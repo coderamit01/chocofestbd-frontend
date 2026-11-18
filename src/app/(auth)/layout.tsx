@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { AuthHero, HighlightUnderline } from "@/components/auth/auth-hero";
+import { BrandLogo } from "@/components/shared/brand-logo";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
@@ -14,7 +15,10 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           description="Imported chocolates, coffee & snacks, delivered fresh to your doorstep across Bangladesh."
         />
         <div className="flex items-center justify-center">
-          <div className="w-full max-w-[380px]">{children}</div>
+          <div className="flex w-full max-w-[380px] flex-col items-center gap-6">
+            <BrandLogo priority />
+            <div className="w-full">{children}</div>
+          </div>
         </div>
       </div>
     </main>

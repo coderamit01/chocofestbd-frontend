@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-off-white: #FFF8F0;
+  --color-off-white: #f5751c0f;
   --color-dark: #272626;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -53,8 +53,8 @@
 }
 
 :root {
-  /* Brand: primary #4E1D06 · secondary #F56505 · off-white #FFF8F0 · dark #272626 */
-  --background: #FFF8F0;
+  /* Brand: primary #4E1D06 · secondary #F56505 · off-white ##f5751c0f · dark #272626 */
+  --background: #f5751c0f;
   --foreground: #272626;
   --card: #FFFFFF;
   --card-foreground: #272626;
@@ -70,7 +70,7 @@
   --accent-foreground: #4E1D06;
   --destructive: oklch(0.577 0.245 27.325);
   --border: #EADBCB;
-  --input: #EADBCB;
+  --input: #f5650524;
   --ring: #F56505;
   --chart-1: #4E1D06;
   --chart-2: #F56505;
@@ -134,5 +134,9 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    @apply cursor-pointer;
   }
 }

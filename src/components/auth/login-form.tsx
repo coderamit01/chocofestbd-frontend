@@ -3,11 +3,11 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import { AuthDivider } from "./auth-divider";
+import { AuthFormError } from "./auth-form-error";
 import { AuthInput, PasswordInput } from "./auth-input";
-import { SocialAuthButtons } from "./social-auth-buttons";
+import { AuthSocialSection } from "./auth-social-section";
+import { AuthSubmitButton } from "./auth-submit-button";
 
 export function LoginForm() {
   const router = useRouter();
@@ -51,26 +51,14 @@ export function LoginForm() {
           Forgot password?
         </Link>
 
-        {error && (
-          <p role="alert" className="mt-4 text-sm text-destructive">
-            {error}
-          </p>
-        )}
+        <AuthFormError message={error} />
 
-        <Button
-          type="submit"
-          variant="secondary"
-          disabled={isPending}
-          className="mt-8 h-13 w-full rounded-xl text-[15px] font-semibold text-white"
-        >
-          {isPending ? "Logging in..." : "Login"}
-        </Button>
+        <AuthSubmitButton isPending={isPending} pendingLabel="Logging in..." className="mt-8">
+          Login
+        </AuthSubmitButton>
       </form>
 
-      <div className="mt-6 flex flex-col gap-6">
-        <AuthDivider label="Or Login with" />
-        <SocialAuthButtons onError={setError} />
-      </div>
+      <AuthSocialSection label="Or Login with" onError={setError} />
     </div>
   );
 }

@@ -1,17 +1,14 @@
 "use client";
 
-import { cn } from "cn";
 import type { IconType } from "react-icons";
-import { FaFacebook } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 
-type SocialProvider = "google" | "facebook";
+type SocialProvider = "google";
 
-const providers: { id: SocialProvider; label: string; icon: IconType; iconClassName?: string }[] = [
+const providers: { id: SocialProvider; label: string; icon: IconType }[] = [
   { id: "google", label: "Google", icon: FcGoogle },
-  { id: "facebook", label: "Facebook", icon: FaFacebook, iconClassName: "text-[#1877F2]" },
 ];
 
 type SocialAuthButtonsProps = {
@@ -30,16 +27,16 @@ export function SocialAuthButtons({ callbackURL = "/", onError }: SocialAuthButt
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 px-2">
-      {providers.map(({ id, label, icon: Icon, iconClassName }) => (
+    <div className="flex flex-wrap justify-center gap-4">
+      {providers.map(({ id, label, icon: Icon }) => (
         <Button
           key={id}
           type="button"
           variant="outline"
           onClick={() => handleSignIn(id)}
-          className="h-12 gap-2.5 rounded-xl bg-card text-[15px] font-medium text-foreground"
+          className="h-12 min-w-44 gap-2.5 rounded-xl bg-card px-8 text-[15px] font-medium text-foreground"
         >
-          <Icon className={cn("size-5", iconClassName)} />
+          <Icon className="size-5" />
           {label}
         </Button>
       ))}
