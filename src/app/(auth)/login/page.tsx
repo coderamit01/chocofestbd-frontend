@@ -12,7 +12,7 @@ export default function LoginPage() {
     <div className="flex flex-col gap-8">
       <AuthHeader title="Welcome Back" description="Please login to your account" />
       <LoginForm />
-      <AuthSwitchLink question="Don't have an account?" label="Signup" href="/signup" />
+      <AuthSwitchLink question="Don't have an account?" label="Create an account" href="/signup" />
     </div>
   );
 }

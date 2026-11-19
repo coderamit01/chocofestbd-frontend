@@ -11,7 +11,7 @@ export function BrandLogo({ className, priority }: BrandLogoProps) {
   return (
     <Link href="/" aria-label="Chocofest BD home" className={cn("inline-flex", className)}>
       <Image
-        src="/Chocofestbd Logo.png"
+        src="/Chocofestbd Logo.webp"
         alt="Chocofest BD"
         width={137}
         height={80}
