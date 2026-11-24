@@ -4,7 +4,7 @@ import { BrandLogo } from "@/components/shared/brand-logo";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="flex flex-1 items-center justify-center bg-off-white px-4 py-10 sm:px-8">
+    <main className="flex flex-1 items-center justify-center bg-[#f9efea00] px-4 py-10 sm:px-8">
       <div className="grid w-full max-w-240 gap-10 rounded-[36px] bg-card p-6 shadow-[0_40px_80px_-30px_rgb(39_38_38/0.18)] sm:p-8 lg:grid-cols-2 lg:p-10">
         <AuthHero
           title={
