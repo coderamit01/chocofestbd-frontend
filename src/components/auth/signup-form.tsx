@@ -1,78 +1,141 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ApiError } from "@/lib/api-client";
+import { homeFor } from "@/lib/route-guard";
+import { signUpSchema, type SignUpInput, type SignUpValues } from "@/lib/validations/auth";
+import { AuthService } from "@/services/auth.service";
 import { AuthFormError } from "./auth-form-error";
-import { AuthInput, PasswordInput } from "./auth-input";
 import { AuthSocialSection } from "./auth-social-section";
 import { AuthSubmitButton } from "./auth-submit-button";
 
-const MIN_PASSWORD_LENGTH = 8;
+const inputClassName =
+  "h-13 rounded-xl border-input bg-off-white px-5 text-[15px] text-foreground md:text-[15px] placeholder:text-muted-foreground/80 focus-visible:border-secondary focus-visible:ring-secondary/20";
+
+const isSignUpField = (field: string): field is keyof SignUpInput => field in signUpSchema.shape;
+
+function FieldError({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
+
+  return (
+    <p id={id} role="alert" className="mt-1.5 px-1 text-xs text-destructive">
+      {message}
+    </p>
+  );
+}
 
 export function SignupForm() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [isPending, setIsPending] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const PasswordIcon = isPasswordVisible ? Eye : EyeOff;
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError(null);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<SignUpInput, unknown, SignUpValues>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: { name: "", email: "", password: "", address: "" },
+  });
 
-    const formData = new FormData(event.currentTarget);
-    const password = String(formData.get("password"));
+  async function onSubmit({ name, email, password }: SignUpValues) {
+    try {
+      const { data: user } = await AuthService.signUp({ name, email, password });
+      router.replace(homeFor(user?.role));
+      router.refresh();
+    } catch (error) {
+      if (error instanceof ApiError && error.fieldErrors.length > 0) {
+        error.fieldErrors.forEach(({ field, message }) => {
+          if (isSignUpField(field)) setError(field, { message });
+        });
+        return;
+      }
 
-    if (password.length < MIN_PASSWORD_LENGTH) {
-      setPasswordError(`Password must be at least ${MIN_PASSWORD_LENGTH} characters`);
-      return;
+      setError("root", {
+        message: error instanceof Error ? error.message : "Could not create your account. Please try again.",
+      });
     }
-
-    setIsPending(true);
-
-    const { error } = await authClient.signUp.email({
-      name: String(formData.get("name")).trim(),
-      email: String(formData.get("email")),
-      password,
-    });
-
-    setIsPending(false);
-
-    if (error) {
-      setError(error.message ?? "Could not create your account. Please try again.");
-      return;
-    }
-
-    router.push("/");
-    router.refresh();
   }
 
   return (
     <div className="flex flex-col">
-      <form onSubmit={handleSubmit} className="flex flex-col">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col">
         <div className="flex flex-col gap-3.5">
-          <AuthInput id="name" name="name" label="Full name" autoComplete="name" required />
-          <AuthInput id="email" name="email" type="email" label="Email address" autoComplete="email" required />
-          <PasswordInput
-            id="password"
-            name="password"
-            label="Password"
-            error={passwordError}
-            onChange={() => setPasswordError(null)}
-            autoComplete="new-password"
-            required
-          />
-          <AuthInput id="address" name="address" label="Address (optional)" autoComplete="street-address" />
+          <div>
+            <label htmlFor="name" className="sr-only">
+              Full name
+            </label>
+            <Input
+              id="name"
+              placeholder="Full name"
+              autoComplete="name"
+              aria-invalid={errors.name ? true : undefined}
+              aria-describedby={errors.name ? "name-error" : undefined}
+              className={inputClassName}
+              {...register("name")}
+            />
+            <FieldError id="name-error" message={errors.name?.message} />
+          </div>
+
+          <div>
+            <label htmlFor="email" className="sr-only">
+              Email address
+            </label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="Email address"
+              autoComplete="email"
+              aria-invalid={errors.email ? true : undefined}
+              aria-describedby={errors.email ? "email-error" : undefined}
+              className={inputClassName}
+              {...register("email")}
+            />
+            <FieldError id="email-error" message={errors.email?.message} />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="sr-only">
+              Password
+            </label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder="Password"
+                autoComplete="new-password"
+                aria-invalid={errors.password ? true : undefined}
+                aria-describedby={errors.password ? "password-error" : undefined}
+                className={`${inputClassName} pr-14`}
+                {...register("password")}
+              />
+              <button
+                type="button"
+                onClick={() => setIsPasswordVisible((visible) => !visible)}
+                aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+                className="absolute top-1/2 right-4 flex -translate-y-1/2 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-secondary/40 focus-visible:outline-none"
+              >
+                <PasswordIcon className="size-5" />
+              </button>
+            </div>
+            <FieldError id="password-error" message={errors.password?.message} />
+          </div>
         </div>
 
-        <AuthFormError message={error} />
+        <AuthFormError message={errors.root?.message ?? null} />
 
-        <AuthSubmitButton isPending={isPending} pendingLabel="Creating account..." className="mt-8">
+        <AuthSubmitButton isPending={isSubmitting} pendingLabel="Creating account..." className="mt-8">
           Sign Up
         </AuthSubmitButton>
       </form>
 
-      <AuthSocialSection label="Or Sign up with" onError={setError} />
+      <AuthSocialSection label="Or Sign up with" onError={(message) => setError("root", { message })} />
     </div>
   );
 }

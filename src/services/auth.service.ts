@@ -1,0 +1,16 @@
+import { apiRequest } from "@/lib/api-client";
+import type { SessionUser } from "@/types/auth";
+
+export type SignUpPayload = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export const AuthService = {
+  signUp: (payload: SignUpPayload) =>
+    apiRequest<SessionUser>("/auth/sign-up", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+};
