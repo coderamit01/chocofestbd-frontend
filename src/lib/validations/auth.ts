@@ -22,3 +22,14 @@ export const signUpSchema = z.object({
 
 export type SignUpInput = z.input<typeof signUpSchema>;
 export type SignUpValues = z.output<typeof signUpSchema>;
+
+export const signInSchema = z.object({
+  email: signUpSchema.shape.email,
+  password: z
+    .string()
+    .min(1, { error: "Password is required" })
+    .max(128, { error: "Password must be at most 128 characters" }),
+});
+
+export type SignInInput = z.input<typeof signInSchema>;
+export type SignInValues = z.output<typeof signInSchema>;

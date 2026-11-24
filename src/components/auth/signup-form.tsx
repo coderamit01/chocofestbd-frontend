@@ -10,6 +10,7 @@ import { ApiError } from "@/lib/api-client";
 import { homeFor } from "@/lib/route-guard";
 import { signUpSchema, type SignUpInput, type SignUpValues } from "@/lib/validations/auth";
 import { AuthService } from "@/services/auth.service";
+import { AuthFieldError } from "./auth-field-error";
 import { AuthFormError } from "./auth-form-error";
 import { AuthSocialSection } from "./auth-social-section";
 import { AuthSubmitButton } from "./auth-submit-button";
@@ -18,16 +19,6 @@ const inputClassName =
   "h-13 rounded-xl border-input bg-off-white px-5 text-[15px] text-foreground md:text-[15px] placeholder:text-muted-foreground/80 focus-visible:border-secondary focus-visible:ring-secondary/20";
 
 const isSignUpField = (field: string): field is keyof SignUpInput => field in signUpSchema.shape;
-
-function FieldError({ id, message }: { id: string; message?: string }) {
-  if (!message) return null;
-
-  return (
-    <p id={id} role="alert" className="mt-1.5 px-1 text-xs text-destructive">
-      {message}
-    </p>
-  );
-}
 
 export function SignupForm() {
   const router = useRouter();
@@ -44,7 +35,7 @@ export function SignupForm() {
     defaultValues: { name: "", email: "", password: "", address: "" },
   });
 
-  async function onSubmit({ name, email, password }: SignUpValues) {
+  const onSubmit = async({ name, email, password }: SignUpValues) => {
     try {
       const { data: user } = await AuthService.signUp({ name, email, password });
       router.replace(homeFor(user?.role));
@@ -80,7 +71,7 @@ export function SignupForm() {
               className={inputClassName}
               {...register("name")}
             />
-            <FieldError id="name-error" message={errors.name?.message} />
+            <AuthFieldError id="name-error" message={errors.name?.message} />
           </div>
 
           <div>
@@ -97,7 +88,7 @@ export function SignupForm() {
               className={inputClassName}
               {...register("email")}
             />
-            <FieldError id="email-error" message={errors.email?.message} />
+            <AuthFieldError id="email-error" message={errors.email?.message} />
           </div>
 
           <div>
@@ -124,7 +115,7 @@ export function SignupForm() {
                 <PasswordIcon className="size-5" />
               </button>
             </div>
-            <FieldError id="password-error" message={errors.password?.message} />
+            <AuthFieldError id="password-error" message={errors.password?.message} />
           </div>
         </div>
 

@@ -6,6 +6,10 @@ export type SignUpPayload = {
   email: string;
   password: string;
 };
+export type SignInPayload = {
+  email: string;
+  password: string;
+};
 
 export const AuthService = {
   signUp: (payload: SignUpPayload) =>
@@ -13,4 +17,10 @@ export const AuthService = {
       method: "POST",
       body: JSON.stringify(payload),
     }),
+  signIn: (payload: SignInPayload) =>
+    apiRequest<SessionUser>("/auth/sign-in", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
 };
+

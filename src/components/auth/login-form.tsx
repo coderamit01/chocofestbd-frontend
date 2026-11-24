@@ -1,11 +1,17 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { authClient } from "@/lib/auth-client";
+import { ApiError } from "@/lib/api-client";
+import { homeFor, isSafeRedirect } from "@/lib/route-guard";
+import { signInSchema, type SignInInput, type SignInValues } from "@/lib/validations/auth";
+import { AuthService } from "@/services/auth.service";
+import { AuthFieldError } from "./auth-field-error";
 import { AuthFormError } from "./auth-form-error";
 import { AuthSocialSection } from "./auth-social-section";
 import { AuthSubmitButton } from "./auth-submit-button";
@@ -13,38 +19,46 @@ import { AuthSubmitButton } from "./auth-submit-button";
 const inputClassName =
   "h-13 rounded-xl border-input bg-off-white px-5 text-[15px] text-foreground md:text-[15px] placeholder:text-muted-foreground/80 focus-visible:border-secondary focus-visible:ring-secondary/20";
 
+const isSignInField = (field: string): field is keyof SignInInput => field in signInSchema.shape;
+
 export function LoginForm() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [isPending, setIsPending] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const PasswordIcon = isPasswordVisible ? Eye : EyeOff;
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError(null);
-    setIsPending(true);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<SignInInput, unknown, SignInValues>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: { email: "", password: "" },
+  });
 
-    const formData = new FormData(event.currentTarget);
-    const { error } = await authClient.signIn.email({
-      email: String(formData.get("email")),
-      password: String(formData.get("password")),
-    });
+  const onSubmit = async ({ email, password }: SignInValues) => {
+    try {
+      const { data: user } = await AuthService.signIn({ email, password });
+      const callbackUrl = new URLSearchParams(window.location.search).get("callbackUrl");
+      router.replace(isSafeRedirect(callbackUrl) ? callbackUrl : homeFor(user?.role));
+      router.refresh();
+    } catch (error) {
+      if (error instanceof ApiError && error.fieldErrors.length > 0) {
+        error.fieldErrors.forEach(({ field, message }) => {
+          if (isSignInField(field)) setError(field, { message });
+        });
+        return;
+      }
 
-    setIsPending(false);
-
-    if (error) {
-      setError(error.message ?? "Invalid email or password.");
-      return;
+      setError("root", {
+        message: error instanceof Error ? error.message : "Could not log you in. Please try again.",
+      });
     }
-
-    router.push("/");
-    router.refresh();
-  }
+  };
 
   return (
     <div className="flex flex-col">
-      <form onSubmit={handleSubmit} className="flex flex-col">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col">
         <div className="flex flex-col gap-3.5">
           <div>
             <label htmlFor="email" className="sr-only">
@@ -52,13 +66,15 @@ export function LoginForm() {
             </label>
             <Input
               id="email"
-              name="email"
               type="email"
               placeholder="Email address"
               autoComplete="email"
-              required
+              aria-invalid={errors.email ? true : undefined}
+              aria-describedby={errors.email ? "email-error" : undefined}
               className={inputClassName}
+              {...register("email")}
             />
+            <AuthFieldError id="email-error" message={errors.email?.message} />
           </div>
 
           <div>
@@ -68,12 +84,13 @@ export function LoginForm() {
             <div className="relative">
               <Input
                 id="password"
-                name="password"
                 type={isPasswordVisible ? "text" : "password"}
                 placeholder="Password"
                 autoComplete="current-password"
-                required
+                aria-invalid={errors.password ? true : undefined}
+                aria-describedby={errors.password ? "password-error" : undefined}
                 className={`${inputClassName} pr-14`}
+                {...register("password")}
               />
               <button
                 type="button"
@@ -84,6 +101,7 @@ export function LoginForm() {
                 <PasswordIcon className="size-5" />
               </button>
             </div>
+            <AuthFieldError id="password-error" message={errors.password?.message} />
           </div>
         </div>
 
@@ -94,14 +112,14 @@ export function LoginForm() {
           Forgot password?
         </Link>
 
-        <AuthFormError message={error} />
+        <AuthFormError message={errors.root?.message ?? null} />
 
-        <AuthSubmitButton isPending={isPending} pendingLabel="Logging in..." className="mt-8">
+        <AuthSubmitButton isPending={isSubmitting} pendingLabel="Logging in..." className="mt-8">
           Login
         </AuthSubmitButton>
       </form>
 
-      <AuthSocialSection label="Or Login with" onError={setError} />
+      <AuthSocialSection label="Or Login with" onError={(message) => setError("root", { message })} />
     </div>
   );
 }
