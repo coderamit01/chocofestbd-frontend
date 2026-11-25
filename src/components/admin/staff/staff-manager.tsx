@@ -28,9 +28,9 @@ export function StaffManager({ staff }: { staff: User[] }) {
   }, [staff, query, roleFilter]);
 
   return (
-    <section className="flex flex-col gap-5 rounded-xl bg-card px-6 py-[22px] max-[900px]:p-[18px]">
+    <section className="flex flex-col gap-5 rounded-xl bg-card px-6 py-5.5 max-[900px]:p-4.5]">
       <div className="flex flex-wrap items-center gap-3">
-        <div role="tablist" aria-label="Staff" className="flex gap-1.5 overflow-x-auto [scrollbar-width:none]">
+        <div role="tablist" aria-label="Staff" className="flex gap-1.5 overflow-x-auto [scrollbar-none]">
           {STAFF_TABS.map((item) => (
             <button
               key={item.value}
@@ -39,7 +39,7 @@ export function StaffManager({ staff }: { staff: User[] }) {
               aria-selected={tab === item.value}
               onClick={() => setTab(item.value)}
               className={cn(
-                "inline-flex h-[38px] items-center gap-2 rounded-[10px] px-3.5 text-[13.5px] leading-none font-medium whitespace-nowrap",
+                "inline-flex h-9.5 items-center gap-2 rounded-[10px] px-3.5 text-[13.5px] leading-none font-medium whitespace-nowrap",
                 tab === item.value ? "bg-brand-50 text-brand-text" : "text-ink-2 hover:bg-surface-2 hover:text-ink"
               )}
             >
@@ -60,14 +60,14 @@ export function StaffManager({ staff }: { staff: User[] }) {
                 placeholder="Name or email"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                className="h-[42px] w-full rounded-[10px] border border-transparent bg-surface-2 pr-3.5 pl-[42px] text-sm text-ink outline-none transition-[border-color,box-shadow,background-color] placeholder:text-ink-4 focus:border-brand focus:bg-surface focus:shadow-[0_0_0_3px_rgb(238_86_21/20%)]"
+                className="h-10.5 w-full rounded-[10px] border border-transparent bg-surface-2 pr-3.5 pl-10.5 text-sm text-ink outline-none transition-[border-color,box-shadow,background-color] placeholder:text-ink-4 focus:border-brand focus:bg-surface focus:shadow-[0_0_0_3px_rgb(238_86_21/20%)]"
               />
             </div>
             <select
               aria-label="Role"
               value={roleFilter}
               onChange={(event) => setRoleFilter(event.target.value as StaffRole | "")}
-              className="select-chevron h-9 w-auto cursor-pointer rounded-[10px] border border-transparent bg-surface-2 pr-[38px] pl-3 text-[13px] text-ink outline-none focus:border-brand focus:shadow-[0_0_0_3px_rgb(238_86_21/20%)]"
+              className="select-chevron h-9 w-auto cursor-pointer rounded-[10px] border border-transparent bg-surface-2 pr-9.5 pl-3 text-[13px] text-ink outline-none focus:border-brand focus:shadow-[0_0_0_3px_rgb(238_86_21/20%)]"
             >
               <option value="">All roles</option>
               {STAFF_ROLE_ORDER.map((role) => (

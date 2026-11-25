@@ -34,6 +34,10 @@ export const ICON_PATHS = {
   userAdd: "M10 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM3 21a7 7 0 0 1 13.4-2.8M19 14v6M16 17h6",
   lock: "M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4",
   home: "M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z",
+  user: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0",
+  chevronDown: "M6 9l6 6 6-6",
+  alert: "M12 9v4M12 17h.01M10.3 4l-8 14a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0z",
+  xcircle: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9 9l6 6M15 9l-6 6",
 } as const;
 
 export type IconName = keyof typeof ICON_PATHS;

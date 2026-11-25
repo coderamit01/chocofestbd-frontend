@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { Icon } from "@/components/shared/icon";
-import { useSidebar } from "./sidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 
-export default function Topbar() {
+export function MobileBar() {
   const { toggleSidebar } = useSidebar();
 
   return (

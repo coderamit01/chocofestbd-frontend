@@ -4,7 +4,6 @@ import { StaffManager } from "@/components/admin/staff/staff-manager";
 import { StaffSkeleton } from "@/components/admin/staff/staff-skeleton";
 import { AccessDenied } from "@/components/shared/access-denied";
 import { Icon } from "@/components/shared/icon";
-import { PageTitle } from "@/components/shared/page-title";
 import { ApiError } from "@/lib/api-client";
 import { getCurrentUser } from "@/lib/current-user";
 import { UserService } from "@/services/user.service";
@@ -50,11 +49,8 @@ async function StaffSection() {
 
 export default function StaffPage() {
   return (
-    <>
-      <PageTitle title="Staff & roles" />
-      <Suspense fallback={<StaffSkeleton />}>
-        <StaffSection />
-      </Suspense>
-    </>
+    <Suspense fallback={<StaffSkeleton />}>
+      <StaffSection />
+    </Suspense>
   );
 }

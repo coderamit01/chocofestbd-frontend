@@ -312,3 +312,15 @@
     @apply cursor-pointer;
   }
 }
+
+@theme {
+  --animate-pop: pop 0.12s ease-out;
+  --shadow-focus: 0 0 0 3px rgb(238 86 21 / 20%);
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.98);
+    }
+  }
+}

@@ -30,19 +30,24 @@ export function StaffTable({ staff, onEdit }: StaffTableProps) {
               </th>
             ))}
             <th className={cn(tableStyles.head, "text-right")}>
-              <span className="sr-only">Actions</span>
+             Actions
             </th>
           </tr>
         </thead>
         <tbody className={tableStyles.body}>
           {staff.length === 0 ? (
             <tr>
-              <td colSpan={6} className="px-4 py-12 text-center text-caption text-ink-3">
+              <td
+                colSpan={6}
+                className="px-4 py-12 text-center text-caption text-ink-3"
+              >
                 No staff match your search.
               </td>
             </tr>
           ) : (
-            staff.map((user) => <StaffRow key={user.id} user={user} onEdit={onEdit} />)
+            staff.map((user) => (
+              <StaffRow key={user.id} user={user} onEdit={onEdit} />
+            ))
           )}
         </tbody>
       </table>
@@ -50,7 +55,13 @@ export function StaffTable({ staff, onEdit }: StaffTableProps) {
   );
 }
 
-function StaffRow({ user, onEdit }: { user: User; onEdit: (user: User) => void }) {
+function StaffRow({
+  user,
+  onEdit,
+}: {
+  user: User;
+  onEdit: (user: User) => void;
+}) {
   const [isPending, startTransition] = useTransition();
   const isLocked = user.role === "SUPER_ADMIN";
   const toggleLabel = user.isBanned ? "Reactivate" : "Deactivate";
@@ -59,13 +70,19 @@ function StaffRow({ user, onEdit }: { user: User; onEdit: (user: User) => void }
     startTransition(async () => {
       const result = await setUserBanAction(user.id, !user.isBanned);
       if (!result.success) {
-        toast.error(`Couldn’t ${toggleLabel.toLowerCase()}`, { description: result.message });
+        toast.error(`Couldn’t ${toggleLabel.toLowerCase()}`, {
+          description: result.message,
+        });
         return;
       }
       if (user.isBanned) {
-        toast.success("Reactivated", { description: `${user.name} can sign in again` });
+        toast.success("Reactivated", {
+          description: `${user.name} can sign in again`,
+        });
       } else {
-        toast.error("Deactivated", { description: `${user.name} is signed out everywhere` });
+        toast.error("Deactivated", {
+          description: `${user.name} is signed out everywhere`,
+        });
       }
     });
 
@@ -76,7 +93,7 @@ function StaffRow({ user, onEdit }: { user: User; onEdit: (user: User) => void }
           <span
             className={cn(
               "flex size-9 flex-none items-center justify-center rounded-full font-heading text-[13px] leading-none font-semibold",
-              pickByHash(user.id, AVATAR_TONES)
+              pickByHash(user.id, AVATAR_TONES),
             )}
           >
             {getInitials(user.name)}
@@ -94,9 +111,15 @@ function StaffRow({ user, onEdit }: { user: User; onEdit: (user: User) => void }
         <StatusBadge kind="role" status={user.role} />
       </td>
       <td data-label="Status" className={tableStyles.cell}>
-        <StatusBadge kind="account" status={user.isBanned ? "DEACTIVATED" : "ACTIVE"} />
+        <StatusBadge
+          kind="account"
+          status={user.isBanned ? "DEACTIVATED" : "ACTIVE"}
+        />
       </td>
-      <td data-label="Last active" className={cn(tableStyles.cell, "text-caption text-ink-3")}>
+      <td
+        data-label="Last active"
+        className={cn(tableStyles.cell, "text-caption text-ink-3")}
+      >
         —
       </td>
       <td className={tableStyles.bareCell}>

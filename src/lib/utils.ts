@@ -19,3 +19,18 @@ export const pickByHash = <T,>(key: string, options: T[]) => {
   const hash = [...key].reduce((total, char) => (total * 31 + char.charCodeAt(0)) >>> 0, 0);
   return options[hash % options.length];
 };
+
+export const formatTaka = (amount: number | string) => `৳${Math.round(Number(amount)).toLocaleString("en-IN")}`;
+
+const MINUTE = 60_000;
+const HOUR = 60 * MINUTE;
+const DAY = 24 * HOUR;
+
+export const timeAgo = (value: string | Date) => {
+  const elapsed = Date.now() - new Date(value).getTime();
+  if (elapsed < MINUTE) return "Just now";
+  if (elapsed < HOUR) return `${Math.floor(elapsed / MINUTE)} min ago`;
+  if (elapsed < DAY) return `${Math.floor(elapsed / HOUR)} hr ago`;
+  if (elapsed < 2 * DAY) return "Yesterday";
+  return formatDate(value);
+};
