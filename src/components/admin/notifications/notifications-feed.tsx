@@ -135,7 +135,7 @@ export function NotificationsFeed({ notifications, unreadCount, meta, query, now
           Mark all read
         </button>
         {canManageAlerts && (
-          <Link href={SETTINGS_PATH} className={buttonVariants({ variant: "outline" })}>
+          <Link href={`${SETTINGS_PATH}?tab=notifications`} className={buttonVariants({ variant: "outline" })}>
             <Icon name="settings" size={17} strokeWidth={1.8} />
             Telegram alerts
           </Link>

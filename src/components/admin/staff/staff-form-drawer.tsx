@@ -12,6 +12,7 @@ import { INVITE_ROLE_OPTIONS, type InvitableRole } from "@/config/staff";
 import { STATUS_BADGES } from "@/config/status-badges";
 import { cn } from "@/lib/utils";
 import { getPasswordScore, staffFormSchema, type StaffFormValues } from "@/lib/validations/staff";
+import { formStyles } from "@/lib/form-styles";
 import type { User } from "@/types/user";
 
 export type StaffDrawerState = { mode: "invite" } | { mode: "edit"; user: User } | null;
@@ -21,13 +22,11 @@ type StaffFormDrawerProps = {
   onClose: () => void;
 };
 
-const inputClassName =
-  "h-[42px] w-full rounded-[10px] border border-input bg-surface-2 px-3.5 text-sm text-ink outline-none transition-[border-color,box-shadow,background-color] placeholder:text-ink-4 focus:border-brand focus:bg-surface focus:shadow-[0_0_0_3px_rgb(238_86_21/20%)] aria-invalid:border-danger aria-invalid:bg-[#fffafa] disabled:cursor-not-allowed disabled:text-ink-4";
+const inputClassName = formStyles.input;
 
-const inputGroupClassName =
-  "flex h-[42px] items-stretch overflow-hidden rounded-[10px] border border-input bg-surface-2 transition-[border-color,box-shadow,background-color] focus-within:border-brand focus-within:bg-surface focus-within:shadow-[0_0_0_3px_rgb(238_86_21/20%)] has-aria-invalid:border-danger";
+const inputGroupClassName = formStyles.inputGroup;
 
-const groupInputClassName = "min-w-0 flex-1 border-0 bg-transparent px-3.5 text-sm text-ink outline-none placeholder:text-ink-4";
+const groupInputClassName = formStyles.groupInput;
 
 const STRENGTH = [
   { label: "Weak", color: "bg-[#e5533f]" },

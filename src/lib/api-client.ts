@@ -34,7 +34,7 @@ export async function apiRequest<T>(path: string, init: RequestInit = {}): Promi
     response = await fetch(`${API_BASE_URL}${path}`, {
       ...init,
       credentials: "include",
-      headers: { "Content-Type": "application/json", ...init.headers },
+      headers: init.body instanceof FormData ? init.headers : { "Content-Type": "application/json", ...init.headers },
     });
   } catch {
     throw new ApiError("Unable to reach the server. Please check your connection and try again.", 0);
