@@ -10,9 +10,16 @@ const LIST_ENDPOINTS: Record<UserView, string> = {
 };
 
 export type UpdateUserPayload = {
+  name?: string;
+  phone?: string;
   role?: UserRole;
   isBanned?: boolean;
 };
+
+const ALL_USERS_PAGE_SIZE = 100;
+
+const fetchUsersPage = (page: number) =>
+  serverApiRequest<User[]>(`/users?${new URLSearchParams({ page: String(page), limit: String(ALL_USERS_PAGE_SIZE) })}`);
 
 export const UserService = {
   getUsers: ({ view, page, search }: UsersQuery) => {
@@ -22,10 +29,22 @@ export const UserService = {
     return serverApiRequest<User[]>(`${LIST_ENDPOINTS[view]}?${params}`);
   },
 
-  updateUser: (userId: string, { role, isBanned }: UpdateUserPayload) =>
+  getStaff: async () => {
+    const first = await fetchUsersPage(1);
+    const totalPages = first.meta?.totalPages ?? 1;
+    const rest = await Promise.all(
+      Array.from({ length: Math.max(totalPages - 1, 0) }, (_, index) => fetchUsersPage(index + 2))
+    );
+
+    return [first, ...rest].flatMap((response) => response.data ?? []).filter((user) => user.role !== "CUSTOMER");
+  },
+
+  updateUser: (userId: string, { name, phone, role, isBanned }: UpdateUserPayload) =>
     serverApiRequest<User>(`/users/${userId}`, {
       method: "PUT",
       body: JSON.stringify({
+        ...(name !== undefined && { name }),
+        ...(phone !== undefined && { phone }),
         ...(role && { role }),
         ...(isBanned !== undefined && { isBanned: String(isBanned) }),
       }),

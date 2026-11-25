@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
-import { NavIcon } from "./nav-icon";
+import { Icon } from "@/components/shared/icon";
 
 export function SidebarBrand({ expanded }: { expanded: boolean }) {
   const { isMobile, toggleSidebar, setOpenMobile } = useSidebar();
@@ -29,12 +29,12 @@ export function SidebarBrand({ expanded }: { expanded: boolean }) {
 
         {isMobile ? (
           <Button variant="ghost" size="icon-sm" aria-label="Close menu" onClick={() => setOpenMobile(false)}>
-            <NavIcon name="close" size={18} strokeWidth={1.8} />
+            <Icon name="close" size={18} strokeWidth={1.8} />
           </Button>
         ) : (
           expanded && (
             <Button variant="ghost" size="icon-sm" aria-label="Collapse sidebar" onClick={toggleSidebar}>
-              <NavIcon name="collapse" size={18} strokeWidth={1.8} />
+              <Icon name="collapse" size={18} strokeWidth={1.8} />
             </Button>
           )
         )}
@@ -48,7 +48,7 @@ export function SidebarBrand({ expanded }: { expanded: boolean }) {
           onClick={toggleSidebar}
           className="mx-auto -mt-2.5 mb-3.5 w-11 px-0"
         >
-          <NavIcon name="expand" size={18} strokeWidth={1.8} />
+          <Icon name="expand" size={18} strokeWidth={1.8} />
         </Button>
       )}
     </>

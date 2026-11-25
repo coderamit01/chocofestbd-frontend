@@ -6,7 +6,7 @@ import { useSidebar } from "@/components/ui/sidebar";
 import type { NavCounts, NavSection } from "@/config/admin-nav";
 import { isActivePath } from "@/lib/nav";
 import { cn } from "@/lib/utils";
-import { NavIcon } from "./nav-icon";
+import { Icon } from "@/components/shared/icon";
 
 type SidebarNavProps = {
   sections: NavSection[];
@@ -44,7 +44,7 @@ export function SidebarNav({ sections, counts, expanded }: SidebarNavProps) {
                   isActive ? "bg-brand font-medium text-white" : "text-ink-2"
                 )}
               >
-                <NavIcon name={icon} className="flex-none" />
+                <Icon name={icon} className="flex-none" />
                 {expanded && (
                   <>
                     <span className="flex-1 whitespace-nowrap">{title}</span>

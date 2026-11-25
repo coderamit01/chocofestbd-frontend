@@ -1,40 +1,30 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import { SidebarTrigger } from "./sidebar";
+"use client";
 
+import Link from "next/link";
+import { Icon } from "@/components/shared/icon";
+import { useSidebar } from "./sidebar";
 
-const Topbar = () => {
+export default function Topbar() {
+  const { toggleSidebar } = useSidebar();
+
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Build Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header>
-  )
+    <header className="flex h-16 items-center justify-between border-b border-line bg-surface px-4 md:hidden">
+      <Link href="/admin" className="flex items-center gap-2.5 text-ink">
+        <span className="flex size-9 items-center justify-center rounded-[11px] bg-brand font-heading text-sm leading-none font-bold text-white">
+          CF
+        </span>
+        <span className="font-heading text-lg leading-none font-semibold">
+          ChocoFest <span className="text-brand">BD</span>
+        </span>
+      </Link>
+      <button
+        type="button"
+        aria-label="Open menu"
+        onClick={toggleSidebar}
+        className="flex size-11 items-center justify-center rounded-[9px] border border-line-2 bg-surface text-ink-2"
+      >
+        <Icon name="menu" strokeWidth={1.8} />
+      </button>
+    </header>
+  );
 }
-
-export default Topbar

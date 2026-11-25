@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { LOGIN_PATH } from "@/config/routes";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { NavIcon } from "./nav-icon";
+import { Icon } from "@/components/shared/icon";
 
 export function SidebarLogout({ expanded }: { expanded: boolean }) {
   const router = useRouter();
@@ -34,7 +34,7 @@ export function SidebarLogout({ expanded }: { expanded: boolean }) {
         expanded ? "justify-start" : "justify-center"
       )}
     >
-      <NavIcon name="logout" strokeWidth={1.8} />
+      <Icon name="logout" strokeWidth={1.8} />
       {expanded && <span>{isPending ? "Logging out…" : "Logout"}</span>}
     </button>
   );

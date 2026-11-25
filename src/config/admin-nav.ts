@@ -1,4 +1,4 @@
-import type { NavIconName } from "@/components/admin/sidebar/nav-icon";
+import type { IconName } from "@/components/shared/icon";
 import type { UserRole } from "@/types/auth";
 
 export type NavCountKey = "orders" | "payments" | "reviews" | "notifications";
@@ -8,7 +8,7 @@ export type NavCounts = Partial<Record<NavCountKey, number>>;
 export type NavItem = {
   title: string;
   url: string;
-  icon: NavIconName;
+  icon: IconName;
   roles: UserRole[];
   countKey?: NavCountKey;
 };
@@ -81,7 +81,7 @@ export const ADMIN_NAV: NavSection[] = [
     label: "System",
     showLabel: true,
     items: [
-      { title: "Staff & roles", url: "/admin/users", icon: "staff", roles: SUPER_ADMIN },
+      { title: "Staff & roles", url: "/admin/staff", icon: "staff", roles: SUPER_ADMIN },
       { title: "Notifications", url: "/admin/notifications", icon: "notifications", roles: ORDER_TEAM, countKey: "notifications" },
       { title: "Settings", url: "/admin/settings", icon: "settings", roles: ADMINS },
     ],

@@ -23,6 +23,10 @@ export async function changeUserRoleAction(userId: string, role: UserRole) {
   return runUserAction(() => UserService.updateUser(userId, { role }));
 }
 
+export async function updateStaffAction(userId: string, payload: { name: string; phone: string; role: UserRole }) {
+  return runUserAction(() => UserService.updateUser(userId, payload));
+}
+
 export async function setUserBanAction(userId: string, isBanned: boolean) {
   return runUserAction(() => UserService.updateUser(userId, { isBanned }));
 }

@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-export const NAV_ICON_PATHS = {
+export const ICON_PATHS = {
   dashboard: "M4 4h6v7H4zM14 4h6v4h-6zM14 12h6v8h-6zM4 15h6v5H4z",
   deliveries: "M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z",
   orders: "M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8zM9 8V6a3 3 0 0 1 6 0v2",
@@ -25,16 +25,25 @@ export const NAV_ICON_PATHS = {
   collapse: "M15 6l-6 6 6 6",
   expand: "M9 6l6 6-6 6",
   close: "M6 6l12 12M18 6L6 18",
+  menu: "M4 6h16M4 12h16M4 18h16",
+  check: "M5 12.5l4.5 4.5L19 7",
+  minus: "M5 12h14",
+  edit: "M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4",
+  ban: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM5.6 5.6l12.8 12.8",
+  search: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4",
+  userAdd: "M10 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM3 21a7 7 0 0 1 13.4-2.8M19 14v6M16 17h6",
+  lock: "M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4",
+  home: "M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z",
 } as const;
 
-export type NavIconName = keyof typeof NAV_ICON_PATHS;
+export type IconName = keyof typeof ICON_PATHS;
 
-type NavIconProps = SVGProps<SVGSVGElement> & {
-  name: NavIconName;
+type IconProps = SVGProps<SVGSVGElement> & {
+  name: IconName;
   size?: number;
 };
 
-export function NavIcon({ name, size = 20, strokeWidth = 1.75, ...props }: NavIconProps) {
+export function Icon({ name, size = 20, strokeWidth = 1.75, ...props }: IconProps) {
   return (
     <svg
       width={size}
@@ -48,7 +57,7 @@ export function NavIcon({ name, size = 20, strokeWidth = 1.75, ...props }: NavIc
       aria-hidden="true"
       {...props}
     >
-      <path d={NAV_ICON_PATHS[name]} />
+      <path d={ICON_PATHS[name]} />
     </svg>
   );
 }
