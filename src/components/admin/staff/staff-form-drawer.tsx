@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { inviteStaffAction } from "@/actions/staff.actions";
 import { updateStaffAction } from "@/actions/user.actions";
 import { Icon } from "@/components/shared/icon";
 import { Button } from "@/components/ui/button";
@@ -68,6 +69,7 @@ function StaffForm({ state, onClose }: { state: NonNullable<StaffDrawerState>; o
     register,
     handleSubmit,
     setValue,
+    setError,
     control,
     formState: { errors },
   } = useForm<StaffFormValues>({
@@ -91,8 +93,28 @@ function StaffForm({ state, onClose }: { state: NonNullable<StaffDrawerState>; o
     const roleLabel = STATUS_BADGES.role[values.role].label;
 
     if (!user) {
-      toast.error("Invites aren’t available yet", {
-        description: "The server doesn’t have a staff invite endpoint yet.",
+      startTransition(async () => {
+        const result = await inviteStaffAction({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          phone: values.phone,
+          role: values.role,
+          password: values.password,
+        });
+        if (!result.success) {
+          const fieldErrors = result.fieldErrors ?? [];
+          fieldErrors.forEach((item) => {
+            if (item.field === "name" || item.field === "email" || item.field === "phone" || item.field === "password") {
+              setError(item.field, { message: item.message });
+            }
+          });
+          if (!fieldErrors.length && /email/i.test(result.message)) setError("email", { message: result.message });
+          else if (!fieldErrors.length && /phone/i.test(result.message)) setError("phone", { message: result.message });
+          else if (!fieldErrors.length) toast.error("Couldn’t add staff member", { description: result.message });
+          return;
+        }
+        toast.success("Staff member added", { description: `${values.name} · ${roleLabel}` });
+        onClose();
       });
       return;
     }
@@ -120,7 +142,7 @@ function StaffForm({ state, onClose }: { state: NonNullable<StaffDrawerState>; o
             {isEdit ? "Edit staff member" : "Invite staff member"}
           </SheetTitle>
           <SheetDescription className="mt-1.5 text-caption text-ink-3">
-            They get an email with a link to sign in.
+            {isEdit ? "Their role and details update right away." : "Share their email and this temporary password so they can sign in."}
           </SheetDescription>
         </div>
         <SheetClose render={<Button variant="ghost" size="icon-sm" aria-label="Close" />}>
@@ -170,7 +192,7 @@ function StaffForm({ state, onClose }: { state: NonNullable<StaffDrawerState>; o
               inputMode="numeric"
               placeholder="01XXXXXXXXX"
               aria-invalid={!!errors.phone}
-              className={cn(groupInputClassName, "pl-0")}
+              className={groupInputClassName}
               {...register("phone", {
                 onChange: (event) =>
                   setValue("phone", event.target.value.replace(/\D/g, "").slice(0, 11), { shouldValidate: !!errors.phone }),
@@ -248,7 +270,7 @@ function StaffForm({ state, onClose }: { state: NonNullable<StaffDrawerState>; o
             {errors.password ? (
               <span className="text-caption text-danger">{errors.password.message}</span>
             ) : (
-              <span className="text-caption text-ink-3">They must change it on first sign-in.</span>
+              <span className="text-caption text-ink-3">Share it with them privately.</span>
             )}
           </div>
         )}
@@ -258,7 +280,7 @@ function StaffForm({ state, onClose }: { state: NonNullable<StaffDrawerState>; o
         <SheetClose render={<Button type="button" variant="soft" />}>Cancel</SheetClose>
         <Button type="submit" disabled={isPending} aria-busy={isPending}>
           {isPending && <span className="size-[15px] animate-spin rounded-full border-2 border-current border-r-transparent" />}
-          {isEdit ? "Save changes" : "Send invite"}
+          {isEdit ? "Save changes" : "Add staff member"}
         </Button>
       </div>
     </form>

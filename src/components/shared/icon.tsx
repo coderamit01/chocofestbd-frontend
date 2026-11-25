@@ -58,6 +58,23 @@ export const ICON_PATHS = {
   chevronDown: "M6 9l6 6 6-6",
   alert: "M12 9v4M12 17h.01M10.3 4l-8 14a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0z",
   xcircle: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM9 9l6 6M15 9l-6 6",
+  phone: "M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z",
+  chevronUp: "M6 15l6-6 6 6",
+  trendUp: "M7 17L17 7M9 7h8v8",
+  trendDown: "M7 7l10 10M17 9v8H9",
+  trend: "M4 17l5-5 4 4 7-7M15 9h5v5",
+  percent: "M19 5L5 19M7 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
+  clock: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2",
+  cart: "M3 4h2l2.5 11h11L21 7H6.2M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM18 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
+  verified: "M12 3l2.4 1.8 3-.2.9 2.8 2.4 1.8-1 2.8 1 2.8-2.4 1.8-.9 2.8-3-.2L12 21l-2.4-1.8-3 .2-.9-2.8-2.4-1.8 1-2.8-1-2.8 2.4-1.8.9-2.8 3 .2zM9 12l2 2 4-4",
+  eye: "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+  sort: "M8 9l4-4 4 4M8 15l4 4 4-4",
+  download: "M12 4v11M7 10l5 5 5-5M5 20h14",
+  arrowLeft: "M19 12H5M11 6l-6 6 6 6",
+  chat: "M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.4A8.5 8.5 0 1 1 21 12z",
+  print: "M7 9V4h10v5M7 17H4v-7h16v7h-3M7 14h10v6H7z",
+  arrowRight: "M5 12h14M13 6l6 6-6 6",
+  gift: "M4 9h16v4H4zM5 13h14v8H5zM12 9v12M12 9c-2-4-6-4-6-1.5S10 9 12 9zM12 9c2-4 6-4 6-1.5S14 9 12 9z",
 } as const;
 
 export type IconName = keyof typeof ICON_PATHS;

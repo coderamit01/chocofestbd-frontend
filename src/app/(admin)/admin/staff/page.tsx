@@ -3,10 +3,11 @@ import { Suspense } from "react";
 import { StaffManager } from "@/components/admin/staff/staff-manager";
 import { StaffSkeleton } from "@/components/admin/staff/staff-skeleton";
 import { AccessDenied } from "@/components/shared/access-denied";
-import { Icon } from "@/components/shared/icon";
+import { LoadError } from "@/components/shared/load-error";
 import { ApiError } from "@/lib/api-client";
 import { getCurrentUser } from "@/lib/current-user";
-import { UserService } from "@/services/user.service";
+import { toStaffRow } from "@/lib/staff";
+import { StaffService } from "@/services/staff.service";
 
 export const metadata: Metadata = {
   title: "Staff & roles | Chocofest BD",
@@ -14,7 +15,9 @@ export const metadata: Metadata = {
 
 async function loadStaff() {
   try {
-    return { staff: await UserService.getStaff(), error: null };
+    const staff = await StaffService.getStaff();
+    const now = Date.now();
+    return { staff: staff.map((member) => toStaffRow(member, now)), error: null };
   } catch (error) {
     return {
       staff: [],
@@ -32,17 +35,7 @@ async function StaffSection() {
 
   const { staff, error } = await loadStaff();
 
-  if (error) {
-    return (
-      <section className="flex flex-col items-center gap-3 rounded-xl bg-card px-6 py-16 text-center">
-        <span className="flex size-12 items-center justify-center rounded-xl bg-danger-soft text-danger">
-          <Icon name="ban" size={22} strokeWidth={1.8} />
-        </span>
-        <p className="font-medium text-ink">Couldn’t load staff</p>
-        <p className="max-w-sm text-caption text-ink-3">{error}</p>
-      </section>
-    );
-  }
+  if (error) return <LoadError title="Couldn’t load staff" message={error} />;
 
   return <StaffManager staff={staff} />;
 }

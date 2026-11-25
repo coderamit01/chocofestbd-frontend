@@ -9,11 +9,11 @@ import { Button } from "@/components/ui/button";
 import { AVATAR_TONES } from "@/config/staff";
 import { tableStyles } from "@/lib/table-styles";
 import { cn, formatPhone, getInitials, pickByHash } from "@/lib/utils";
-import type { User } from "@/types/user";
+import type { StaffRow } from "@/types/staff";
 
 type StaffTableProps = {
-  staff: User[];
-  onEdit: (user: User) => void;
+  staff: StaffRow[];
+  onEdit: (user: StaffRow) => void;
 };
 
 const COLUMNS = ["Name", "Phone", "Role", "Status", "Last active"];
@@ -46,7 +46,7 @@ export function StaffTable({ staff, onEdit }: StaffTableProps) {
             </tr>
           ) : (
             staff.map((user) => (
-              <StaffRow key={user.id} user={user} onEdit={onEdit} />
+              <StaffTableRow key={user.id} user={user} onEdit={onEdit} />
             ))
           )}
         </tbody>
@@ -55,12 +55,12 @@ export function StaffTable({ staff, onEdit }: StaffTableProps) {
   );
 }
 
-function StaffRow({
+function StaffTableRow({
   user,
   onEdit,
 }: {
-  user: User;
-  onEdit: (user: User) => void;
+  user: StaffRow;
+  onEdit: (user: StaffRow) => void;
 }) {
   const [isPending, startTransition] = useTransition();
   const isLocked = user.role === "SUPER_ADMIN";
@@ -113,14 +113,14 @@ function StaffRow({
       <td data-label="Status" className={tableStyles.cell}>
         <StatusBadge
           kind="account"
-          status={user.isBanned ? "DEACTIVATED" : "ACTIVE"}
+          status={user.status}
         />
       </td>
       <td
         data-label="Last active"
         className={cn(tableStyles.cell, "text-caption text-ink-3")}
       >
-        —
+        {user.lastActiveLabel}
       </td>
       <td className={tableStyles.bareCell}>
         <div className="flex justify-end gap-1.5">

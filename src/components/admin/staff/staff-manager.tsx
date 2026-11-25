@@ -5,14 +5,14 @@ import { Icon } from "@/components/shared/icon";
 import { Button } from "@/components/ui/button";
 import { STAFF_ROLE_ORDER, STAFF_TABS, type StaffRole, type StaffTab } from "@/config/staff";
 import { cn } from "@/lib/utils";
-import type { User } from "@/types/user";
+import type { StaffRow } from "@/types/staff";
 import { PermissionsMatrix } from "./permissions-matrix";
 import { StaffFormDrawer, type StaffDrawerState } from "./staff-form-drawer";
 import { StaffTable } from "./staff-table";
 
-const roleRank = (role: User["role"]) => STAFF_ROLE_ORDER.indexOf(role as StaffRole);
+const roleRank = (role: StaffRow["role"]) => STAFF_ROLE_ORDER.indexOf(role as StaffRole);
 
-export function StaffManager({ staff }: { staff: User[] }) {
+export function StaffManager({ staff }: { staff: StaffRow[] }) {
   const [tab, setTab] = useState<StaffTab>("staff");
   const [query, setQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState<StaffRole | "">("");
@@ -28,7 +28,7 @@ export function StaffManager({ staff }: { staff: User[] }) {
   }, [staff, query, roleFilter]);
 
   return (
-    <section className="flex flex-col gap-5 rounded-xl bg-card px-6 py-5.5 max-[900px]:p-4.5]">
+    <section className="flex flex-col gap-5 rounded-xl bg-card px-6 py-5.5 max-[900px]:p-4.5">
       <div className="flex flex-wrap items-center gap-3">
         <div role="tablist" aria-label="Staff" className="flex gap-1.5 overflow-x-auto [scrollbar-none]">
           {STAFF_TABS.map((item) => (
