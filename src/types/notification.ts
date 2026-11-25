@@ -20,3 +20,11 @@ export type AppNotification = {
   isRead: boolean;
   readAt: string | null;
 };
+
+export type NotificationReadStatus = "all" | "unread" | "read";
+
+export type NotificationsQuery = {
+  status: NotificationReadStatus;
+  type?: NotificationType;
+  page: number;
+};

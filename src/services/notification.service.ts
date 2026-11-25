@@ -1,13 +1,24 @@
-import { apiRequest } from "@/lib/api-client";
-import type { AppNotification } from "@/types/notification";
+import { serverApiRequest } from "@/lib/server-api";
+import type { AppNotification, NotificationsQuery } from "@/types/notification";
+
+export const NOTIFICATIONS_PAGE_SIZE = 20;
 
 export const NotificationService = {
-  getLatest: (limit: number) =>
-    apiRequest<AppNotification[]>(`/notifications?${new URLSearchParams({ page: "1", limit: String(limit) })}`),
+  getNotifications: ({ status, type, page }: NotificationsQuery) => {
+    const params = new URLSearchParams({ page: String(page), limit: String(NOTIFICATIONS_PAGE_SIZE) });
+    if (status === "unread") params.set("unreadOnly", "true");
+    if (status === "read") params.set("readOnly", "true");
+    if (type) params.set("type", type);
 
-  getUnreadCount: () => apiRequest<{ count: number }>("/notifications/unread-count"),
+    return serverApiRequest<AppNotification[]>(`/notifications?${params}`);
+  },
 
-  markAsRead: (notificationId: string) => apiRequest(`/notifications/${notificationId}/read`, { method: "PATCH" }),
+  getUnreadCount: () => serverApiRequest<{ count: number }>("/notifications/unread-count"),
 
-  markAllAsRead: () => apiRequest("/notifications/read-all", { method: "PATCH" }),
+  markAsRead: (notificationId: string) => serverApiRequest(`/notifications/${notificationId}/read`, { method: "PATCH" }),
+
+  markAsUnread: (notificationId: string) =>
+    serverApiRequest(`/notifications/${notificationId}/unread`, { method: "PATCH" }),
+
+  markAllAsRead: () => serverApiRequest<{ updated: number }>("/notifications/read-all", { method: "PATCH" }),
 };

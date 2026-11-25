@@ -5,10 +5,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Icon } from "@/components/shared/icon";
-import { NOTIFICATION_TILE_CLASSES, NOTIFICATION_VISUALS, TOPBAR_NOTIFICATION_LIMIT } from "@/config/notifications";
+import {
+  NOTIFICATIONS_CHANGED_EVENT,
+  NOTIFICATION_TILE_CLASSES,
+  NOTIFICATION_TYPES,
+  TOPBAR_NOTIFICATION_LIMIT,
+} from "@/config/notifications";
 import { NOTIFICATIONS_PATH, UNREAD_POLL_MS } from "@/config/topbar";
 import { cn, timeAgo } from "@/lib/utils";
-import { NotificationService } from "@/services/notification.service";
+import { NotificationClient } from "@/services/notification.client";
 import type { AppNotification } from "@/types/notification";
 import { TopbarPopover, topbarIconButtonClass } from "./topbar-popover";
 
@@ -27,7 +32,7 @@ export function TopbarNotifications({ open, canViewAll, onToggle, onClose }: Top
 
   const refreshCount = useCallback(
     () =>
-      NotificationService.getUnreadCount()
+      NotificationClient.getUnreadCount()
         .then(({ data }) => setUnread(data?.count ?? 0))
         .catch(() => {}),
     []
@@ -36,15 +41,17 @@ export function TopbarNotifications({ open, canViewAll, onToggle, onClose }: Top
   useEffect(() => {
     const first = setTimeout(refreshCount, 0);
     const timer = setInterval(refreshCount, UNREAD_POLL_MS);
+    window.addEventListener(NOTIFICATIONS_CHANGED_EVENT, refreshCount);
     return () => {
       clearTimeout(first);
       clearInterval(timer);
+      window.removeEventListener(NOTIFICATIONS_CHANGED_EVENT, refreshCount);
     };
   }, [refreshCount]);
 
   const loadLatest = () => {
     setIsLoading(true);
-    NotificationService.getLatest(TOPBAR_NOTIFICATION_LIMIT)
+    NotificationClient.getLatest(TOPBAR_NOTIFICATION_LIMIT)
       .then(({ data }) => setNotifications(data ?? []))
       .catch(() => setNotifications([]))
       .finally(() => setIsLoading(false));
@@ -63,7 +70,7 @@ export function TopbarNotifications({ open, canViewAll, onToggle, onClose }: Top
   const handleOpen = (notification: AppNotification) => {
     if (!notification.isRead) {
       markRead(notification.id);
-      NotificationService.markAsRead(notification.id).catch(refreshCount);
+      NotificationClient.markAsRead(notification.id).catch(refreshCount);
     }
     if (notification.link) {
       onClose();
@@ -76,7 +83,7 @@ export function TopbarNotifications({ open, canViewAll, onToggle, onClose }: Top
     setNotifications((list) => list.map((item) => ({ ...item, isRead: true })));
     setUnread(0);
     try {
-      await NotificationService.markAllAsRead();
+      await NotificationClient.markAllAsRead();
     } catch (error) {
       setNotifications(previous);
       refreshCount();
@@ -131,7 +138,7 @@ export function TopbarNotifications({ open, canViewAll, onToggle, onClose }: Top
           ))}
 
         {notifications.map((notification) => {
-          const visual = NOTIFICATION_VISUALS[notification.type] ?? NOTIFICATION_VISUALS["system.error"];
+          const visual = NOTIFICATION_TYPES[notification.type] ?? NOTIFICATION_TYPES["system.error"];
 
           return (
             <button
