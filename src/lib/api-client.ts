@@ -1,3 +1,5 @@
+import type { PaginationMeta } from "@/types/api";
+
 const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1`;
 
 export type ApiFieldError = {
@@ -9,6 +11,7 @@ export type ApiResponse<T> = {
   success: boolean;
   message: string;
   data?: T;
+  meta?: PaginationMeta;
   errors?: ApiFieldError[];
 };
 

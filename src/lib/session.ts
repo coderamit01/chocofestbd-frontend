@@ -4,8 +4,7 @@ import type { SessionResponse } from "@/types/auth";
 const AUTH_API_URL =
   process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? process.env.NEXT_PUBLIC_URL;
 
-export async function getSession(request: NextRequest): Promise<SessionResponse> {
-  const cookie = request.headers.get("cookie");
+export async function fetchSession(cookie: string | null): Promise<SessionResponse> {
   if (!cookie || !AUTH_API_URL) return null;
 
   try {
@@ -19,3 +18,5 @@ export async function getSession(request: NextRequest): Promise<SessionResponse>
     return null;
   }
 }
+
+export const getSession = (request: NextRequest) => fetchSession(request.headers.get("cookie"));

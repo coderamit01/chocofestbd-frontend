@@ -46,12 +46,12 @@ export const ADMIN_NAV: NavSection[] = [
     label: "Store",
     items: [
       {
-        title: "Catalog",
+        title: "Products",
         url: "/admin/products",
         icon: BoxesIcon,
         roles: MANAGERS,
         items: [
-          { title: "Products", url: "/admin/products" },
+          { title: "All Products", url: "/admin/products" },
           { title: "Categories", url: "/admin/categories" },
           { title: "Brands", url: "/admin/brands" },
           { title: "Tags", url: "/admin/tags" },
