@@ -73,7 +73,7 @@ export async function UsersTable({ searchParams }: UsersTableProps) {
                         <p className="flex items-center gap-2 truncate font-medium text-foreground">
                           {user.name}
                           {currentUser?.id === user.id && (
-                            <Badge variant="outline" className="h-4.5 px-1.5 text-[10px]">
+                            <Badge variant="outline" size="sm">
                               You
                             </Badge>
                           )}

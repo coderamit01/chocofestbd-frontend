@@ -42,7 +42,7 @@ export function DataPagination({ meta, pathname, query = {} }: DataPaginationPro
 
   const from = (page - 1) * limit + 1;
   const to = Math.min(page * limit, total);
-  const navClassName = buttonVariants({ variant: "outline", size: "icon-sm" });
+  const navClassName = buttonVariants({ variant: "outline", size: "icon-sm", className: "size-[38px] rounded-lg" });
 
   return (
     <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
@@ -53,7 +53,7 @@ export function DataPagination({ meta, pathname, query = {} }: DataPaginationPro
       </p>
 
       {totalPages > 1 && (
-        <nav aria-label="Pagination" className="flex items-center gap-1">
+        <nav aria-label="Pagination" className="flex items-center gap-2">
           {page > 1 ? (
             <Link href={hrefFor(page - 1)} scroll={false} aria-label="Previous page" className={navClassName}>
               <ChevronLeftIcon />
@@ -72,9 +72,9 @@ export function DataPagination({ meta, pathname, query = {} }: DataPaginationPro
                 scroll={false}
                 aria-current={item === page ? "page" : undefined}
                 className={buttonVariants({
-                  variant: item === page ? "secondary" : "ghost",
+                  variant: item === page ? "default" : "outline",
                   size: "icon-sm",
-                  className: cn("tabular-nums", item === page && "text-white"),
+                  className: "size-auto h-[38px] min-w-[38px] rounded-lg px-2.5 text-sm font-medium tabular-nums",
                 })}
               >
                 {item}

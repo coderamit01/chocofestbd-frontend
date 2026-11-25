@@ -13,9 +13,10 @@ export function AuthSubmitButton({ isPending, pendingLabel, children, className 
   return (
     <Button
       type="submit"
-      variant="secondary"
+      size="lg"
       disabled={isPending}
-      className={cn("h-13 w-full rounded-xl text-[15px] font-semibold text-white", className)}
+      aria-busy={isPending}
+      className={cn("h-13 w-full", className)}
     >
       {isPending ? pendingLabel : children}
     </Button>
