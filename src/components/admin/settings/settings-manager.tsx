@@ -16,7 +16,7 @@ import { SeoSection } from "./seo-section";
 import { SocialSection } from "./social-section";
 import { TelegramSection } from "./telegram-section";
 import type { ImageUploadHandler } from "./settings-types";
-import { UnsavedChangesBar } from "./unsaved-changes-bar";
+import { UnsavedChangesBar } from "@/components/shared/unsaved-changes-bar";
 
 type SettingsManagerProps = {
   initialValues: SettingValues;

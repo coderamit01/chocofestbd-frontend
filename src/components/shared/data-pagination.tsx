@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -8,6 +9,7 @@ type DataPaginationProps = {
   meta: PaginationMeta;
   pathname: string;
   query?: Record<string, string | undefined>;
+  pageSizeControl?: ReactNode;
 };
 
 type PageItem = number | `ellipsis-${number}`;
@@ -24,7 +26,7 @@ function getPageItems(current: number, total: number): PageItem[] {
   );
 }
 
-export function DataPagination({ meta, pathname, query = {} }: DataPaginationProps) {
+export function DataPagination({ meta, pathname, query = {}, pageSizeControl }: DataPaginationProps) {
   const { page, limit, total, totalPages } = meta;
 
   if (total === 0) return null;
@@ -46,11 +48,13 @@ export function DataPagination({ meta, pathname, query = {} }: DataPaginationPro
 
   return (
     <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-      <p className="text-sm text-muted-foreground">
-        Showing <span className="font-medium text-foreground">{from}</span>–
-        <span className="font-medium text-foreground">{to}</span> of{" "}
-        <span className="font-medium text-foreground">{total}</span>
-      </p>
+      <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
+        Showing {pageSizeControl}
+        <span>
+          <span className="font-medium text-foreground">{from}</span>–<span className="font-medium text-foreground">{to}</span>{" "}
+          of <span className="font-medium text-foreground">{total}</span>
+        </span>
+      </div>
 
       {totalPages > 1 && (
         <nav aria-label="Pagination" className="flex items-center gap-2">

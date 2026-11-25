@@ -52,9 +52,7 @@ export async function UsersTable({ searchParams }: UsersTableProps) {
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Points</TableHead>
               <TableHead>{query.view === "trash" ? "Trashed" : "Joined"}</TableHead>
-              <TableHead className="w-12 pr-4">
-                <span className="sr-only">Actions</span>
-              </TableHead>
+              <TableHead className="pr-4 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

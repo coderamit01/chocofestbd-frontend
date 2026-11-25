@@ -2,7 +2,7 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 
-const buttonVariants = cva(
+const buttonVariantClasses = cva(
   "group/button inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-transparent bg-clip-padding text-sm leading-none font-medium whitespace-nowrap transition-colors outline-none select-none focus-visible:ring-3 focus-visible:ring-brand/20 disabled:pointer-events-none disabled:opacity-45 aria-busy:pointer-events-none aria-busy:opacity-85 aria-invalid:border-danger aria-invalid:ring-3 aria-invalid:ring-danger/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-[17px]",
   {
     variants: {
@@ -39,6 +39,8 @@ const buttonVariants = cva(
   }
 )
 
+const buttonVariants = (...args: Parameters<typeof buttonVariantClasses>) => cn(buttonVariantClasses(...args))
+
 function Button({
   className,
   variant = "default",
@@ -48,7 +50,7 @@ function Button({
   return (
     <ButtonPrimitive
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={buttonVariants({ variant, size, className })}
       {...props}
     />
   )
