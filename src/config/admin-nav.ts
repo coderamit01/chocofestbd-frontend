@@ -1,97 +1,89 @@
-import {
-  BellIcon,
-  BoxesIcon,
-  HelpCircleIcon,
-  LayoutDashboardIcon,
-  type LucideIcon,
-  MegaphoneIcon,
-  SettingsIcon,
-  ShoppingBagIcon,
-  StarIcon,
-  StoreIcon,
-  TruckIcon,
-  UsersIcon,
-} from "lucide-react";
+import type { NavIconName } from "@/components/admin/sidebar/nav-icon";
 import type { UserRole } from "@/types/auth";
 
-export type NavLink = {
+export type NavCountKey = "orders" | "payments" | "reviews" | "notifications";
+
+export type NavCounts = Partial<Record<NavCountKey, number>>;
+
+export type NavItem = {
   title: string;
   url: string;
-  roles?: UserRole[];
-};
-
-export type NavItem = NavLink & {
-  icon: LucideIcon;
-  items?: NavLink[];
+  icon: NavIconName;
+  roles: UserRole[];
+  countKey?: NavCountKey;
 };
 
 export type NavSection = {
   label: string;
+  showLabel: boolean;
   items: NavItem[];
 };
 
-const ADMINS: UserRole[] = ["SUPER_ADMIN", "ADMIN"];
+const SUPER_ADMIN: UserRole[] = ["SUPER_ADMIN"];
+const ADMINS: UserRole[] = [...SUPER_ADMIN, "ADMIN"];
 const MANAGERS: UserRole[] = [...ADMINS, "MANAGER"];
-const ORDER_STAFF: UserRole[] = [...MANAGERS, "ORDER_HANDLER", "RIDER"];
+const ORDER_TEAM: UserRole[] = [...MANAGERS, "ORDER_HANDLER"];
+const RIDERS: UserRole[] = ["RIDER"];
 
 export const ADMIN_NAV: NavSection[] = [
   {
     label: "Overview",
+    showLabel: false,
+    items: [{ title: "Dashboard", url: "/admin", icon: "dashboard", roles: MANAGERS }],
+  },
+  {
+    label: "Deliveries",
+    showLabel: false,
+    items: [{ title: "My deliveries", url: "/admin/deliveries", icon: "deliveries", roles: RIDERS }],
+  },
+  {
+    label: "Sales",
+    showLabel: true,
     items: [
-      { title: "Dashboard", url: "/admin", icon: LayoutDashboardIcon },
-      { title: "Orders", url: "/admin/orders", icon: ShoppingBagIcon, roles: ORDER_STAFF },
+      { title: "Orders", url: "/admin/orders", icon: "orders", roles: ORDER_TEAM, countKey: "orders" },
+      { title: "Payments", url: "/admin/payments", icon: "payments", roles: ORDER_TEAM, countKey: "payments" },
+      { title: "Customers", url: "/admin/customers", icon: "customers", roles: ORDER_TEAM },
     ],
   },
   {
-    label: "Store",
+    label: "Catalog",
+    showLabel: true,
     items: [
-      {
-        title: "Products",
-        url: "/admin/products",
-        icon: BoxesIcon,
-        roles: MANAGERS,
-        items: [
-          { title: "All Products", url: "/admin/products" },
-          { title: "Categories", url: "/admin/categories" },
-          { title: "Brands", url: "/admin/brands" },
-          { title: "Tags", url: "/admin/tags" },
-          { title: "Collections", url: "/admin/collections" },
-        ],
-      },
-      {
-        title: "Marketing",
-        url: "/admin/coupons",
-        icon: MegaphoneIcon,
-        roles: MANAGERS,
-        items: [
-          { title: "Coupons", url: "/admin/coupons" },
-          { title: "Banners", url: "/admin/banners" },
-        ],
-      },
-      {
-        title: "Delivery",
-        url: "/admin/delivery-zones",
-        icon: TruckIcon,
-        roles: ADMINS,
-        items: [
-          { title: "Delivery Zones", url: "/admin/delivery-zones" },
-          { title: "Locations", url: "/admin/locations" },
-        ],
-      },
-      { title: "Reviews", url: "/admin/reviews", icon: StarIcon, roles: MANAGERS },
+      { title: "Products", url: "/admin/products", icon: "products", roles: MANAGERS },
+      { title: "Categories", url: "/admin/categories", icon: "categories", roles: MANAGERS },
+      { title: "Brands", url: "/admin/brands", icon: "brands", roles: MANAGERS },
+      { title: "Tags", url: "/admin/tags", icon: "tags", roles: MANAGERS },
+      { title: "Collections", url: "/admin/collections", icon: "collections", roles: MANAGERS },
     ],
   },
   {
-    label: "Management",
+    label: "Marketing",
+    showLabel: true,
     items: [
-      { title: "Users", url: "/admin/users", icon: UsersIcon, roles: ADMINS },
-      { title: "FAQs", url: "/admin/faqs", icon: HelpCircleIcon, roles: MANAGERS },
-      { title: "Notifications", url: "/admin/notifications", icon: BellIcon },
-      { title: "Settings", url: "/admin/settings", icon: SettingsIcon, roles: ADMINS },
+      { title: "Coupons", url: "/admin/coupons", icon: "coupons", roles: MANAGERS },
+      { title: "Banners", url: "/admin/banners", icon: "banners", roles: MANAGERS },
     ],
   },
-];
-
-export const ADMIN_NAV_SECONDARY: NavItem[] = [
-  { title: "View Store", url: "/", icon: StoreIcon },
+  {
+    label: "Content",
+    showLabel: true,
+    items: [
+      { title: "Reviews", url: "/admin/reviews", icon: "reviews", roles: MANAGERS, countKey: "reviews" },
+      { title: "FAQs", url: "/admin/faqs", icon: "faqs", roles: MANAGERS },
+    ],
+  },
+  {
+    label: "Logistics",
+    showLabel: true,
+    items: [{ title: "Delivery zones", url: "/admin/delivery-zones", icon: "zones", roles: ADMINS }],
+  },
+  {
+    label: "System",
+    showLabel: true,
+    items: [
+      { title: "Staff & roles", url: "/admin/users", icon: "staff", roles: SUPER_ADMIN },
+      { title: "Notifications", url: "/admin/notifications", icon: "notifications", roles: ORDER_TEAM, countKey: "notifications" },
+      { title: "Settings", url: "/admin/settings", icon: "settings", roles: ADMINS },
+    ],
+  },
 ];
