@@ -5,8 +5,8 @@ export function SidebarNavSkeleton() {
     <div className="flex flex-1 flex-col gap-[3px]" aria-hidden="true">
       {SKELETON_WIDTHS.map((width) => (
         <div key={width} className="flex h-[46px] items-center gap-3.5 px-3.5">
-          <span className="size-5 flex-none animate-pulse rounded-md bg-surface-3" />
-          <span className="h-3 animate-pulse rounded-md bg-surface-3" style={{ width }} />
+          <span className="size-5 flex-none rounded-[6px] skel" />
+          <span className="skel h-3 rounded-[6px]" style={{ width }} />
         </div>
       ))}
     </div>

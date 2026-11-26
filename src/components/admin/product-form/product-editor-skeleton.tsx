@@ -5,10 +5,10 @@ export function ProductEditorSkeleton() {
     <div className="flex flex-col gap-6" aria-busy="true">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-2">
-          <span className="h-3 w-28 animate-pulse rounded-md bg-surface-3" />
-          <span className="h-6 w-64 animate-pulse rounded-md bg-surface-3" />
+          <span className="h-3 w-28 rounded-[6px] skel" />
+          <span className="h-6 w-64 rounded-[6px] skel" />
         </div>
-        <span className="h-10 w-48 animate-pulse rounded-[10px] bg-surface-3" />
+        <span className="h-10 w-48 rounded-[10px] skel" />
       </div>
       <div className="flex flex-wrap items-start gap-6">
         <div className="flex flex-[2_1_600px] flex-col gap-6">

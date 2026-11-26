@@ -1,12 +1,12 @@
 import { KpiGridSkeleton } from "./kpi-card";
 
-const block = "animate-pulse rounded-md bg-surface-2";
+const block = "skel";
 
 function Card({ className = "", height = "h-64" }: { className?: string; height?: string }) {
   return (
     <div className={`flex flex-col gap-4 rounded-xl bg-card px-6 py-5.5 ${className}`}>
-      <span className={`${block} h-5 w-40`} />
-      <span className={`${block} ${height} w-full`} />
+      <span className={`${block} rounded-[6px] h-5 w-40`} />
+      <span className={`${block} rounded-[6px] ${height} w-full`} />
     </div>
   );
 }
@@ -15,8 +15,8 @@ export function DashboardSkeleton() {
   return (
     <div aria-busy="true" className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className={`${block} h-5 w-80`} />
-        <span className={`${block} h-10 w-[480px] max-w-full rounded-xl`} />
+        <span className={`${block} rounded-[6px] h-5 w-80`} />
+        <span className={`${block} h-10 w-[480px] max-w-full rounded-[12px]`} />
       </div>
       <KpiGridSkeleton count={8} />
       <div className="flex flex-wrap items-start gap-6">

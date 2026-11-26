@@ -8,6 +8,7 @@ import { DataPagination } from "@/components/shared/data-pagination";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Icon } from "@/components/shared/icon";
 import { SegmentedControl } from "@/components/shared/segmented-control";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { PAYMENT_METHODS } from "@/config/orders";
 import { ADVANCE_PAYMENT_METHODS, PAYMENT_SEGMENTS } from "@/config/payments";
 import { SEARCH_DEBOUNCE_MS } from "@/config/search";
@@ -18,8 +19,6 @@ import type { AdvancePaymentMethod, PaymentRow, PaymentsQuery } from "@/types/pa
 import { PaymentsTable } from "./payments-table";
 import { RejectPaymentDialog } from "./reject-payment-dialog";
 
-const smallSelect =
-  "select-chevron h-9 w-auto cursor-pointer rounded-[10px] border border-transparent bg-surface-2 pr-[38px] pl-3 text-[13px] text-ink outline-none transition-[border-color,box-shadow,background-color] focus:border-brand focus:bg-surface focus:shadow-focus";
 
 type PaymentsManagerProps = {
   payments: PaymentRow[];
@@ -79,19 +78,13 @@ export function PaymentsManager({ payments, meta, query, now }: PaymentsManagerP
             className="h-10.5 w-full rounded-[10px] border border-transparent bg-surface-2 pr-3.5 pl-10.5 text-sm text-ink outline-none transition-[border-color,box-shadow,background-color] placeholder:text-ink-4 focus:border-brand focus:bg-surface focus:shadow-focus"
           />
         </div>
-        <select
-          aria-label="Method"
+        <SelectMenu<AdvancePaymentMethod | "">
+          ariaLabel="Method"
+          size="sm"
           value={query.method ?? ""}
-          onChange={(event) => navigate({ method: (event.target.value || undefined) as AdvancePaymentMethod | undefined })}
-          className={smallSelect}
-        >
-          <option value="">All methods</option>
-          {ADVANCE_PAYMENT_METHODS.map((method) => (
-            <option key={method} value={method}>
-              {PAYMENT_METHODS[method].short}
-            </option>
-          ))}
-        </select>
+          onChange={(method) => navigate({ method: method || undefined })}
+          options={[{ value: "", label: "All methods" }, ...ADVANCE_PAYMENT_METHODS.map((method) => ({ value: method, label: PAYMENT_METHODS[method].short }))]}
+        />
         <SegmentedControl ariaLabel="Status" options={PAYMENT_SEGMENTS} value={query.status} onChange={(status) => navigate({ status })} className="self-center" />
       </div>
 

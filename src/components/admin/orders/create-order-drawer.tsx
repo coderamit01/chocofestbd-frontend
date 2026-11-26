@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { createOrderAction, loadOrderFormOptionsAction, previewOrderAction, searchCustomersAction } from "@/actions/order.actions";
 import { FormDrawer } from "@/components/shared/form-drawer";
 import { Icon } from "@/components/shared/icon";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { Button } from "@/components/ui/button";
 import { CHECKOUT_PAYMENT_METHODS, PAYMENT_METHODS } from "@/config/orders";
 import { SEARCH_DEBOUNCE_MS } from "@/config/search";
@@ -26,7 +27,6 @@ type CouponState = { code: string; ok: boolean; message: string; discount: numbe
 type Errors = Partial<Record<"name" | "phone" | "address" | "district" | "area" | "zone" | "lines", boolean>>;
 
 const PHONE = /^01[3-9]\d{8}$/;
-const selectClass = cn(formStyles.input, "select-chevron cursor-pointer pr-[38px]");
 const errorClass = formStyles.error;
 
 export function CreateOrderDrawer({ open, onOpenChange, onCreated }: CreateOrderDrawerProps) {
@@ -218,7 +218,7 @@ function CreateOrderForm({ onCreated }: { onCreated: () => void }) {
   return (
     <form id="create-order-form" onSubmit={submit} aria-busy={isSaving || undefined} className="contents">
       {loadError && (
-        <p role="alert" className="rounded-xl bg-danger-soft px-4 py-3 text-[13px] text-danger">
+        <p role="alert" className="rounded-[12px] bg-danger-soft px-4 py-3 text-[13px] text-danger">
           {loadError}
         </p>
       )}
@@ -316,20 +316,17 @@ function CreateOrderForm({ onCreated }: { onCreated: () => void }) {
       <div className="flex flex-col gap-3.5">
         <span className="eyebrow">Products</span>
         <div className="flex flex-wrap items-center gap-2">
-          <select
-            aria-label="Product"
+          <SelectMenu
+            ariaLabel="Product"
             value={productId}
-            onChange={(event) => setProductId(event.target.value)}
+            onChange={setProductId}
             disabled={!options}
-            className={cn(selectClass, "min-w-0 flex-[1_1_220px]")}
-          >
-            <option value="">{options ? "Choose a product…" : "Loading products…"}</option>
-            {products.map((product) => (
-              <option key={product.id} value={product.id}>
-                {product.name} — {formatTaka(product.price)}
-              </option>
-            ))}
-          </select>
+            className="min-w-0 flex-[1_1_220px]"
+            options={[
+              { value: "", label: options ? "Choose a product…" : "Loading products…" },
+              ...products.map((product) => ({ value: product.id, label: `${product.name} — ${formatTaka(product.price)}` })),
+            ]}
+          />
           <Button type="button" variant="dark" onClick={addLine}>
             <Icon name="plus" size={18} strokeWidth={1.8} />
             Add
@@ -340,7 +337,7 @@ function CreateOrderForm({ onCreated }: { onCreated: () => void }) {
           const product = products.find((item) => item.id === line.productId);
           const price = priceOf(line.productId);
           return (
-            <div key={line.productId} className="flex items-center gap-3 rounded-xl bg-surface-2 p-3">
+            <div key={line.productId} className="flex items-center gap-3 rounded-[12px] bg-surface-2 p-3">
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="text-sm font-medium">{product?.name}</span>
                 <span className="text-xs text-ink-3">{formatTaka(price)} each</span>
@@ -394,84 +391,62 @@ function CreateOrderForm({ onCreated }: { onCreated: () => void }) {
             <label className={formStyles.label} htmlFor="dd">
               District<span className={formStyles.required}>*</span>
             </label>
-            <select
+            <SelectMenu
               id="dd"
               value={district}
-              aria-invalid={errors.district || undefined}
-              onChange={(event) => {
-                setDistrict(event.target.value);
+              invalid={errors.district}
+              onChange={(next) => {
+                setDistrict(next);
                 setArea("");
                 clearError("district");
               }}
-              className={selectClass}
-            >
-              <option value="">Select district</option>
-              {options?.districts.map((item) => (
-                <option key={item.name} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
+              options={[{ value: "", label: "Select district" }, ...(options?.districts.map((item) => ({ value: item.name, label: item.name })) ?? [])]}
+            />
             {errors.district && <span className={errorClass}>Select a district.</span>}
           </div>
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor="da">
               Area<span className={formStyles.required}>*</span>
             </label>
-            <select
+            <SelectMenu
               id="da"
               value={area}
               disabled={!district}
-              aria-invalid={errors.area || undefined}
-              onChange={(event) => {
-                setArea(event.target.value);
+              invalid={errors.area}
+              onChange={(next) => {
+                setArea(next);
                 clearError("area");
               }}
-              className={selectClass}
-            >
-              <option value="">Select area</option>
-              {areas.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
+              options={[{ value: "", label: "Select area" }, ...areas.map((item) => ({ value: item, label: item }))]}
+            />
             {errors.area && <span className={errorClass}>Select an area.</span>}
           </div>
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor="dz">
               Delivery zone
             </label>
-            <select
+            <SelectMenu
               id="dz"
               value={zoneId}
-              aria-invalid={errors.zone || undefined}
-              onChange={(event) => {
-                setZoneId(event.target.value);
+              invalid={errors.zone}
+              onChange={(next) => {
+                setZoneId(next);
                 clearError("zone");
-                if (coupon?.ok) checkCoupon(coupon.code, lines, event.target.value);
+                if (coupon?.ok) checkCoupon(coupon.code, lines, next);
               }}
-              className={selectClass}
-            >
-              {!zones.length && <option value="">No delivery zones</option>}
-              {zones.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name} · {formatTaka(item.charge)}
-                </option>
-              ))}
-            </select>
+              options={zones.length ? zones.map((item) => ({ value: item.id, label: `${item.name} · ${formatTaka(item.charge)}` })) : [{ value: "", label: "No delivery zones" }]}
+            />
           </div>
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor="pm">
               Payment method
             </label>
-            <select id="pm" value={method} onChange={(event) => setMethod(event.target.value as CheckoutPaymentMethod)} className={selectClass}>
-              {CHECKOUT_PAYMENT_METHODS.map((item) => (
-                <option key={item} value={item}>
-                  {PAYMENT_METHODS[item].short}
-                </option>
-              ))}
-            </select>
+            <SelectMenu<CheckoutPaymentMethod>
+              id="pm"
+              value={method}
+              onChange={setMethod}
+              options={CHECKOUT_PAYMENT_METHODS.map((item) => ({ value: item, label: PAYMENT_METHODS[item].short }))}
+            />
           </div>
         </div>
         <div className={formStyles.field}>

@@ -13,7 +13,7 @@ type InvoiceToolbarProps = {
 export function InvoiceToolbar({ backHref, backLabel, count }: InvoiceToolbarProps) {
   return (
     <div className="mx-auto flex w-full max-w-198.5 flex-wrap items-center justify-between gap-3 print:hidden">
-      <Link href={backHref} className="flex items-center gap-1.5 text-[12.5px] text-ink-3 hover:text-ink">
+      <Link href={backHref} className="flex items-center gap-1.5 text-[12.5px] text-ink-3">
         <Icon name="arrowLeft" size={16} strokeWidth={1.8} />
         {backLabel}
       </Link>

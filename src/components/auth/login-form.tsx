@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { formStyles } from "@/lib/form-styles";
+import { cn } from "@/lib/utils";
 import { ApiError } from "@/lib/api-client";
 import { homeFor, isSafeRedirect } from "@/lib/route-guard";
 import { signInSchema, type SignInInput, type SignInValues } from "@/lib/validations/auth";
@@ -16,15 +17,11 @@ import { AuthFormError } from "./auth-form-error";
 import { AuthSocialSection } from "./auth-social-section";
 import { AuthSubmitButton } from "./auth-submit-button";
 
-const inputClassName =
-  "h-13 rounded-xl border-input bg-off-white px-5 text-[15px] text-foreground md:text-[15px] placeholder:text-muted-foreground/80 focus-visible:border-secondary focus-visible:ring-secondary/20";
-
 const isSignInField = (field: string): field is keyof SignInInput => field in signInSchema.shape;
 
 export function LoginForm() {
   const router = useRouter();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const PasswordIcon = isPasswordVisible ? Eye : EyeOff;
 
   const {
     register,
@@ -57,69 +54,67 @@ export function LoginForm() {
   };
 
   return (
-    <div className="flex flex-col">
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col">
-        <div className="flex flex-col gap-3.5">
-          <div>
-            <label htmlFor="email" className="sr-only">
-              Email address
-            </label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Email address"
-              autoComplete="email"
-              aria-invalid={errors.email ? true : undefined}
-              aria-describedby={errors.email ? "email-error" : undefined}
-              className={inputClassName}
-              {...register("email")}
-            />
-            <AuthFieldError id="email-error" message={errors.email?.message} />
-          </div>
+    <div className="flex flex-col gap-6">
+      <AuthFormError message={errors.root?.message ?? null} />
 
-          <div>
-            <label htmlFor="password" className="sr-only">
-              Password
-            </label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={isPasswordVisible ? "text" : "password"}
-                placeholder="Password"
-                autoComplete="current-password"
-                aria-invalid={errors.password ? true : undefined}
-                aria-describedby={errors.password ? "password-error" : undefined}
-                className={`${inputClassName} pr-14`}
-                {...register("password")}
-              />
-              <button
-                type="button"
-                onClick={() => setIsPasswordVisible((visible) => !visible)}
-                aria-label={isPasswordVisible ? "Hide password" : "Show password"}
-                className="absolute top-1/2 right-4 flex -translate-y-1/2 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-secondary/40 focus-visible:outline-none"
-              >
-                <PasswordIcon className="size-5" />
-              </button>
-            </div>
-            <AuthFieldError id="password-error" message={errors.password?.message} />
-          </div>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
+        <div className={formStyles.field}>
+          <label htmlFor="email" className={formStyles.label}>
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            placeholder="you@chocofestbd.com"
+            autoComplete="username"
+            aria-invalid={errors.email ? true : undefined}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            className={cn(formStyles.input, "h-12.5 bg-surface")}
+            {...register("email")}
+          />
+          <AuthFieldError id="email-error" message={errors.email?.message} />
         </div>
 
-        <Link
-          href="/forgot-password"
-          className="mt-3 self-end text-[13px] text-muted-foreground transition-colors hover:text-foreground"
-        >
-          Forgot password?
-        </Link>
+        <div className={formStyles.field}>
+          <div className="flex items-center justify-between">
+            <label htmlFor="password" className={formStyles.label}>
+              Password
+            </label>
+            <Link href="/forgot-password" className={buttonVariants({ variant: "link", className: "text-[13px]" })}>
+              Forgot password?
+            </Link>
+          </div>
+          <div className={cn(formStyles.inputGroup, "h-12.5 bg-surface")}>
+            <input
+              id="password"
+              type={isPasswordVisible ? "text" : "password"}
+              placeholder="At least 8 characters"
+              autoComplete="current-password"
+              aria-invalid={errors.password ? true : undefined}
+              aria-describedby={errors.password ? "password-error" : undefined}
+              className={formStyles.groupInput}
+              {...register("password")}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsPasswordVisible((visible) => !visible)}
+              aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+              className="m-1.5 h-auto"
+            >
+              {isPasswordVisible ? "Hide" : "Show"}
+            </Button>
+          </div>
+          <AuthFieldError id="password-error" message={errors.password?.message} />
+        </div>
 
-        <AuthFormError message={errors.root?.message ?? null} />
-
-        <AuthSubmitButton isPending={isSubmitting} pendingLabel="Logging in..." className="mt-8">
-          Login
+        <AuthSubmitButton isPending={isSubmitting} pendingLabel="Signing in…">
+          Sign in
         </AuthSubmitButton>
       </form>
 
-      <AuthSocialSection label="Or Login with" onError={(message) => setError("root", { message })} />
+      <AuthSocialSection label="Or sign in with" onError={(message) => setError("root", { message })} />
     </div>
   );
 }

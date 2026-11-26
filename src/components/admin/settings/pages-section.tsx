@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { Icon } from "@/components/shared/icon";
 import { SegmentedControl } from "@/components/shared/segmented-control";
-import { LEGAL_PAGES } from "@/config/settings";
+import { buttonVariants } from "@/components/ui/button";
+import { LEGAL_PAGES, STORE_HOST } from "@/config/settings";
 import { formStyles } from "@/lib/form-styles";
 import { cn } from "@/lib/utils";
 import type { LegalSettings } from "@/types/setting";
-import { SettingsSectionHeader } from "./settings-field";
+import { SettingsCallout, SettingsSectionHeader } from "./settings-field";
 import type { SectionProps } from "./settings-types";
 
 const TOOLS = [
@@ -26,17 +28,26 @@ export function PagesSection({ value, onChange, errorFor }: SectionProps<"legal"
 
   return (
     <div className="flex flex-col gap-5">
-      <SettingsSectionHeader title="Pages & policies" description="Linked from the footer and from checkout." />
+      <SettingsSectionHeader
+        title="Pages & policies"
+        description="Linked from the footer and from checkout."
+        action={
+          <a href={`https://${STORE_HOST}`} target="_blank" rel="noreferrer" className={buttonVariants({ variant: "outline", size: "sm" })}>
+            <Icon name="eye" size={17} strokeWidth={1.8} />
+            View on site
+          </a>
+        }
+      />
 
       <SegmentedControl
         role="tablist"
         ariaLabel="Page"
-        options={LEGAL_PAGES.map((item) => ({ value: item.key, label: item.label }))}
+        options={LEGAL_PAGES.map((item) => ({ value: item.key, label: value[item.key]?.trim() ? item.label : `${item.label} · empty` }))}
         value={page}
         onChange={setPage}
       />
 
-      <div className={cn("overflow-hidden rounded-xl border bg-surface-2", error ? "border-danger" : "border-input")}>
+      <div className={cn("overflow-hidden rounded-[12px] border bg-surface-2", error ? "border-danger" : "border-input")}>
         <div role="toolbar" aria-label="Formatting" className="flex items-center gap-1 border-b border-input bg-surface p-1.5">
           {TOOLS.map((tool) => (
             <button
@@ -60,6 +71,7 @@ export function PagesSection({ value, onChange, errorFor }: SectionProps<"legal"
         />
       </div>
       {error && <p className={formStyles.error}>{error}</p>}
+      {!text.trim() && <SettingsCallout tone="warning">This page is empty — the footer link is hidden until you add text.</SettingsCallout>}
     </div>
   );
 }

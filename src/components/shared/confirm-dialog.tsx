@@ -1,6 +1,5 @@
 "use client";
 
-import { Loader2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Spinner } from "@/components/shared/spinner";
 
 type ConfirmDialogProps = {
   open: boolean;
@@ -35,17 +35,19 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   return (
     <Dialog open={open} onOpenChange={(nextOpen) => !isPending && onOpenChange(nextOpen)}>
-      <DialogContent showCloseButton={false} className="sm:max-w-md">
+      <DialogContent showCloseButton={false} className="sm:max-w-120">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+          <div>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription className="mt-1.5">{description}</DialogDescription>
+          </div>
         </DialogHeader>
-        <DialogFooter>
-          <DialogClose render={<Button variant="outline" />} disabled={isPending}>
+        <DialogFooter className="pt-5">
+          <DialogClose render={<Button variant="soft" />} disabled={isPending}>
             Cancel
           </DialogClose>
-          <Button variant={variant} disabled={isPending} onClick={onConfirm}>
-            {isPending && <Loader2Icon data-icon="inline-start" className="animate-spin" />}
+          <Button variant={variant} onClick={onConfirm} aria-busy={isPending || undefined}>
+            {isPending && <Spinner />}
             {confirmLabel}
           </Button>
         </DialogFooter>

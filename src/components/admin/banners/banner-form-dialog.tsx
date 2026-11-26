@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { FormDialog } from "@/components/shared/form-dialog";
 import { Icon } from "@/components/shared/icon";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { ToggleSwitch } from "@/components/shared/toggle-switch";
 import { Button } from "@/components/ui/button";
 import { BANNER_ART, BANNER_LINK_HOST, BANNER_TITLE_MAX, BANNER_TITLE_MIN } from "@/config/banners";
@@ -197,18 +198,12 @@ function BannerForm({
           <label htmlFor="bc" className={formStyles.label}>
             Category
           </label>
-          <select
+          <SelectMenu
             id="bc"
             value={values.categoryId}
-            onChange={(event) => set({ categoryId: event.target.value })}
-            className={cn(formStyles.input, "select-chevron cursor-pointer pr-9.5")}
-          >
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+            onChange={(categoryId) => set({ categoryId })}
+            options={categories.map((category) => ({ value: category.id, label: category.name }))}
+          />
         </div>
         <div className={formStyles.field}>
           <label htmlFor="bs" className={formStyles.label}>

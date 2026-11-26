@@ -93,11 +93,11 @@ export function CollectionsManager({ collections, current, now, canDelete }: Col
                   >
                     <span
                       className={cn(
-                        "flex size-10 flex-none items-center justify-center rounded-[10px]",
+                        "flex size-14 flex-none items-center justify-center rounded-[36%]",
                         selected ? "bg-brand text-white" : "bg-brand-50 text-brand"
                       )}
                     >
-                      <Icon name="collections" />
+                      <Icon name="collections" size={24} strokeWidth={1.8} />
                     </span>
                     <span className="flex min-w-0 flex-col gap-1">
                       <span className="flex flex-wrap items-center gap-2">

@@ -30,7 +30,6 @@ export function ReviewCard({ review, now, selected, canDelete, isPending, onTogg
           aria-label={`Select review by ${review.user.name}`}
           checked={selected}
           onChange={onToggle}
-          className="size-[18px] cursor-pointer accent-brand"
         />
       </label>
       <div className="flex min-w-0 flex-1 flex-col gap-2.5">

@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { DataPagination } from "@/components/shared/data-pagination";
 import { EmptyState } from "@/components/shared/empty-state";
 import { SearchInput } from "@/components/shared/search-input";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { COUPON_ORDER_PAGE_SIZES } from "@/config/coupons";
 import { orderPath } from "@/config/customers";
@@ -112,18 +113,14 @@ export function CouponOrders({ code, orders, meta, query }: CouponOrdersProps) {
           pathname={pathname}
           query={couponOrdersQueryParams(query)}
           pageSizeControl={
-            <select
-              aria-label="Rows per page"
-              value={query.limit}
-              onChange={(event) => setLimit(Number(event.target.value))}
-              className={cn(filterStyles.select, filterStyles.pageSize)}
-            >
-              {COUPON_ORDER_PAGE_SIZES.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
+            <SelectMenu
+              ariaLabel="Rows per page"
+              size="sm"
+              className={filterStyles.pageSize}
+              value={String(query.limit)}
+              onChange={(limit) => setLimit(Number(limit))}
+              options={COUPON_ORDER_PAGE_SIZES.map((size) => ({ value: String(size), label: String(size) }))}
+            />
           }
         />
       )}

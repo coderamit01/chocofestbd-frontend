@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { FormDrawer } from "@/components/shared/form-drawer";
 import { ImagePicker } from "@/components/shared/image-picker";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { ToggleSwitch } from "@/components/shared/toggle-switch";
 import { Button } from "@/components/ui/button";
 import { ApiError } from "@/lib/api-client";
@@ -156,20 +157,13 @@ function CategoryForm({ state, categories, onSavingChange, onClose }: CategoryFo
           <label htmlFor="cp" className={formStyles.label}>
             Parent
           </label>
-          <select
+          <SelectMenu
             id="cp"
             value={values.parentId}
-            aria-invalid={!!errors.parentId || undefined}
-            onChange={(event) => set({ parentId: event.target.value })}
-            className={cn(formStyles.input, "select-chevron cursor-pointer pr-9.5")}
-          >
-            <option value="">None (top level)</option>
-            {parentOptions.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+            invalid={!!errors.parentId}
+            onChange={(parentId) => set({ parentId })}
+            options={[{ value: "", label: "None (top level)" }, ...parentOptions.map((option) => ({ value: option.id, label: option.label }))]}
+          />
           {errors.parentId && <span className={formStyles.error}>{errors.parentId}</span>}
         </div>
         <div className={formStyles.field}>
@@ -201,6 +195,7 @@ function CategoryForm({ state, categories, onSavingChange, onClose }: CategoryFo
         <span className={formStyles.label}>Image</span>
         <ImagePicker
           label="Upload image (square, 600 px)"
+          variant="zone"
           file={values.image}
           currentUrl={values.removeImage ? null : category?.image ?? null}
           onChange={(image) => set({ image, removeImage: false })}

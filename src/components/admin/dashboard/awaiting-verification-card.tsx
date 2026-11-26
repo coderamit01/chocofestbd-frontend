@@ -52,7 +52,7 @@ export function AwaitingVerificationCard({ pending }: { pending: DashboardOvervi
             <div className="flex items-center justify-between gap-2">
               <span className="flex min-w-0 items-center gap-2.5">
                 <PaymentMethodChip method={payment.paymentMethod} />
-                <Link href={orderPath(payment.id)} className="truncate text-sm font-semibold text-ink hover:text-brand-text">
+                <Link href={orderPath(payment.id)} className="truncate text-sm font-semibold text-ink">
                   {payment.orderNumber}
                 </Link>
               </span>

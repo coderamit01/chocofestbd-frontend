@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { markAllNotificationsReadAction, setNotificationReadAction } from "@/actions/notification.actions";
 import { DataPagination } from "@/components/shared/data-pagination";
 import { Icon } from "@/components/shared/icon";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { buttonVariants } from "@/components/ui/button";
 import {
   NOTIFICATIONS_CHANGED_EVENT,
@@ -92,7 +93,7 @@ export function NotificationsFeed({ notifications, unreadCount, meta, query, now
   return (
     <section className="flex flex-col gap-5 rounded-xl bg-card px-6 py-5.5 max-[900px]:p-4.5">
       <div className="flex flex-wrap items-center gap-3">
-        <div role="group" aria-label="Read state" className="inline-flex gap-1 rounded-xl bg-surface-2 p-1">
+        <div role="group" aria-label="Read state" className="inline-flex gap-1 rounded-[12px] bg-surface-2 p-1">
           {NOTIFICATION_READ_STATUSES.map((option) => (
             <button
               key={option.value}
@@ -109,19 +110,13 @@ export function NotificationsFeed({ notifications, unreadCount, meta, query, now
           ))}
         </div>
 
-        <select
-          aria-label="Type"
+        <SelectMenu<NotificationType | "">
+          ariaLabel="Type"
+          size="sm"
           value={query.type ?? ""}
-          onChange={(event) => setFilter({ type: (event.target.value || undefined) as NotificationType | undefined })}
-          className="select-chevron h-9 w-auto cursor-pointer rounded-[10px] border border-transparent bg-surface-2 pr-[38px] pl-3 text-[13px] text-ink outline-none transition-[border-color,box-shadow,background-color] focus:border-brand focus:bg-surface focus:shadow-focus"
-        >
-          <option value="">All types</option>
-          {NOTIFICATION_TYPE_KEYS.map((type) => (
-            <option key={type} value={type}>
-              {NOTIFICATION_TYPES[type].label}
-            </option>
-          ))}
-        </select>
+          onChange={(type) => setFilter({ type: type || undefined })}
+          options={[{ value: "", label: "All types" }, ...NOTIFICATION_TYPE_KEYS.map((type) => ({ value: type, label: NOTIFICATION_TYPES[type].label }))]}
+        />
 
         <span className="flex-1" />
 

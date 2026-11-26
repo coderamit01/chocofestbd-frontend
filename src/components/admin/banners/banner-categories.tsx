@@ -86,7 +86,9 @@ export function BannerCategories({ categories, canDelete }: BannerCategoriesProp
                 <th className={tableStyles.head}>Name</th>
                 <th className={tableStyles.head}>Slot key</th>
                 <th className={cn(tableStyles.head, "text-right")}>Banners</th>
-                <th className={cn(tableStyles.head, "text-right")}>Actions</th>
+                <th className={cn(tableStyles.head, "text-right")}>
+                <span className="sr-only">Actions</span>
+              </th>
               </tr>
             </thead>
             <tbody className={tableStyles.body}>

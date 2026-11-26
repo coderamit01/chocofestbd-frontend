@@ -8,10 +8,9 @@ import { Icon } from "@/components/shared/icon";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { AVATAR_TONES } from "@/config/staff";
 import { customerInitials, dayWithTime, internationalPhone, memberSince } from "@/lib/customer-display";
 import { isBengali } from "@/lib/customer-query";
-import { cn, formatPhone, pickByHash } from "@/lib/utils";
+import { cn, formatPhone } from "@/lib/utils";
 import type { CustomerProfile } from "@/types/customer";
 import { PointsDialog } from "./points-dialog";
 
@@ -53,8 +52,7 @@ export function CustomerProfileCard({ customer, now, canEdit, canBan }: Customer
       <div className="flex flex-col items-center gap-3 pt-2 text-center">
         <span
           className={cn(
-            "flex size-22 items-center justify-center rounded-full font-heading text-[32px] leading-none font-semibold",
-            pickByHash(customer.id, AVATAR_TONES),
+            "flex size-22 items-center justify-center rounded-full bg-brand-50 font-heading text-[32px] leading-none font-semibold text-brand-text",
             bengali && "font-bengali"
           )}
         >

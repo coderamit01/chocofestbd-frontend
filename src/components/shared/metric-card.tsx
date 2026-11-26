@@ -20,8 +20,8 @@ export function MetricCard({ label, value, icon, tone, change, note = "from last
   return (
     <article className="flex flex-col gap-4 rounded-xl bg-card px-6 py-5.5 max-[900px]:p-4.5">
       <div className="flex items-center gap-3">
-        <span className={cn("flex size-10 flex-none items-center justify-center rounded-[10px]", TONES[tone])}>
-          <Icon name={icon} size={20} strokeWidth={1.8} />
+        <span className={cn("flex size-14 flex-none items-center justify-center rounded-[36%]", TONES[tone])}>
+          <Icon name={icon} size={24} strokeWidth={1.8} />
         </span>
         <span className="text-[14.5px] text-ink-2">{label}</span>
       </div>
@@ -69,10 +69,10 @@ export function MetricGridSkeleton({ count = 4, min = 220 }: { count?: number; m
       {Array.from({ length: count }, (_, index) => (
         <div key={index} className="flex flex-col gap-4 rounded-xl bg-card px-6 py-5.5">
           <div className="flex items-center gap-3">
-            <span className="size-10 animate-pulse rounded-[10px] bg-surface-2" />
-            <span className="h-3.5 w-28 animate-pulse rounded-md bg-surface-2" />
+            <span className="skel size-14 rounded-[36%]" />
+            <span className="skel h-3.5 w-28 rounded-[6px]" />
           </div>
-          <span className="h-8 w-24 animate-pulse rounded-md bg-surface-2" />
+          <span className="skel h-8 w-24 rounded-[6px]" />
         </div>
       ))}
     </section>

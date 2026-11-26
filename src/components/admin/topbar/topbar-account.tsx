@@ -18,12 +18,12 @@ type TopbarAccountProps = {
 };
 
 const menuItemClass =
-  "flex w-full items-center gap-2.5 rounded-[9px] px-3 py-2.5 text-left text-sm leading-[1.2] text-ink outline-none hover:bg-surface-2 hover:text-ink focus-visible:bg-surface-2 disabled:opacity-60";
+  "flex w-full cursor-pointer items-center gap-2.5 rounded-[9px] px-3 py-2.5 text-left text-sm leading-[1.2] text-ink outline-none hover:bg-surface-2 hover:text-ink focus-visible:bg-surface-2 disabled:opacity-60";
 
 function MenuLink({ href, icon, label, onClick }: { href: string; icon: IconName; label: string; onClick: () => void }) {
   return (
     <Link href={href} onClick={onClick} className={menuItemClass}>
-      <Icon name={icon} size={18} strokeWidth={1.8} className="text-ink-3" />
+      <Icon name={icon} size={17} strokeWidth={1.8} className="text-ink-3" />
       {label}
     </Link>
   );
@@ -35,10 +35,10 @@ export function TopbarAccount({ user, open, onToggle, onClose }: TopbarAccountPr
   if (!user) {
     return (
       <div className="flex h-13 items-center gap-3 pr-1.5 pl-0.5">
-        <span className="size-12 animate-pulse rounded-xl bg-surface-3" />
+        <span className="skel size-12 rounded-[12px]" />
         <span className="flex flex-col gap-1.5 max-[900px]:hidden">
-          <span className="h-3.5 w-24 animate-pulse rounded-md bg-surface-3" />
-          <span className="h-3 w-16 animate-pulse rounded-md bg-surface-3" />
+          <span className="skel h-3.5 w-24 rounded-[6px]" />
+          <span className="skel h-3 w-16 rounded-[6px]" />
         </span>
       </div>
     );
@@ -57,9 +57,9 @@ export function TopbarAccount({ user, open, onToggle, onClose }: TopbarAccountPr
           onClick={onToggle}
           aria-label="Account menu"
           aria-expanded={open}
-          className="flex h-13 items-center gap-3 rounded-xl border-0 bg-transparent pr-1.5 pl-0.5 text-left outline-none focus-visible:shadow-focus"
+          className="flex h-13 cursor-pointer items-center gap-3 rounded-[12px] border-0 bg-transparent pr-1.5 pl-0.5 text-left outline-none focus-visible:shadow-focus"
         >
-          <span className="flex size-12 flex-none items-center justify-center rounded-xl bg-choco font-heading text-base leading-none font-semibold text-white">
+          <span className="flex size-12 flex-none items-center justify-center rounded-[12px] bg-choco font-heading text-base leading-none font-semibold text-white">
             {getInitials(user.name)}
           </span>
           <span className="flex flex-col gap-[3px] max-[900px]:hidden">
@@ -86,7 +86,7 @@ export function TopbarAccount({ user, open, onToggle, onClose }: TopbarAccountPr
         <MenuLink href={SETTINGS_PATH} icon="settings" label="Store settings" onClick={onClose} />
       )}
       <button type="button" onClick={logout} disabled={isPending} className={`${menuItemClass} text-danger hover:text-danger`}>
-        <Icon name="logout" size={18} strokeWidth={1.8} className="text-danger" />
+        <Icon name="logout" size={17} strokeWidth={1.8} className="text-danger" />
         {isPending ? "Logging out…" : "Log out"}
       </button>
     </TopbarPopover>

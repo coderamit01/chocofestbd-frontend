@@ -8,7 +8,7 @@ type AuthSocialSectionProps = {
 
 export function AuthSocialSection({ label, onError }: AuthSocialSectionProps) {
   return (
-    <div className="mt-6 flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <AuthDivider label={label} />
       <SocialAuthButtons onError={onError} />
     </div>

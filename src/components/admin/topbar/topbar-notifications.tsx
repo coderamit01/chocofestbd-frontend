@@ -106,7 +106,7 @@ export function TopbarNotifications({ open, canViewAll, onToggle, onClose }: Top
           aria-expanded={open}
           onClick={handleToggle}
         >
-          <Icon name="notifications" size={21} strokeWidth={1.8} />
+          <Icon name="notifications" size={17} strokeWidth={1.8} />
           {unread > 0 && (
             <span className="absolute top-[11px] right-3 size-[9px] rounded-full border-2 border-surface bg-brand" />
           )}
@@ -129,10 +129,10 @@ export function TopbarNotifications({ open, canViewAll, onToggle, onClose }: Top
         {isLoading && notifications.length === 0 &&
           Array.from({ length: 3 }, (_, index) => (
             <div key={index} className="flex gap-3 p-3">
-              <span className="size-9 flex-none animate-pulse rounded-[10px] bg-surface-3" />
+              <span className="skel size-9 flex-none rounded-[36%]" />
               <span className="flex flex-1 flex-col gap-2 pt-1">
-                <span className="h-3 w-3/4 animate-pulse rounded-md bg-surface-3" />
-                <span className="h-3 w-1/2 animate-pulse rounded-md bg-surface-3" />
+                <span className="skel h-3 w-3/4 rounded-[6px]" />
+                <span className="skel h-3 w-1/2 rounded-[6px]" />
               </span>
             </div>
           ))}
@@ -152,11 +152,11 @@ export function TopbarNotifications({ open, canViewAll, onToggle, onClose }: Top
             >
               <span
                 className={cn(
-                  "flex size-9 flex-none items-center justify-center rounded-[10px]",
+                  "flex size-9 flex-none items-center justify-center rounded-[36%]",
                   NOTIFICATION_TILE_CLASSES[visual.tile]
                 )}
               >
-                <Icon name={visual.icon} size={17} strokeWidth={1.8} />
+                <Icon name={visual.icon} size={24} strokeWidth={1.8} />
               </span>
               <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <span className="text-[13.5px] leading-[1.35] font-medium text-ink">{notification.title}</span>

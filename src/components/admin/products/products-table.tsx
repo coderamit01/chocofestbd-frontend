@@ -6,10 +6,9 @@ import { productPrice, productRating, productStatus, productStock } from "@/lib/
 import { tableStyles } from "@/lib/table-styles";
 import { cn } from "@/lib/utils";
 import type { AdminProduct } from "@/types/product";
+import { CopySkuButton } from "./copy-sku-button";
 import { ProductRowMenu, type ProductMenuAction } from "./product-row-menu";
 import { ProductThumb } from "./product-thumb";
-
-export const checkboxClass = "size-[18px] cursor-pointer accent-brand";
 
 const headClass = tableStyles.head;
 
@@ -33,7 +32,7 @@ export function ProductsTable({ products, selected, canTrash, isPending, onToggl
         <thead>
           <tr>
             <th className={cn(headClass, "w-11")}>
-              <input type="checkbox" aria-label="Select all" checked={allOn} onChange={onToggleAll} className={checkboxClass} />
+              <input type="checkbox" aria-label="Select all" checked={allOn} onChange={onToggleAll} />
             </th>
             <th className={headClass}>Product name</th>
             <th className={headClass}>Category</th>
@@ -44,7 +43,9 @@ export function ProductsTable({ products, selected, canTrash, isPending, onToggl
             <th className={cn(headClass, "text-right")}>Sold</th>
             <th className={headClass}>Rating</th>
             <th className={headClass}>Featured</th>
-            <th className={cn(headClass, "text-right")}>Actions</th>
+            <th className={cn(headClass, "text-right")}>
+              <span className="sr-only">Actions</span>
+            </th>
           </tr>
         </thead>
         <tbody className={tableStyles.body}>
@@ -63,17 +64,19 @@ export function ProductsTable({ products, selected, canTrash, isPending, onToggl
                     aria-label={`Select ${product.name}`}
                     checked={on}
                     onChange={() => onToggle(product.id)}
-                    className={checkboxClass}
                   />
                 </td>
                 <td className={cell} data-label="Product">
                   <span className="flex min-w-60 items-center gap-3">
                     <ProductThumb product={product} className="size-11 rounded-[10px] text-[13px] leading-none" />
                     <span className="flex flex-col text-left">
-                      <Link href={productEditPath(product.id)} className="font-medium text-ink hover:text-brand-text">
+                      <Link href={productEditPath(product.id)} className="font-medium text-ink">
                         {product.name}
                       </Link>
-                      <span className="text-xs text-ink-3">{product.sku}</span>
+                      <span className="flex items-center gap-1">
+                        <span className="text-xs text-ink-3">{product.sku}</span>
+                        <CopySkuButton sku={product.sku} />
+                      </span>
                     </span>
                   </span>
                 </td>

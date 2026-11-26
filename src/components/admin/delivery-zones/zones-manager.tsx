@@ -88,7 +88,9 @@ export function ZonesManager({ zones, offer }: ZonesManagerProps) {
                   <th className={tableStyles.head}>Estimated delivery</th>
                   <th className={cn(tableStyles.head, "text-right")}>Orders (30 d)</th>
                   <th className={tableStyles.head}>Active</th>
-                  <th className={cn(tableStyles.head, "text-right")}>Actions</th>
+                  <th className={cn(tableStyles.head, "text-right")}>
+                    <span className="sr-only">Actions</span>
+                  </th>
                 </tr>
               </thead>
               <tbody className={tableStyles.body}>
@@ -112,8 +114,8 @@ export function ZonesManager({ zones, offer }: ZonesManagerProps) {
                     </td>
                     <td className={tableStyles.cell} data-label="Zone">
                       <span className="flex items-center gap-3">
-                        <span className="flex size-10 flex-none items-center justify-center rounded-[10px] bg-brand-50 text-brand">
-                          <Icon name="zones" size={20} strokeWidth={1.8} />
+                        <span className="flex size-14 flex-none items-center justify-center rounded-[36%] bg-brand-50 text-brand">
+                          <Icon name="zones" size={24} strokeWidth={1.8} />
                         </span>
                         <span className="flex flex-col text-left">
                           <span className="font-medium text-ink">{zone.name}</span>

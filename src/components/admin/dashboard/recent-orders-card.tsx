@@ -42,7 +42,7 @@ export function RecentOrdersCard({ orders, now }: { orders: DashboardOverview["r
               {orders.map((order) => (
                 <tr key={order.id} className={tableStyles.row}>
                   <td className={tableStyles.cell} data-label="Order">
-                    <Link href={orderPath(order.id)} className="font-semibold whitespace-nowrap text-ink hover:text-brand-text">
+                    <Link href={orderPath(order.id)} className="font-semibold whitespace-nowrap text-ink">
                       {order.orderNumber}
                     </Link>
                   </td>

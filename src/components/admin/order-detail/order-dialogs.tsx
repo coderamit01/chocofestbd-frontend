@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { cancelOrderAction, changeOrderStatusAction, markPaymentPaidAction, recordRefundAction, rejectPaymentAction } from "@/actions/order.actions";
 import { FormDialog } from "@/components/shared/form-dialog";
 import { SegmentedControl } from "@/components/shared/segmented-control";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { Button } from "@/components/ui/button";
 import { CANCEL_REASONS } from "@/config/orders";
 import { STATUS_BADGES } from "@/config/status-badges";
@@ -21,7 +22,6 @@ type DialogProps = {
   onClose: () => void;
 };
 
-const selectClass = cn(formStyles.input, "select-chevron cursor-pointer pr-[38px]");
 const statusLabel = (status: OrderStatus) => STATUS_BADGES.order[status].label;
 
 function useSubmit(onClose: () => void) {
@@ -154,21 +154,16 @@ export function CancelOrderDialog({ order, onClose }: DialogProps) {
         <label className={formStyles.label} htmlFor="cr">
           Reason<span className={formStyles.required}>*</span>
         </label>
-        <select
+        <SelectMenu
           id="cr"
           value={reason}
-          aria-invalid={error || undefined}
-          onChange={(event) => {
-            setReason(event.target.value);
+          invalid={error}
+          onChange={(next) => {
+            setReason(next);
             setError(false);
           }}
-          className={selectClass}
-        >
-          <option value="">Select a reason</option>
-          {CANCEL_REASONS.map((item) => (
-            <option key={item}>{item}</option>
-          ))}
-        </select>
+          options={[{ value: "", label: "Select a reason" }, ...CANCEL_REASONS.map((item) => ({ value: item, label: item }))]}
+        />
         {error && <span className={formStyles.error}>A reason is required.</span>}
       </div>
       <div className={formStyles.field}>
@@ -183,7 +178,7 @@ export function CancelOrderDialog({ order, onClose }: DialogProps) {
 
 function InfoTile({ label, value, highlight, valueClassName }: { label: string; value: string; highlight?: boolean; valueClassName: string }) {
   return (
-    <div className={cn("flex min-w-0 flex-col gap-1 rounded-xl p-3.5", highlight ? "bg-brand-50" : "bg-surface-2")}>
+    <div className={cn("flex min-w-0 flex-col gap-1 rounded-[12px] p-3.5", highlight ? "bg-brand-50" : "bg-surface-2")}>
       <span className="text-xs text-ink-3">{label}</span>
       <b className={cn("break-all", valueClassName)}>{value}</b>
     </div>

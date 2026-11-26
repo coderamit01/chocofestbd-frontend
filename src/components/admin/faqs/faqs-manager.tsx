@@ -108,7 +108,7 @@ export function FaqsManager({ faqs, canDelete }: FaqsManagerProps) {
                     onClick={() => setOpenId(isOpen ? null : faq.id)}
                     className="flex min-w-0 flex-1 cursor-pointer flex-col gap-1 text-left outline-none focus-visible:shadow-focus"
                   >
-                    <span className="font-heading text-[15px] leading-[1.4] font-semibold text-ink">{faq.question}</span>
+                    <span className={cn("font-heading text-[15px] leading-[1.4] font-semibold text-ink", hasBengali(faq.question) && "font-bengali")}>{faq.question}</span>
                     <span className="truncate text-[12.5px] text-ink-3">{faq.answer.replace(/\n/g, " ")}</span>
                   </button>
                   <ToggleSwitch ariaLabel="Active" checked={faq.isActive} disabled={isSaving} onChange={(isActive) => toggleActive(faq, isActive)} />

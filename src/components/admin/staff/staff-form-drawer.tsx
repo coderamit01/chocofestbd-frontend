@@ -221,7 +221,7 @@ function StaffForm({ state, onClose }: { state: NonNullable<StaffDrawerState>; o
                   <input
                     type="radio"
                     value={option.value}
-                    className="mt-0.5 size-[18px] accent-brand"
+                    className="mt-0.5 size-[18px]"
                     {...register("role", { setValueAs: (value: string) => value as InvitableRole })}
                   />
                   <span className="flex flex-col gap-1">

@@ -1,5 +1,6 @@
 "use client";
 
+import { buttonVariants } from "@/components/ui/button";
 import { formStyles } from "@/lib/form-styles";
 import { generateSlug } from "@/lib/slug";
 import { cn } from "@/lib/utils";
@@ -62,7 +63,7 @@ export function ProductBasicSection({ values, set, errors, isNew, customSlug, sa
               <button
                 type="button"
                 onClick={onToggleSlug}
-                className="m-1 inline-flex items-center rounded-md px-2.5 text-[13px] font-medium text-ink-2 hover:bg-surface-2 hover:text-ink"
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "m-1 h-auto")}
               >
                 {customSlug ? "Auto" : "Edit"}
               </button>
@@ -114,7 +115,7 @@ export function ProductBasicSection({ values, set, errors, isNew, customSlug, sa
           <span id="dl" className={formStyles.label}>
             Description
           </span>
-          <div className="overflow-hidden rounded-xl border border-input bg-surface-2">
+          <div className="overflow-hidden rounded-[12px] border border-input bg-surface-2">
             <div role="toolbar" aria-labelledby="dl" className="flex flex-wrap items-center gap-1 border-b border-input bg-surface p-2">
               {TOOLS.map((tool) => (
                 <button

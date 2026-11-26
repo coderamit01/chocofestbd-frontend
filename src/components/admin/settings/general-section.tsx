@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { STORE_FACTS } from "@/config/settings";
 import { formStyles } from "@/lib/form-styles";
 import type { GeneralSettings, NumberingSettings, SettingImages } from "@/types/setting";
 import { ImageDrop } from "./image-drop";
@@ -109,6 +110,15 @@ export function GeneralSection({
         {text("address", "g6", "Address", { placeholder: "Store or warehouse address" })}
         {prefix("orderPrefix", "g7", "Order number prefix", "order")}
         {prefix("invoicePrefix", "g8", "Invoice prefix", "invoice")}
+      </div>
+
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(200px,100%),1fr))] gap-3">
+        {STORE_FACTS.map((fact) => (
+          <div key={fact.label} className="flex flex-col gap-1 rounded-[14px] bg-surface-2 p-4">
+            <span className="text-xs text-ink-3">{fact.label}</span>
+            <span className="font-semibold text-ink">{fact.value}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

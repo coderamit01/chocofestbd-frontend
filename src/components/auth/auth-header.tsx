@@ -5,9 +5,9 @@ type AuthHeaderProps = {
 
 export function AuthHeader({ title, description }: AuthHeaderProps) {
   return (
-    <header className="flex flex-col items-center text-center">
-      <h1 className="text-[32px] leading-tight font-bold tracking-tight text-foreground">{title}</h1>
-      <p className="mt-1.5 text-sm text-muted-foreground">{description}</p>
+    <header className="flex flex-col gap-2">
+      <h2 className="text-[32px] leading-[1.2]">{title}</h2>
+      <p className="text-ink-2">{description}</p>
     </header>
   );
 }

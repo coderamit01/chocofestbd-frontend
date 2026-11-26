@@ -10,6 +10,7 @@ import { DataPagination } from "@/components/shared/data-pagination";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Icon } from "@/components/shared/icon";
 import { SearchInput } from "@/components/shared/search-input";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { ToggleSwitch } from "@/components/shared/toggle-switch";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useUrlSearch } from "@/hooks/use-url-search";
@@ -20,8 +21,6 @@ import type { PaginationMeta } from "@/types/api";
 import type { Brand } from "@/types/brand";
 import { BrandFormDialog, type BrandDialogState } from "./brand-form-dialog";
 
-const smallSelect =
-  "select-chevron h-9 w-auto cursor-pointer rounded-[10px] border border-transparent bg-surface-2 pr-9.5 pl-3 text-[13px] text-ink outline-none transition-[border-color,box-shadow,background-color] focus:border-brand focus:bg-surface focus:shadow-focus";
 const squareButton = buttonVariants({ variant: "square", size: "icon-md" });
 
 type BrandsManagerProps = {
@@ -72,12 +71,13 @@ export function BrandsManager({ brands, meta, search, canDelete }: BrandsManager
           value={searchBox.value}
           onChange={(event) => searchBox.setValue(event.target.value)}
         />
-        <select aria-label="Country" value={country} onChange={(event) => setCountry(event.target.value)} className={smallSelect}>
-          <option value="">All countries</option>
-          {countries.map((item) => (
-            <option key={item}>{item}</option>
-          ))}
-        </select>
+        <SelectMenu
+          ariaLabel="Country"
+          size="sm"
+          value={country}
+          onChange={setCountry}
+          options={[{ value: "", label: "All countries" }, ...countries.map((item) => ({ value: item, label: item }))]}
+        />
         <span className="flex-1" />
         <Button onClick={() => setDialog({ mode: "new" })}>
           <Icon name="plus" size={17} strokeWidth={1.8} />
@@ -96,7 +96,9 @@ export function BrandsManager({ brands, meta, search, canDelete }: BrandsManager
                 <th className={tableStyles.head}>Country</th>
                 <th className={cn(tableStyles.head, "text-right")}>Products</th>
                 <th className={tableStyles.head}>Active</th>
-                <th className={cn(tableStyles.head, "text-right")}>Actions</th>
+                <th className={cn(tableStyles.head, "text-right")}>
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody className={tableStyles.body}>

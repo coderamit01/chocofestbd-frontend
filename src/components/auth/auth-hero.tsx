@@ -1,76 +1,27 @@
-import Image from "next/image";
-import type { ReactNode } from "react";
-
-type AuthHeroProps = {
-  title: ReactNode;
-  description: string;
-  image?: {
-    src: string;
-    alt: string;
-  };
-};
-
-export function AuthHero({ title, description, image }: AuthHeroProps) {
+export function AuthHero() {
   return (
-    <section className="relative isolate hidden min-h-[560px] flex-col overflow-hidden rounded-[40px] bg-linear-165 from-secondary/85 via-secondary via-45% to-secondary/45 px-10 pt-14 lg:flex">
-      <NoiseOverlay />
-      <LogoWatermark />
-
-      <h2 className="text-[40px] leading-[1.3] font-bold tracking-tight text-white">{title}</h2>
-      <p className="mt-8 max-w-sm text-base leading-relaxed font-medium text-white/95">{description}</p>
-
-      {image && (
-        <div className="relative mt-auto h-[280px] w-full">
-          <Image
-            src={image.src}
-            alt={image.alt}
-            fill
-            sizes="(min-width: 1024px) 400px, 0px"
-            className="object-contain object-bottom"
-          />
-        </div>
-      )}
-    </section>
-  );
-}
-
-export function HighlightUnderline({ children }: { children: ReactNode }) {
-  return (
-    <span className="relative inline-block">
-      {children}
-      <svg
-        aria-hidden
-        viewBox="0 0 210 10"
-        fill="none"
-        preserveAspectRatio="none"
-        className="absolute -bottom-2.5 left-[-28%] h-2 w-[140%]"
-      >
-        <path d="M2 8C70 1.5 140 1.5 208 8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    <section className="relative hidden min-h-[calc(100vh-32px)] flex-[1_1_520px] flex-col justify-between overflow-hidden rounded-[24px] bg-choco p-12 text-white min-[901px]:flex">
+      <svg viewBox="0 0 600 600" aria-hidden="true" className="absolute -right-30 -bottom-35 size-140">
+        <g transform="rotate(-12 300 300)">
+          <rect x="90" y="110" width="420" height="380" rx="28" fill="#5a2410" />
+          <path d="M230 110v380M370 110v380M90 237h420M90 364h420" stroke="#3d1104" strokeWidth="12" />
+          <path d="M430 110h52a28 28 0 0 1 28 28v80a96 96 0 0 1-80-108z" fill="#3d1104" />
+          <rect x="60" y="400" width="480" height="150" rx="22" fill="#ee5615" />
+        </g>
       </svg>
-    </span>
-  );
-}
-
-function LogoWatermark() {
-  return (
-    <Image
-      src="/Chocofestbd Logo.png"
-      alt=""
-      aria-hidden
-      width={410}
-      height={240}
-      className="pointer-events-none absolute -right-12 -bottom-8 -z-10 w-[380px] max-w-none -rotate-12 opacity-10 brightness-0 invert select-none"
-    />
-  );
-}
-
-function NoiseOverlay() {
-  return (
-    <svg aria-hidden className="pointer-events-none absolute inset-0 -z-10 size-full opacity-25 mix-blend-soft-light">
-      <filter id="auth-hero-noise">
-        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#auth-hero-noise)" />
-    </svg>
+      <div className="relative flex items-center gap-3">
+        <span className="flex size-11 items-center justify-center rounded-[13px] bg-brand font-heading text-base leading-none font-bold">CF</span>
+        <span className="font-heading text-[22px] leading-none font-semibold">
+          ChocoFest <span className="text-[#ff9a66]">BD</span>
+        </span>
+      </div>
+      <div className="relative flex max-w-105 flex-col gap-4">
+        <h1 className="text-[44px] leading-[1.1] tracking-[-0.02em] text-white">Every order, from cart to doorstep.</h1>
+        <p className="text-base leading-[1.6] text-[#e8d6cc]">
+          Confirm orders, verify bKash and Nagad payments and keep the shelves stocked — in one place.
+        </p>
+      </div>
+      <span className="relative text-[13px] text-[#c9ad9f]">© {new Date().getFullYear()} ChocoFest BD · Dhaka</span>
+    </section>
   );
 }

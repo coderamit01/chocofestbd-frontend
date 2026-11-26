@@ -1,15 +1,17 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/shared/icon";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { buttonVariants } from "@/components/ui/button";
+import { copyWithToast } from "@/lib/clipboard";
 import { invoicePath, orderPath } from "@/config/orders";
 import { dhakaClock, dhakaDate } from "@/lib/dhaka-time";
 import { isBangla, methodShort, unitCount } from "@/lib/order-display";
 import { tableStyles } from "@/lib/table-styles";
 import { cn, formatPhone, formatTaka } from "@/lib/utils";
 import type { OrderListItem, OrderSortKey, OrdersQuery } from "@/types/order";
-
-export const checkboxClass = "size-[18px] cursor-pointer accent-brand";
 
 type OrdersTableProps = {
   orders: OrderListItem[];
@@ -30,6 +32,31 @@ function SortButton({ label, active, onClick }: { label: string; active: boolean
   );
 }
 
+function CopyOrderNumber({ orderNumber }: { orderNumber: string }) {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const timer = setTimeout(() => setCopied(false), 1600);
+    return () => clearTimeout(timer);
+  }, [copied]);
+
+  return (
+    <button
+      type="button"
+      aria-label={`Copy order number ${orderNumber}`}
+      title={copied ? "Copied" : "Copy"}
+      onClick={() => {
+        copyWithToast(orderNumber, "Copied", `${orderNumber} copied to clipboard`);
+        setCopied(true);
+      }}
+      className={cn(buttonVariants({ variant: "square", size: "icon-xs" }), "size-6.5 rounded-[7px]", copied ? "text-[#1f8a4c] hover:text-[#1f8a4c]" : "text-ink-3")}
+    >
+      {copied ? <Icon name="check" size={14} strokeWidth={2.6} /> : <Icon name="copy" size={14} strokeWidth={1.8} />}
+    </button>
+  );
+}
+
 export function OrdersTable({ orders, query, selected, onToggle, onToggleAll, onSort, onChangeStatus }: OrdersTableProps) {
   const allOn = orders.length > 0 && orders.every((order) => selected.has(order.id));
   const head = tableStyles.head;
@@ -40,7 +67,7 @@ export function OrdersTable({ orders, query, selected, onToggle, onToggleAll, on
         <thead>
           <tr>
             <th className={cn(head, "w-11")}>
-              <input type="checkbox" aria-label="Select all on page" checked={allOn} onChange={onToggleAll} className={checkboxClass} />
+              <input type="checkbox" aria-label="Select all on page" checked={allOn} onChange={onToggleAll} />
             </th>
             <th className={head}>Order</th>
             <th className={head}>
@@ -54,7 +81,9 @@ export function OrdersTable({ orders, query, selected, onToggle, onToggleAll, on
             <th className={head}>Payment</th>
             <th className={head}>Status</th>
             <th className={head}>Zone</th>
-            <th className={cn(head, "text-right")}>Actions</th>
+            <th className={cn(head, "text-right")}>
+              <span className="sr-only">Actions</span>
+            </th>
           </tr>
         </thead>
         <tbody className={tableStyles.body}>
@@ -70,14 +99,16 @@ export function OrdersTable({ orders, query, selected, onToggle, onToggleAll, on
                     aria-label={`Select ${order.orderNumber}`}
                     checked={on}
                     onChange={() => onToggle(order.id)}
-                    className={checkboxClass}
                   />
                 </td>
                 <td className={cell} data-label="Order">
                   <span className="flex flex-col">
-                    <Link href={orderPath(order.id)} className="font-semibold text-ink hover:text-brand-text">
-                      {order.orderNumber}
-                    </Link>
+                    <span className="flex items-center gap-1 max-[900px]:justify-end">
+                      <Link href={orderPath(order.id)} className="font-semibold text-ink">
+                        {order.orderNumber}
+                      </Link>
+                      <CopyOrderNumber orderNumber={order.orderNumber} />
+                    </span>
                     <span className="text-xs text-ink-3">{order.invoiceNumber}</span>
                   </span>
                 </td>
@@ -90,7 +121,7 @@ export function OrdersTable({ orders, query, selected, onToggle, onToggleAll, on
                 <td className={cell} data-label="Customer">
                   <span className="flex flex-col">
                     <span className={cn("font-medium", isBangla(order.recipientName) && "font-bengali")}>{order.recipientName}</span>
-                    <a href={`tel:+88${order.recipientPhone}`} className="text-xs text-ink-3 hover:text-ink">
+                    <a href={`tel:+88${order.recipientPhone}`} className="text-xs text-ink-3">
                       {formatPhone(order.recipientPhone)}
                     </a>
                   </span>

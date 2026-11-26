@@ -29,8 +29,8 @@ export type Kpi = {
 
 export function Tile({ icon, tone, className }: { icon: IconName; tone: TileTone; className?: string }) {
   return (
-    <span className={cn("flex size-10 flex-none items-center justify-center rounded-[10px]", TILE_TONES[tone], className)}>
-      <Icon name={icon} size={20} strokeWidth={1.8} />
+    <span className={cn("flex size-14 flex-none items-center justify-center rounded-[36%]", TILE_TONES[tone], className)}>
+      <Icon name={icon} size={24} strokeWidth={1.8} />
     </span>
   );
 }
@@ -105,10 +105,10 @@ export function KpiGridSkeleton({ count = 4 }: { count?: number }) {
       {Array.from({ length: count }, (_, index) => (
         <div key={index} className="flex flex-col gap-4 rounded-xl bg-card px-6 py-5.5">
           <div className="flex items-center gap-3">
-            <span className="size-10 animate-pulse rounded-[10px] bg-surface-2" />
-            <span className="h-4 w-28 animate-pulse rounded-md bg-surface-2" />
+            <span className="size-14 rounded-[36%] skel" />
+            <span className="h-4 w-28 rounded-[6px] skel" />
           </div>
-          <span className="h-8 w-24 animate-pulse rounded-md bg-surface-2" />
+          <span className="h-8 w-24 rounded-[6px] skel" />
         </div>
       ))}
     </section>

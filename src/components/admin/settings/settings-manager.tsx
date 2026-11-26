@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { saveSettingsAction } from "@/actions/setting.actions";
 import { Icon } from "@/components/shared/icon";
+import { UnsavedChangesBar } from "@/components/shared/unsaved-changes-bar";
 import { SETTINGS_TABS, SETTINGS_TAB_GROUPS } from "@/config/settings";
+import { settingsNeedingAttention } from "@/lib/settings";
 import { cn } from "@/lib/utils";
 import { SettingClient } from "@/services/setting.client";
 import type { EditableSettingGroup, SettingImages, SettingsTab, SettingValues, TelegramStatus } from "@/types/setting";
@@ -16,7 +18,6 @@ import { SeoSection } from "./seo-section";
 import { SocialSection } from "./social-section";
 import { TelegramSection } from "./telegram-section";
 import type { ImageUploadHandler } from "./settings-types";
-import { UnsavedChangesBar } from "@/components/shared/unsaved-changes-bar";
 
 type SettingsManagerProps = {
   initialValues: SettingValues;
@@ -60,6 +61,8 @@ export function SettingsManager({ initialValues, images, telegramStatus, initial
     };
 
   const errorFor = (path: string) => errors[path];
+
+  const attention = settingsNeedingAttention(draft);
 
   const selectTab = (next: SettingsTab) => {
     setTab(next);
@@ -117,7 +120,7 @@ export function SettingsManager({ initialValues, images, telegramStatus, initial
         <nav aria-label="Settings sections" className="flex flex-[0_1_260px] flex-col gap-1 rounded-xl bg-card p-3 max-[900px]:flex-[1_1_100%]">
           {SETTINGS_TABS.map((item) => {
             const active = tab === item.value;
-            const hasError = tabHasError(item.value, Object.keys(errors));
+            const hasDot = tabHasError(item.value, Object.keys(errors)) || !!attention[item.value];
 
             return (
               <button
@@ -126,19 +129,19 @@ export function SettingsManager({ initialValues, images, telegramStatus, initial
                 aria-current={active ? "page" : undefined}
                 onClick={() => selectTab(item.value)}
                 className={cn(
-                  "flex h-11.5 items-center gap-3 rounded-xl px-3.5 text-left text-[14.5px] leading-none outline-none focus-visible:shadow-focus",
+                  "flex h-11.5 items-center gap-3 rounded-[12px] px-3.5 text-left text-[14.5px] leading-none outline-none focus-visible:shadow-focus",
                   active ? "bg-brand font-medium text-white" : "font-normal text-ink-2 hover:bg-surface-2 hover:text-ink"
                 )}
               >
                 <Icon name={item.icon} />
                 <span className="flex-1">{item.label}</span>
-                {hasError && <span aria-label="Has errors" className={cn("size-2 rounded-full", active ? "bg-white" : "bg-danger")} />}
+                {hasDot && <span aria-label="Needs attention" className={cn("size-2 rounded-full", active ? "bg-white" : "bg-[#f0a500]")} />}
               </button>
             );
           })}
         </nav>
 
-        <section className="flex-[1_1_600px] rounded-xl bg-card p-7 max-[900px]:p-4.5">
+        <section className="min-w-0 flex-[1_1_600px] rounded-xl bg-card p-[30px] max-[900px]:p-4.5">
           {tab === "general" && (
             <GeneralSection
               general={draft.general}
@@ -173,7 +176,15 @@ export function SettingsManager({ initialValues, images, telegramStatus, initial
               onUpload={upload}
             />
           )}
-          {tab === "social" && <SocialSection value={draft.social} onChange={update("social")} errorFor={errorFor} />}
+          {tab === "social" && (
+            <SocialSection
+              value={draft.social}
+              onChange={update("social")}
+              errorFor={errorFor}
+              storeName={draft.general.storeName}
+              tagline={draft.general.tagline}
+            />
+          )}
           {tab === "pages" && <PagesSection value={draft.legal} onChange={update("legal")} errorFor={errorFor} />}
         </section>
       </div>

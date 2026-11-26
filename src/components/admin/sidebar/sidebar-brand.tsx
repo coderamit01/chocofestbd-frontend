@@ -4,53 +4,42 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { Icon } from "@/components/shared/icon";
+import { cn } from "@/lib/utils";
 
 export function SidebarBrand({ expanded }: { expanded: boolean }) {
-  const { isMobile, toggleSidebar, setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   return (
-    <>
-      <div className="flex items-center justify-between px-2 pt-1.5 pb-[22px]">
-        <Link
-          href="/admin"
-          aria-label="ChocoFest BD dashboard"
-          onClick={() => isMobile && setOpenMobile(false)}
-          className="flex min-w-0 items-center gap-3 text-ink"
-        >
-          <span className="flex size-10 flex-none items-center justify-center rounded-[12px] bg-brand font-heading text-[15px] leading-none font-bold text-white">
-            CF
-          </span>
-          {expanded && (
-            <span className="font-heading text-[21px] leading-none font-semibold tracking-[-0.01em] whitespace-nowrap">
+    <div
+      className={cn(
+        "flex flex-none items-center gap-3 px-1.5 pb-[22px]",
+        isMobile ? "justify-between" : expanded ? "justify-start" : "justify-center"
+      )}
+    >
+      <Link
+        href="/admin"
+        aria-label="ChocoFest BD — Dashboard"
+        onClick={() => isMobile && setOpenMobile(false)}
+        className="flex min-w-0 items-center gap-3 text-ink hover:text-ink"
+      >
+        <span className="flex size-11 flex-none items-center justify-center rounded-[13px] bg-brand font-heading text-base leading-none font-bold text-white shadow-[0_4px_12px_rgb(238_86_21/28%)]">
+          CF
+        </span>
+        {expanded && (
+          <span className="flex min-w-0 flex-col gap-1">
+            <span className="font-heading text-xl leading-none font-semibold tracking-[-0.01em] whitespace-nowrap">
               ChocoFest <span className="text-brand">BD</span>
             </span>
-          )}
-        </Link>
-
-        {isMobile ? (
-          <Button variant="ghost" size="icon-sm" aria-label="Close menu" onClick={() => setOpenMobile(false)}>
-            <Icon name="close" size={18} strokeWidth={1.8} />
-          </Button>
-        ) : (
-          expanded && (
-            <Button variant="ghost" size="icon-sm" aria-label="Collapse sidebar" onClick={toggleSidebar}>
-              <Icon name="collapse" size={18} strokeWidth={1.8} />
-            </Button>
-          )
+            <span className="text-[11.5px] leading-none whitespace-nowrap text-ink-3">Admin dashboard</span>
+          </span>
         )}
-      </div>
+      </Link>
 
-      {!expanded && (
-        <Button
-          variant="soft"
-          size="sm"
-          aria-label="Expand sidebar"
-          onClick={toggleSidebar}
-          className="mx-auto -mt-2.5 mb-3.5 w-11 px-0"
-        >
-          <Icon name="expand" size={18} strokeWidth={1.8} />
+      {isMobile && (
+        <Button variant="ghost" size="icon-sm" aria-label="Close menu" onClick={() => setOpenMobile(false)}>
+          <Icon name="close" size={17} strokeWidth={1.8} />
         </Button>
       )}
-    </>
+    </div>
   );
 }

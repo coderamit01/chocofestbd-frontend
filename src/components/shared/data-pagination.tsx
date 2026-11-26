@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { Icon } from "@/components/shared/icon";
 import { cn } from "@/lib/utils";
 import type { PaginationMeta } from "@/types/api";
 
@@ -44,63 +43,61 @@ export function DataPagination({ meta, pathname, query = {}, pageSizeControl }: 
 
   const from = (page - 1) * limit + 1;
   const to = Math.min(page * limit, total);
-  const navClassName = buttonVariants({ variant: "outline", size: "icon-sm", className: "size-[38px] rounded-lg" });
+  const pageClass = (on: boolean) =>
+    cn(
+      "inline-flex h-[38px] min-w-[38px] items-center justify-center rounded-[10px] border px-2.5 text-sm leading-none font-medium tabular-nums transition-colors",
+      on ? "border-brand bg-brand text-white hover:text-white" : "border-line-2 bg-surface text-ink hover:bg-surface-2 hover:text-ink"
+    );
+  const disabledClass = cn(pageClass(false), "cursor-default text-ink-4 hover:bg-surface hover:text-ink-4");
 
   return (
-    <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-      <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
+    <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-ink-3">
+      <span className="flex items-center gap-2.5">
         Showing {pageSizeControl}
         <span>
-          <span className="font-medium text-foreground">{from}</span>–<span className="font-medium text-foreground">{to}</span>{" "}
-          of <span className="font-medium text-foreground">{total}</span>
+          {from}–{to} of {total}
         </span>
-      </div>
+      </span>
 
-      {totalPages > 1 && (
-        <nav aria-label="Pagination" className="flex items-center gap-2">
-          {page > 1 ? (
-            <Link href={hrefFor(page - 1)} scroll={false} aria-label="Previous page" className={navClassName}>
-              <ChevronLeftIcon />
+      <nav aria-label="Pagination" className="flex gap-2">
+        {page > 1 ? (
+          <Link href={hrefFor(page - 1)} scroll={false} aria-label="Previous page" className={pageClass(false)}>
+            <Icon name="chevronLeft" size={16} strokeWidth={1.8} />
+          </Link>
+        ) : (
+          <span aria-disabled className={disabledClass}>
+            <Icon name="chevronLeft" size={16} strokeWidth={1.8} />
+          </span>
+        )}
+
+        {getPageItems(page, Math.max(1, totalPages)).map((item) =>
+          typeof item === "number" ? (
+            <Link
+              key={item}
+              href={hrefFor(item)}
+              scroll={false}
+              aria-current={item === page ? "page" : undefined}
+              className={pageClass(item === page)}
+            >
+              {item}
             </Link>
           ) : (
-            <span aria-disabled className={cn(navClassName, "pointer-events-none opacity-50")}>
-              <ChevronLeftIcon />
+            <span key={item} className="inline-flex h-[38px] items-center px-1 text-ink-3">
+              …
             </span>
-          )}
+          )
+        )}
 
-          {getPageItems(page, totalPages).map((item) =>
-            typeof item === "number" ? (
-              <Link
-                key={item}
-                href={hrefFor(item)}
-                scroll={false}
-                aria-current={item === page ? "page" : undefined}
-                className={buttonVariants({
-                  variant: item === page ? "default" : "outline",
-                  size: "icon-sm",
-                  className: "size-auto h-[38px] min-w-[38px] rounded-lg px-2.5 text-sm font-medium tabular-nums",
-                })}
-              >
-                {item}
-              </Link>
-            ) : (
-              <span key={item} className="px-1 text-sm text-muted-foreground">
-                …
-              </span>
-            )
-          )}
-
-          {page < totalPages ? (
-            <Link href={hrefFor(page + 1)} scroll={false} aria-label="Next page" className={navClassName}>
-              <ChevronRightIcon />
-            </Link>
-          ) : (
-            <span aria-disabled className={cn(navClassName, "pointer-events-none opacity-50")}>
-              <ChevronRightIcon />
-            </span>
-          )}
-        </nav>
-      )}
+        {page < totalPages ? (
+          <Link href={hrefFor(page + 1)} scroll={false} aria-label="Next page" className={pageClass(false)}>
+            <Icon name="chevronRight" size={16} strokeWidth={1.8} />
+          </Link>
+        ) : (
+          <span aria-disabled className={disabledClass}>
+            <Icon name="chevronRight" size={16} strokeWidth={1.8} />
+          </span>
+        )}
+      </nav>
     </div>
   );
 }

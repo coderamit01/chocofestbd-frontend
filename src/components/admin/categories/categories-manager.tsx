@@ -8,6 +8,7 @@ import { DangerDialog } from "@/components/shared/danger-dialog";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Icon } from "@/components/shared/icon";
 import { SearchInput } from "@/components/shared/search-input";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { ToggleSwitch } from "@/components/shared/toggle-switch";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { categoryChildrenMap, flattenCategories, reorderSiblings, type CategoryRow } from "@/lib/category-tree";
@@ -17,8 +18,6 @@ import { cn } from "@/lib/utils";
 import type { Category } from "@/types/category";
 import { CategoryFormDrawer, type CategoryDrawerState } from "./category-form-drawer";
 
-const smallSelect =
-  "select-chevron h-9 w-auto cursor-pointer rounded-[10px] border border-transparent bg-surface-2 pr-9.5 pl-3 text-[13px] text-ink outline-none transition-[border-color,box-shadow,background-color] focus:border-brand focus:bg-surface focus:shadow-focus";
 const squareButton = buttonVariants({ variant: "square", size: "icon-md" });
 const ghostIcon = buttonVariants({ variant: "ghost", size: "icon-sm" });
 
@@ -102,17 +101,21 @@ export function CategoriesManager({ categories, canDelete }: CategoriesManagerPr
     <section className="flex flex-col gap-5 rounded-xl bg-card px-6 py-5.5 max-[900px]:p-4.5">
       <div className="flex flex-wrap items-center gap-3">
         <SearchInput label="Search categories" wrapperClassName="flex-[0_1_280px]" value={search} onChange={(event) => setSearch(event.target.value)} />
-        <select aria-label="Status" value={status} onChange={(event) => setStatus(event.target.value as StatusFilter)} className={smallSelect}>
-          <option value="">All status</option>
-          <option value="on">Active</option>
-          <option value="off">Hidden</option>
-        </select>
+        <SelectMenu<StatusFilter>
+          ariaLabel="Status"
+          size="sm"
+          value={status}
+          onChange={setStatus}
+          options={[
+            { value: "", label: "All status" },
+            { value: "on", label: "Active" },
+            { value: "off", label: "Hidden" },
+          ]}
+        />
         <span className="flex-1" />
-        {parentIds.length > 0 && (
-          <Button variant="soft" onClick={() => setClosed(allOpen ? new Set(parentIds) : new Set())}>
-            {allOpen ? "Collapse all" : "Expand all"}
-          </Button>
-        )}
+        <Button variant="soft" onClick={() => setClosed(allOpen ? new Set(parentIds) : new Set())}>
+          {allOpen ? "Collapse all" : "Expand all"}
+        </Button>
         <Button onClick={() => setDrawer({ mode: "new", nextSortOrder: (map.get(null)?.length ?? 0) + 1 })}>
           <Icon name="plus" size={17} strokeWidth={1.8} />
           Add category
@@ -131,7 +134,9 @@ export function CategoriesManager({ categories, canDelete }: CategoriesManagerPr
                 <th className={tableStyles.head}>Slug</th>
                 <th className={cn(tableStyles.head, "text-right")}>Products</th>
                 <th className={tableStyles.head}>Active</th>
-                <th className={cn(tableStyles.head, "text-right")}>Actions</th>
+                <th className={cn(tableStyles.head, "text-right")}>
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody className={tableStyles.body}>

@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <SidebarInset>
         <MobileBar />
         <AdminTopbar />
-        <main className="mx-auto flex w-full max-w-370 flex-1 flex-col gap-6 px-8 pt-1 pb-10 text-body max-[900px]:gap-4 max-[900px]:px-4 max-[900px]:pt-2 max-[900px]:pb-8">
+        <main className="mx-auto flex w-full max-w-370 flex-1 flex-col gap-6 px-8 pt-6 pb-10 text-body max-[900px]:gap-4 max-[900px]:px-4 max-[900px]:pb-8">
           {children}
         </main>
       </SidebarInset>

@@ -27,8 +27,8 @@ export function CouponUsesChart({ days }: { days: { date: string; count: number 
         role="img"
         aria-label={`Coupon uses per day, last ${COUPON_CHART_DAYS} days`}
       >
-        <path d={`M0 1H${WIDTH}M0 90H${WIDTH}`} stroke="#efe9e4" strokeDasharray="4 6" vectorEffect="non-scaling-stroke" />
-        <path d={`M0 ${BASELINE}H${WIDTH}`} stroke="#e4dcd5" vectorEffect="non-scaling-stroke" />
+        <path d={`M0 1H${WIDTH}M0 90H${WIDTH}`} className="stroke-line" strokeDasharray="4 6" vectorEffect="non-scaling-stroke" />
+        <path d={`M0 ${BASELINE}H${WIDTH}`} className="stroke-line-2" vectorEffect="non-scaling-stroke" />
         {days.map((day, index) => {
           const height = (day.count / max) * MAX_BAR;
           return (
@@ -39,7 +39,7 @@ export function CouponUsesChart({ days }: { days: { date: string; count: number 
               width={(slot * 0.6).toFixed(1)}
               height={height.toFixed(1)}
               rx={4}
-              fill={hover === index ? "#ee5615" : "#ffd0b5"}
+              className={hover === index ? "fill-brand" : "fill-brand-200"}
             />
           );
         })}

@@ -5,7 +5,6 @@ import { STATUS_BADGES } from "@/config/status-badges";
 import { dhakaDate, dhakaDateTime } from "@/lib/dhaka-time";
 import { monogram } from "@/lib/monogram";
 import { isBangla, money, splitStoreName, toBanglaDigits } from "@/lib/order-display";
-import { tableStyles } from "@/lib/table-styles";
 import { cn, formatPhone, formatTaka } from "@/lib/utils";
 import type { OrderInvoice } from "@/types/order";
 
@@ -16,7 +15,8 @@ type InvoiceSheetProps = {
   pages: number;
 };
 
-const cellClass = "border-b border-line px-3.5 py-4 align-top";
+const headClass = "bg-surface-2 px-3.5 py-3 text-left font-medium text-ink-2";
+const cellClass = "border-b border-dashed border-[#e2d8d0] px-3.5 py-4 align-middle";
 
 function Meta({ label, value }: { label: string; value: string }) {
   return (
@@ -86,13 +86,13 @@ export function InvoiceSheet({ invoice, printedAt, page, pages }: InvoiceSheetPr
       </div>
 
       <h3 className="mt-10 mb-3.5 font-heading text-base leading-none font-semibold">Item details</h3>
-      <table className="w-full border-separate border-spacing-0 text-[13px]">
+      <table className="w-full border-collapse text-[13px]">
         <thead>
           <tr>
-            <th className={tableStyles.head}>Description</th>
-            <th className={cn(tableStyles.head, "text-right")}>Price</th>
-            <th className={cn(tableStyles.head, "text-right")}>Qty</th>
-            <th className={cn(tableStyles.head, "text-right")}>Amount</th>
+            <th className={headClass}>Description</th>
+            <th className={cn(headClass, "text-right")}>Price</th>
+            <th className={cn(headClass, "text-right")}>Qty</th>
+            <th className={cn(headClass, "text-right")}>Amount</th>
           </tr>
         </thead>
         <tbody>
@@ -104,7 +104,7 @@ export function InvoiceSheet({ invoice, printedAt, page, pages }: InvoiceSheetPr
                   {item.name}
                   <div className="text-[11.5px] text-ink-3">
                     {item.sku}
-                    {itemDiscount ? ` · ${formatTaka(itemDiscount)} off` : ""}
+                    {itemDiscount ? ` · ${formatTaka(itemDiscount)} promo` : ""}
                   </div>
                 </td>
                 <td className={cn(cellClass, "text-right tabular-nums")}>{formatTaka(item.unitPrice)}</td>
@@ -133,7 +133,7 @@ export function InvoiceSheet({ invoice, printedAt, page, pages }: InvoiceSheetPr
 
       <div className="flex-1" />
 
-      <div className="flex items-center justify-between gap-6 rounded-xl bg-brand-50 p-4.5">
+      <div className="flex items-center justify-between gap-6 rounded-[12px] bg-brand-50 p-4.5">
         <div className="flex flex-col gap-1">
           <b className="font-heading text-[15px] leading-[1.3] font-semibold">
             {INVOICE_COPY.thanks} {store.name}

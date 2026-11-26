@@ -3,11 +3,10 @@ import { Icon } from "@/components/shared/icon";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { NOTIFICATION_SEVERITY_BADGES, NOTIFICATION_TILE_CLASSES, NOTIFICATION_TYPES } from "@/config/notifications";
+import { hasBengali } from "@/lib/bengali";
 import { formatNotificationTime } from "@/lib/notification-time";
 import { cn } from "@/lib/utils";
 import type { AppNotification } from "@/types/notification";
-
-const BANGLA = /[ঀ-৿]/;
 
 type NotificationItemProps = {
   notification: AppNotification;
@@ -29,13 +28,13 @@ export function NotificationItem({ notification, now, isPending, onToggleRead, o
         notification.isRead ? "bg-surface shadow-[inset_0_0_0_1px_var(--line)]" : "bg-brand-50"
       )}
     >
-      <span className={cn("flex size-10 flex-none items-center justify-center rounded-[10px]", NOTIFICATION_TILE_CLASSES[type.tile])}>
-        <Icon name={type.listIcon ?? type.icon} size={20} />
+      <span className={cn("flex size-14 flex-none items-center justify-center rounded-[36%]", NOTIFICATION_TILE_CLASSES[type.tile])}>
+        <Icon name={type.listIcon ?? type.icon} size={24} />
       </span>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <span className="flex flex-wrap items-center gap-2">
-          <span className={cn("font-semibold text-ink", BANGLA.test(notification.title) && "font-bengali")}>{notification.title}</span>
+          <span className={cn("font-semibold text-ink", hasBengali(notification.title) && "font-bengali")}>{notification.title}</span>
           <Badge variant={severity.variant} size="sm">
             {severity.label}
           </Badge>
@@ -43,7 +42,7 @@ export function NotificationItem({ notification, now, isPending, onToggleRead, o
             {type.label}
           </Badge>
         </span>
-        <span className={cn("text-sm text-ink-2", BANGLA.test(notification.message) && "font-bengali")}>{notification.message}</span>
+        <span className={cn("text-sm text-ink-2", hasBengali(notification.message) && "font-bengali")}>{notification.message}</span>
         <span className="text-xs text-ink-3">{formatNotificationTime(notification.createdAt, now)}</span>
       </div>
 

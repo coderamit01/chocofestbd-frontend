@@ -35,7 +35,7 @@ export function OrderDetailView({ order }: { order: OrderDetail }) {
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <Link href={ORDERS_PATH} className="flex w-fit items-center gap-1.5 text-[12.5px] text-ink-3 hover:text-ink">
+          <Link href={ORDERS_PATH} className="flex w-fit items-center gap-1.5 text-[12.5px] text-ink-3">
             <Icon name="arrowLeft" size={16} strokeWidth={1.8} />
             Back to orders
           </Link>

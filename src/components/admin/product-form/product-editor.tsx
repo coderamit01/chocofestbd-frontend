@@ -190,8 +190,8 @@ export function ProductEditor({ product, categories, brands, tags: initialTags, 
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <Link href="/admin/products" className="flex items-center gap-1.5 text-[12.5px] text-ink-3 hover:text-ink">
-            <Icon name="chevronLeft" size={16} strokeWidth={1.8} />
+          <Link href="/admin/products" className="flex items-center gap-1.5 self-start text-[12.5px] text-ink-3">
+            <Icon name="arrowLeft" size={16} strokeWidth={1.8} />
             Back to products
           </Link>
           <div className="flex flex-wrap items-center gap-3">
@@ -212,10 +212,12 @@ export function ProductEditor({ product, categories, brands, tags: initialTags, 
 
       {errorKeys.length > 0 && (
         <div role="alert" className="flex items-center gap-2.5 rounded-[14px] bg-danger-soft px-4.5 py-3.5 text-[#8f2318]">
-          <Icon name="alert" size={18} strokeWidth={1.8} className="flex-none" />
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="flex-none">
+            <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v5M12 8h.01" />
+          </svg>
           <span>
             <b className="font-semibold">
-              Fix {errorKeys.length} field{errorKeys.length > 1 ? "s" : ""} before saving:
+              Fix {errorKeys.length} field{errorKeys.length > 1 ? "s" : ""} before publishing:
             </b>{" "}
             {errorKeys.map((key) => FIELD_LABELS[key] ?? key).join(", ")}.
           </span>
@@ -296,7 +298,7 @@ export function ProductEditor({ product, categories, brands, tags: initialTags, 
         </aside>
       </div>
 
-      {dirty && <UnsavedChangesBar isSaving={isSaving} onDiscard={discard} onSave={() => save(values.status)} />}
+      {dirty && <UnsavedChangesBar message="Unsaved changes" isSaving={isSaving} onDiscard={discard} onSave={() => save(values.status)} />}
     </>
   );
 }

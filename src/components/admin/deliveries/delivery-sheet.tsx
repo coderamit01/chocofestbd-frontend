@@ -84,7 +84,7 @@ function SheetBody({ state, onClose }: { state: NonNullable<DeliverySheetState>;
                 cash ? "bg-success-soft" : "bg-surface-2"
               )}
             >
-              <input type="checkbox" checked={cash} onChange={(event) => setCash(event.target.checked)} className="m-0 size-5.5 cursor-pointer accent-brand" />
+              <input type="checkbox" checked={cash} onChange={(event) => setCash(event.target.checked)} className="size-5.5" />
               <span>
                 I collected <b className="font-semibold tabular-nums">{formatTaka(amount)}</b> in cash
               </span>
@@ -107,7 +107,7 @@ function SheetBody({ state, onClose }: { state: NonNullable<DeliverySheetState>;
                     selected ? "bg-brand-50 shadow-[inset_0_0_0_1.5px_var(--brand)]" : "bg-surface-2"
                   )}
                 >
-                  <input type="radio" name="fail-reason" checked={selected} onChange={() => setReason(item)} className="m-0 size-5 accent-brand" />
+                  <input type="radio" name="fail-reason" checked={selected} onChange={() => setReason(item)} className="m-0 size-5" />
                   {item}
                 </label>
               );

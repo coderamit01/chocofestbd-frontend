@@ -1,9 +1,11 @@
+import { formStyles } from "@/lib/form-styles";
+
 export function AuthFieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
 
   return (
-    <p id={id} role="alert" className="mt-1.5 px-1 text-xs text-destructive">
+    <span id={id} role="alert" className={formStyles.error}>
       {message}
-    </p>
+    </span>
   );
 }

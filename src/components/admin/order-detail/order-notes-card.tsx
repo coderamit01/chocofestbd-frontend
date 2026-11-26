@@ -34,7 +34,7 @@ export function OrderNotesCard({ order }: { order: OrderDetail }) {
           <span className={formStyles.label}>Customer note</span>
           <p
             className={cn(
-              "min-h-24 rounded-xl bg-surface-2 p-3.5 text-[15px] whitespace-pre-line",
+              "min-h-24 rounded-[12px] bg-surface-2 p-3.5 text-[15px] whitespace-pre-line",
               isBangla(order.customerNote) && "font-bengali",
               !order.customerNote && "text-sm text-ink-4"
             )}

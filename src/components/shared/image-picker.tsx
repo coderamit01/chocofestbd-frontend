@@ -12,9 +12,10 @@ type ImagePickerProps = {
   onChange: (file: File | null) => void;
   className?: string;
   imageClassName?: string;
+  variant?: "compact" | "zone";
 };
 
-export function ImagePicker({ label, file, currentUrl, onChange, className, imageClassName }: ImagePickerProps) {
+export function ImagePicker({ label, file, currentUrl, onChange, className, imageClassName, variant = "compact" }: ImagePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -46,7 +47,7 @@ export function ImagePicker({ label, file, currentUrl, onChange, className, imag
         ) : (
           <>
             <Icon name="upload" size={17} strokeWidth={1.8} />
-            <span className="text-xs text-ink-3">{label}</span>
+            <span className={variant === "zone" ? undefined : "text-xs text-ink-3"}>{label}</span>
           </>
         )}
       </button>

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function SignupPage() {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <AuthHeader title="Create Account" description="Sign up to start your sweet journey" />
       <SignupForm />
       <AuthSwitchLink question="Already have an account?" label="Login" href="/login" />

@@ -24,6 +24,7 @@ export function AppToaster() {
       offset={24}
       mobileOffset={16}
       duration={4200}
+      gap={10}
       icons={{ success: <ToastIcon tone="success" />, error: <ToastIcon tone="error" /> }}
       toastOptions={{
         unstyled: true,
@@ -34,7 +35,7 @@ export function AppToaster() {
           content: "flex flex-1 flex-col gap-0.5",
           title: "font-semibold text-ink",
           description: "text-caption text-ink-3",
-          actionButton: "text-[13px] font-medium text-brand-text",
+          actionButton: "cursor-pointer self-center text-[13px] leading-none font-medium text-brand-text hover:text-choco",
         },
       }}
     />

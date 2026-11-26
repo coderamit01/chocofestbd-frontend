@@ -105,7 +105,7 @@ export function DashboardView({ data, query }: { data: DashboardData; query: Das
         </p>
         <div className="flex flex-wrap items-center gap-2.5">
           <div ref={pickerRef} className="relative">
-            <div role="group" aria-label="Date range" className="inline-flex gap-1 rounded-xl bg-surface-2 p-1">
+            <div role="group" aria-label="Date range" className="inline-flex gap-1 rounded-[12px] bg-surface-2 p-1">
               {DASHBOARD_RANGES.map((range) => {
                 const on = query.range === range.value;
                 return (

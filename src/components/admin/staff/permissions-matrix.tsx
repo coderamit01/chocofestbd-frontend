@@ -16,7 +16,7 @@ export function PermissionsMatrix() {
     <>
       <div className="flex flex-wrap items-center gap-3">
         <span className="text-sm text-ink-2">Permissions for</span>
-        <div role="group" aria-label="Role" className="inline-flex flex-wrap gap-1 rounded-xl bg-surface-2 p-1">
+        <div role="group" aria-label="Role" className="inline-flex flex-wrap gap-1 rounded-[12px] bg-surface-2 p-1">
           {STAFF_ROLE_ORDER.map((value) => (
             <button
               key={value}

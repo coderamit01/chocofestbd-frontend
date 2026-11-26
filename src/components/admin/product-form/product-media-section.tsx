@@ -14,7 +14,8 @@ import { FormCard } from "./form-card";
 export const MAX_GALLERY_IMAGES = 8;
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
 
-const tileButton = cn(buttonVariants({ variant: "square" }), "size-7.5 rounded-lg p-0");
+const tileButton = cn(buttonVariants({ variant: "square" }), "size-7.5 rounded-[9px] p-0");
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 type MediaSectionProps = {
   mainUrl: string | null;
@@ -52,7 +53,7 @@ function NewFileTile({ file, onRemove }: { file: File; onRemove: () => void }) {
     <div className="flex flex-col gap-2">
       <Tile src={url}>
         <button type="button" aria-label="Remove image" onClick={onRemove} className={cn(tileButton, "text-danger")}>
-          <Icon name="trash" size={15} strokeWidth={1.8} className="size-[15px]" />
+          <Icon name="trash" size={17} strokeWidth={1.8} className="size-[17px]" />
         </button>
       </Tile>
       <span className="truncate px-1 text-xs text-ink-3">New · uploads on save</span>
@@ -96,7 +97,7 @@ export function ProductMediaSection({
           <div className="flex flex-col gap-2">
             <Tile src={mainSrc} main>
               <button type="button" aria-label="Replace main image" onClick={() => mainRef.current?.click()} className={tileButton}>
-                <Icon name="upload" size={15} strokeWidth={1.8} className="size-[15px]" />
+                <Icon name="upload" size={17} strokeWidth={1.8} className="size-[17px]" />
               </button>
             </Tile>
             <span className="truncate px-1 text-xs text-ink-3">{mainFile ? "New main · uploads on save" : "Main image"}</span>
@@ -107,7 +108,7 @@ export function ProductMediaSection({
           <div key={image.id} className="flex flex-col gap-2">
             <Tile src={image.url}>
               <button type="button" aria-label="Move earlier" disabled={index === 0} onClick={() => onMove(image.id, -1)} className={tileButton}>
-                <Icon name="chevronLeft" size={15} strokeWidth={1.8} className="size-[15px]" />
+                <Icon name="chevronLeft" size={17} strokeWidth={1.8} className="size-[17px]" />
               </button>
               <button
                 type="button"
@@ -116,10 +117,10 @@ export function ProductMediaSection({
                 onClick={() => onMove(image.id, 1)}
                 className={tileButton}
               >
-                <Icon name="chevronRight" size={15} strokeWidth={1.8} className="size-[15px]" />
+                <Icon name="chevronRight" size={17} strokeWidth={1.8} className="size-[17px]" />
               </button>
               <button type="button" aria-label="Remove image" onClick={() => onRemoveSaved(image.id)} className={cn(tileButton, "text-danger")}>
-                <Icon name="trash" size={15} strokeWidth={1.8} className="size-[15px]" />
+                <Icon name="trash" size={17} strokeWidth={1.8} className="size-[17px]" />
               </button>
             </Tile>
             <input
@@ -140,13 +141,21 @@ export function ProductMediaSection({
           <button
             type="button"
             onClick={() => addRef.current?.click()}
+            onDragOver={(event) => event.preventDefault()}
+            onDrop={(event) => {
+              event.preventDefault();
+              const dropped = Array.from(event.dataTransfer.files);
+              const images = dropped.filter((file) => ACCEPTED_TYPES.includes(file.type));
+              if (images.length < dropped.length) onRejected("Only JPG, PNG or WebP images can be added.");
+              if (images.length) onAddFiles(accept(images));
+            }}
             className="flex min-h-37.5 cursor-pointer flex-col items-center justify-center gap-2 rounded-[14px] border-[1.5px] border-dashed border-line-2 bg-surface-2 text-center text-[13.5px] leading-[1.3] font-medium text-ink-2 outline-none hover:border-brand hover:bg-brand-50 focus-visible:shadow-focus"
           >
-            <span className="flex size-10 items-center justify-center rounded-full bg-brand-50 text-brand">
-              <Icon name="upload" />
+            <span className="flex size-14 items-center justify-center rounded-full bg-brand-50 text-brand">
+              <Icon name="upload" size={24} strokeWidth={1.8} />
             </span>
             Upload image
-            <span className="text-xs font-normal text-ink-3">{hasMain ? `Up to ${MAX_GALLERY_IMAGES} more` : "This becomes the main image"}</span>
+            <span className="text-xs font-normal text-ink-3">or drop files here</span>
           </button>
         )}
       </div>
@@ -154,7 +163,7 @@ export function ProductMediaSection({
       <input
         ref={addRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept={ACCEPTED_TYPES.join(",")}
         multiple
         hidden
         onChange={(event) => {
@@ -165,7 +174,7 @@ export function ProductMediaSection({
       <input
         ref={mainRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept={ACCEPTED_TYPES.join(",")}
         hidden
         onChange={(event) => {
           const [file] = accept(Array.from(event.target.files ?? []));

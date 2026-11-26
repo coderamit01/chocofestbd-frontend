@@ -4,6 +4,7 @@ import { useMemo, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { saveTagAction } from "@/actions/tag.actions";
 import { Icon } from "@/components/shared/icon";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { ToggleSwitch } from "@/components/shared/toggle-switch";
 import { Badge } from "@/components/ui/badge";
 import { useDismiss } from "@/hooks/use-dismiss";
@@ -33,7 +34,7 @@ export function ProductStatusCard({ values, set }: SectionProps) {
             <label
               key={option.value}
               className={cn(
-                "flex cursor-pointer items-start gap-3 rounded-xl p-3.5",
+                "flex cursor-pointer items-start gap-3 rounded-[12px] p-3.5",
                 on ? "bg-brand-50 shadow-[inset_0_0_0_1.5px_var(--brand)]" : "bg-surface-2"
               )}
             >
@@ -42,7 +43,7 @@ export function ProductStatusCard({ values, set }: SectionProps) {
                 name="product-status"
                 checked={on}
                 onChange={() => set({ status: option.value })}
-                className="mt-0.75 size-4.5 accent-brand"
+                className="mt-0.75 size-4.5"
               />
               <span className="flex flex-col gap-1">
                 <span className="font-medium text-ink">{option.label}</span>
@@ -169,14 +170,12 @@ export function ProductOrganisationCard({ values, set, errors, categories, brand
           <label htmlFor="br" className={formStyles.label}>
             Brand
           </label>
-          <select id="br" value={values.brandId} onChange={(event) => set({ brandId: event.target.value })} className={cn(formStyles.input, "select-chevron cursor-pointer pr-9.5")}>
-            <option value="">No brand</option>
-            {brands.map((brand) => (
-              <option key={brand.id} value={brand.id}>
-                {brand.name}
-              </option>
-            ))}
-          </select>
+          <SelectMenu
+            id="br"
+            value={values.brandId}
+            onChange={(brandId) => set({ brandId })}
+            options={[{ value: "", label: "No brand" }, ...brands.map((brand) => ({ value: brand.id, label: brand.name }))]}
+          />
         </div>
 
         <div className={formStyles.field}>
@@ -185,7 +184,7 @@ export function ProductOrganisationCard({ values, set, errors, categories, brand
           </label>
           <div className="flex min-h-10.5 flex-wrap items-center gap-1.5 rounded-[10px] border border-input bg-surface-2 p-1.5 focus-within:border-brand focus-within:bg-surface focus-within:shadow-focus">
             {selectedTags.map((tag) => (
-              <span key={tag.id} className="inline-flex h-7.5 items-center gap-1.5 rounded-lg bg-surface py-0 pr-1.5 pl-3 text-[13px] text-ink">
+              <span key={tag.id} className="inline-flex h-7.5 items-center gap-1.5 rounded-sm bg-surface py-0 pr-1.5 pl-3 text-[13px] text-ink">
                 {tag.name}
                 <button
                   type="button"
@@ -266,7 +265,6 @@ export function ProductCollectionsCard({ values, set, collections, now }: Collec
                     onChange={() =>
                       set({ collectionIds: on ? values.collectionIds.filter((id) => id !== collection.id) : [...values.collectionIds, collection.id] })
                     }
-                    className="size-4.5 cursor-pointer accent-brand"
                   />
                   {collection.title}
                 </span>

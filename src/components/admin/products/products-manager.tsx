@@ -9,6 +9,8 @@ import { DangerDialog } from "@/components/shared/danger-dialog";
 import { DataPagination } from "@/components/shared/data-pagination";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Icon } from "@/components/shared/icon";
+import { SearchInput } from "@/components/shared/search-input";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { ToggleSwitch } from "@/components/shared/toggle-switch";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -25,14 +27,11 @@ import { productsQueryParams } from "@/lib/product-query";
 import { cn } from "@/lib/utils";
 import type { ActionResult, PaginationMeta } from "@/types/api";
 import type { AdminProduct, BulkProductChange, ProductsQuery, ProductSummary } from "@/types/product";
+import { ProductBulkBar } from "./product-bulk-bar";
 import type { ProductMenuAction } from "./product-row-menu";
 import { ProductsGrid } from "./products-grid";
 import { ProductsTable } from "./products-table";
 
-const smallSelect =
-  "select-chevron h-9 w-auto cursor-pointer rounded-[10px] border border-transparent bg-surface-2 pr-[38px] pl-3 text-[13px] text-ink outline-none transition-[border-color,box-shadow,background-color] focus:border-brand focus:bg-surface focus:shadow-focus";
-const panelSelect = cn(formStyles.input, "select-chevron cursor-pointer bg-surface pr-[38px]");
-const darkButton = "inline-flex h-[34px] items-center rounded-md bg-white/12 px-3 text-[13px] font-medium text-white hover:bg-white/20 disabled:opacity-45";
 
 type ProductsManagerProps = {
   products: AdminProduct[];
@@ -163,33 +162,21 @@ export function ProductsManager({ products, meta, summary, query, canTrash }: Pr
   return (
     <section className="flex flex-col gap-5 rounded-xl bg-card px-6 py-5.5 max-[900px]:p-4.5">
       <div className="flex flex-wrap items-center gap-3">
-        <div className="relative flex flex-[0_1_280px] items-center">
-          <Icon name="search" size={18} strokeWidth={1.8} className="pointer-events-none absolute left-3.5 text-ink-3" />
-          <input
-            type="search"
-            aria-label="Search product or SKU"
-            placeholder="Search product or SKU"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            className="h-10.5 w-full rounded-[10px] border border-transparent bg-surface-2 pr-3.5 pl-10.5 text-sm text-ink outline-none transition-[border-color,box-shadow,background-color] placeholder:text-ink-4 focus:border-brand focus:bg-surface focus:shadow-focus"
-          />
-        </div>
-        <select aria-label="Category" value={query.category ?? ""} onChange={(event) => navigate({ category: event.target.value || undefined })} className={smallSelect}>
-          <option value="">All categories</option>
-          {summary.categories.map((category) => (
-            <option key={category.id} value={category.slug}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-        <select aria-label="Brand" value={query.brand ?? ""} onChange={(event) => navigate({ brand: event.target.value || undefined })} className={smallSelect}>
-          <option value="">All brands</option>
-          {summary.brands.map((brand) => (
-            <option key={brand.id} value={brand.slug}>
-              {brand.name}
-            </option>
-          ))}
-        </select>
+        <SearchInput label="Search product or SKU" wrapperClassName="flex-[0_1_280px]" value={search} onChange={(event) => setSearch(event.target.value)} />
+        <SelectMenu
+          ariaLabel="Category"
+          size="sm"
+          value={query.category ?? ""}
+          onChange={(category) => navigate({ category: category || undefined })}
+          options={[{ value: "", label: "All categories" }, ...summary.categories.map((category) => ({ value: category.slug, label: category.name }))]}
+        />
+        <SelectMenu
+          ariaLabel="Brand"
+          size="sm"
+          value={query.brand ?? ""}
+          onChange={(brand) => navigate({ brand: brand || undefined })}
+          options={[{ value: "", label: "All brands" }, ...summary.brands.map((brand) => ({ value: brand.slug, label: brand.name }))]}
+        />
         <button
           type="button"
           aria-expanded={filtersOpen}
@@ -201,13 +188,13 @@ export function ProductsManager({ products, meta, summary, query, canTrash }: Pr
         </button>
         <span className="flex-1" />
         <span className="text-[12.5px] text-ink-3 max-[900px]:hidden">Sort by:</span>
-        <select aria-label="Sort by" value={query.sort} onChange={(event) => navigate({ sort: event.target.value as ProductsQuery["sort"] })} className={smallSelect}>
-          {PRODUCT_SORTS.map((sort) => (
-            <option key={sort.value} value={sort.value}>
-              {sort.label}
-            </option>
-          ))}
-        </select>
+        <SelectMenu<ProductsQuery["sort"]>
+          ariaLabel="Sort by"
+          size="sm"
+          value={query.sort}
+          onChange={(sort) => navigate({ sort })}
+          options={PRODUCT_SORTS.map((sort) => ({ value: sort.value, label: sort.label }))}
+        />
         <div role="group" aria-label="View" className="inline-flex gap-1 rounded-xl bg-surface-2 p-1">
           {(["table", "grid"] as const).map((view) => (
             <button
@@ -221,7 +208,7 @@ export function ProductsManager({ products, meta, summary, query, canTrash }: Pr
                 query.view === view && "bg-surface text-ink shadow-seg"
               )}
             >
-              <Icon name={view === "table" ? "list" : "grid"} size={17} strokeWidth={1.8} />
+              <Icon name={view === "table" ? "list" : "grid"} size={16} strokeWidth={1.8} />
             </button>
           ))}
         </div>
@@ -237,14 +224,13 @@ export function ProductsManager({ products, meta, summary, query, canTrash }: Pr
             <label className={formStyles.label} htmlFor="fs">
               Stock
             </label>
-            <select id="fs" value={query.stock ?? ""} onChange={(event) => navigate({ stock: (event.target.value || undefined) as ProductsQuery["stock"] })} className={panelSelect}>
-              <option value="">Any</option>
-              {PRODUCT_STOCK_FILTERS.map((stock) => (
-                <option key={stock.value} value={stock.value}>
-                  {stock.label}
-                </option>
-              ))}
-            </select>
+            <SelectMenu<NonNullable<ProductsQuery["stock"]> | "">
+              id="fs"
+              triggerClassName="bg-surface"
+              value={query.stock ?? ""}
+              onChange={(stock) => navigate({ stock: stock || undefined })}
+              options={[{ value: "", label: "Any" }, ...PRODUCT_STOCK_FILTERS.map((stock) => ({ value: stock.value, label: stock.label }))]}
+            />
           </div>
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor="fp">
@@ -266,14 +252,13 @@ export function ProductsManager({ products, meta, summary, query, canTrash }: Pr
             <label className={formStyles.label} htmlFor="ft">
               Tag
             </label>
-            <select id="ft" value={query.tag ?? ""} onChange={(event) => navigate({ tag: event.target.value || undefined })} className={panelSelect}>
-              <option value="">Any tag</option>
-              {summary.tags.map((tag) => (
-                <option key={tag.id} value={tag.slug}>
-                  {tag.name}
-                </option>
-              ))}
-            </select>
+            <SelectMenu
+              id="ft"
+              triggerClassName="bg-surface"
+              value={query.tag ?? ""}
+              onChange={(tag) => navigate({ tag: tag || undefined })}
+              options={[{ value: "", label: "Any tag" }, ...summary.tags.map((tag) => ({ value: tag.slug, label: tag.name }))]}
+            />
           </div>
           <div className={cn(formStyles.field, "justify-end")}>
             <ToggleSwitch
@@ -316,53 +301,19 @@ export function ProductsManager({ products, meta, summary, query, canTrash }: Pr
       </div>
 
       {selected.size > 0 && (
-        <div className="flex flex-wrap items-center gap-2 rounded-[14px] bg-choco py-2.5 pr-2.5 pl-4.5 text-white">
-          <span className="font-medium">{selected.size} selected</span>
-          <span className="flex-1" />
-          {!inTrash && (
-            <>
-              <button type="button" disabled={isSaving} className={darkButton} onClick={() => bulkUpdate({ status: "ACTIVE" }, "Activated", (n) => `${n} products are live`)}>
-                Activate
-              </button>
-              <button type="button" disabled={isSaving} className={darkButton} onClick={() => bulkUpdate({ status: "ARCHIVED" }, "Archived", (n) => `${n} products hidden`)}>
-                Archive
-              </button>
-              <button type="button" disabled={isSaving} className={darkButton} onClick={() => bulkUpdate({ isFeatured: true }, "Featured", (n) => `${n} products`)}>
-                Set featured
-              </button>
-              <select
-                aria-label="Move to category"
-                value=""
-                disabled={isSaving}
-                onChange={(event) => {
-                  const category = summary.categories.find((item) => item.id === event.target.value);
-                  if (category) bulkUpdate({ categoryId: category.id }, "Category changed", (n) => `${n} → ${category.name}`);
-                }}
-                className="select-chevron h-9 cursor-pointer rounded-[10px] border-0 bg-white/12 pr-[38px] pl-3 text-[13px] text-white outline-none [&>option]:text-ink"
-              >
-                <option value="">Change category…</option>
-                {summary.categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-              {canTrash && (
-                <button
-                  type="button"
-                  disabled={isSaving}
-                  onClick={() => setTrashTarget({ ids: selectedIds, title: `Move ${selectedIds.length} products to trash?` })}
-                  className="inline-flex h-[34px] items-center rounded-md bg-danger px-3 text-[13px] font-medium text-white hover:bg-danger-hover"
-                >
-                  Delete
-                </button>
-              )}
-            </>
-          )}
-          <button type="button" className="inline-flex h-[34px] items-center rounded-md px-3 text-[13px] font-medium text-[#e8d6cc] hover:text-white" onClick={() => setSelected(new Set())}>
-            Clear
-          </button>
-        </div>
+        <ProductBulkBar
+          count={selected.size}
+          disabled={isSaving}
+          showActions={!inTrash}
+          canTrash={canTrash}
+          categories={summary.categories}
+          onClear={() => setSelected(new Set())}
+          onActivate={() => bulkUpdate({ status: "ACTIVE" }, "Activated", (n) => `${n} products are live`)}
+          onArchive={() => bulkUpdate({ status: "ARCHIVED" }, "Archived", (n) => `${n} products hidden`)}
+          onFeature={() => bulkUpdate({ isFeatured: true }, "Featured", (n) => `${n} products`)}
+          onCategory={(category) => bulkUpdate({ categoryId: category.id }, "Category changed", (n) => `${n} → ${category.name}`)}
+          onTrash={() => setTrashTarget({ ids: selectedIds, title: `Move ${selectedIds.length} products to trash?` })}
+        />
       )}
 
       <div className={cn("transition-opacity", isNavigating && "opacity-60")}>
@@ -398,18 +349,14 @@ export function ProductsManager({ products, meta, summary, query, canTrash }: Pr
           pathname={pathname}
           query={productsQueryParams(query)}
           pageSizeControl={
-            <select
-              aria-label="Rows per page"
-              value={query.limit}
-              onChange={(event) => navigate({ limit: Number(event.target.value) })}
-              className={cn(smallSelect, "w-19")}
-            >
-              {PRODUCT_PAGE_SIZES.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
+            <SelectMenu
+              ariaLabel="Rows per page"
+              size="sm"
+              className="w-19"
+              value={String(query.limit)}
+              onChange={(limit) => navigate({ limit: Number(limit) })}
+              options={PRODUCT_PAGE_SIZES.map((size) => ({ value: String(size), label: String(size) }))}
+            />
           }
         />
       )}

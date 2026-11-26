@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="flex flex-col gap-8">
-      <AuthHeader title="Welcome Back" description="Please login to your account" />
+    <div className="flex flex-col gap-6">
+      <AuthHeader title="Welcome back" description="Sign in with your email and password." />
       <LoginForm />
       <AuthSwitchLink question="Don't have an account?" label="Create an account" href="/signup" />
     </div>

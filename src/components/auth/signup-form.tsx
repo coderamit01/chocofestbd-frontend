@@ -55,7 +55,7 @@ export function SignupForm() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-6">
       <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col">
         <div className="flex flex-col gap-3.5">
           <div>
@@ -119,7 +119,7 @@ export function SignupForm() {
           </div>
         </div>
 
-        <AuthFormError message={errors.root?.message ?? null} />
+        <div className="mt-4 empty:hidden"><AuthFormError message={errors.root?.message ?? null} /></div>
 
         <AuthSubmitButton isPending={isSubmitting} pendingLabel="Creating account..." className="mt-8">
           Sign Up

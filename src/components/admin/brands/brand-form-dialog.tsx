@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { FormDialog } from "@/components/shared/form-dialog";
 import { ImagePicker } from "@/components/shared/image-picker";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { ToggleSwitch } from "@/components/shared/toggle-switch";
 import { Button } from "@/components/ui/button";
 import { BRAND_COUNTRIES, BRAND_NAME_MAX, BRAND_NAME_MIN } from "@/config/brands";
@@ -112,11 +113,8 @@ function BrandForm({ brand, onClose }: { brand: Brand | null; onClose: () => voi
             onChange={(event) => set({ name: event.target.value })}
             className={formStyles.input}
           />
-          {errors.name ? (
-            <span className={formStyles.error}>{errors.name}</span>
-          ) : (
-            <span className={formStyles.hint}>Slug: /brand/{generateSlug(values.name) || "…"}</span>
-          )}
+          {errors.name && <span className={formStyles.error}>{errors.name}</span>}
+          <span className={formStyles.hint}>Slug: /brand/{generateSlug(values.name) || "…"}</span>
           {(brand?.logo || values.logo) && !values.removeLogo && (
             <button
               type="button"
@@ -133,11 +131,7 @@ function BrandForm({ brand, onClose }: { brand: Brand | null; onClose: () => voi
         <label htmlFor="bc" className={formStyles.label}>
           Country
         </label>
-        <select id="bc" value={values.country} onChange={(event) => set({ country: event.target.value })} className={cn(formStyles.input, "select-chevron cursor-pointer pr-9.5")}>
-          {countries.map((country) => (
-            <option key={country}>{country}</option>
-          ))}
-        </select>
+        <SelectMenu id="bc" value={values.country} onChange={(country) => set({ country })} options={countries.map((country) => ({ value: country, label: country }))} />
       </div>
 
       <div className={formStyles.field}>

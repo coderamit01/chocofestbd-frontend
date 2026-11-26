@@ -102,6 +102,7 @@ function PaymentCard({ order, canVerify, canRefund, onVerify, onRefund }: Paymen
               <Button
                 variant="ghost"
                 size="icon-xs"
+                className="rounded-md"
                 aria-label="Copy transaction ID"
                 onClick={() => copyWithToast(order.paymentTransactionId!, "Copied", `TrxID ${order.paymentTransactionId}`)}
               >

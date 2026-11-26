@@ -8,6 +8,7 @@ import { exportOrdersAction } from "@/actions/order.actions";
 import { DataPagination } from "@/components/shared/data-pagination";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Icon } from "@/components/shared/icon";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   bulkInvoicePath,
@@ -34,10 +35,7 @@ import { CreateOrderDrawer } from "./create-order-drawer";
 import { OrderStatusDialog } from "./order-status-dialog";
 import { OrdersTable } from "./orders-table";
 
-const smallSelect =
-  "select-chevron h-9 w-auto cursor-pointer rounded-[10px] border border-transparent bg-surface-2 pr-[38px] pl-3 text-[13px] text-ink outline-none transition-[border-color,box-shadow,background-color] focus:border-brand focus:bg-surface focus:shadow-focus";
-const panelSelect = cn(formStyles.input, "select-chevron cursor-pointer bg-surface pr-[38px]");
-const darkButton = "inline-flex h-[34px] items-center gap-1.5 rounded-md bg-white/12 px-3 text-[13px] font-medium text-white hover:bg-white/20";
+const bulkButton = cn(buttonVariants({ variant: "soft", size: "sm" }), "bg-surface shadow-[0_1px_2px_rgb(34_21_16/6%)] hover:bg-surface aria-expanded:bg-surface");
 
 type OrdersManagerProps = {
   orders: OrderListItem[];
@@ -173,32 +171,20 @@ export function OrdersManager({ orders, meta, counts, filterOptions, query }: Or
             className="h-10.5 w-full rounded-[10px] border border-transparent bg-surface-2 pr-3.5 pl-10.5 text-sm text-ink outline-none transition-[border-color,box-shadow,background-color] placeholder:text-ink-4 focus:border-brand focus:bg-surface focus:shadow-focus"
           />
         </div>
-        <select
-          aria-label="Payment method"
+        <SelectMenu<PaymentMethod | "">
+          ariaLabel="Payment method"
+          size="sm"
           value={query.method ?? ""}
-          onChange={(event) => navigate({ method: (event.target.value || undefined) as PaymentMethod | undefined })}
-          className={smallSelect}
-        >
-          <option value="">All methods</option>
-          {PAYMENT_METHOD_FILTERS.map((method) => (
-            <option key={method} value={method}>
-              {PAYMENT_METHODS[method].short}
-            </option>
-          ))}
-        </select>
-        <select
-          aria-label="Payment status"
+          onChange={(method) => navigate({ method: method || undefined })}
+          options={[{ value: "", label: "All methods" }, ...PAYMENT_METHOD_FILTERS.map((method) => ({ value: method, label: PAYMENT_METHODS[method].short }))]}
+        />
+        <SelectMenu<PaymentStatus | "">
+          ariaLabel="Payment status"
+          size="sm"
           value={query.pay ?? ""}
-          onChange={(event) => navigate({ pay: (event.target.value || undefined) as PaymentStatus | undefined })}
-          className={smallSelect}
-        >
-          <option value="">Any payment</option>
-          {PAYMENT_STATUS_FILTERS.map((status) => (
-            <option key={status} value={status}>
-              {STATUS_BADGES.payment[status].label}
-            </option>
-          ))}
-        </select>
+          onChange={(pay) => navigate({ pay: pay || undefined })}
+          options={[{ value: "", label: "Any payment" }, ...PAYMENT_STATUS_FILTERS.map((status) => ({ value: status, label: STATUS_BADGES.payment[status].label }))]}
+        />
         <button
           type="button"
           aria-expanded={filtersOpen}
@@ -225,53 +211,49 @@ export function OrdersManager({ orders, meta, counts, filterOptions, query }: Or
             <label className={formStyles.label} htmlFor="f1">
               Date
             </label>
-            <select id="f1" value={query.date ?? ""} onChange={(event) => navigate({ date: (event.target.value || undefined) as OrdersQuery["date"] })} className={panelSelect}>
-              <option value="">Any date</option>
-              {ORDER_DATE_FILTERS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            <SelectMenu<NonNullable<OrdersQuery["date"]> | "">
+              id="f1"
+              triggerClassName="bg-surface"
+              value={query.date ?? ""}
+              onChange={(date) => navigate({ date: date || undefined })}
+              options={[{ value: "", label: "Any date" }, ...ORDER_DATE_FILTERS.map((option) => ({ value: option.value, label: option.label }))]}
+            />
           </div>
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor="f2">
               Delivery zone
             </label>
-            <select id="f2" value={query.zone ?? ""} onChange={(event) => navigate({ zone: event.target.value || undefined })} className={panelSelect}>
-              <option value="">All zones</option>
-              {filterOptions.zones.map((zone) => (
-                <option key={zone} value={zone}>
-                  {zone}
-                </option>
-              ))}
-            </select>
+            <SelectMenu
+              id="f2"
+              triggerClassName="bg-surface"
+              value={query.zone ?? ""}
+              onChange={(zone) => navigate({ zone: zone || undefined })}
+              options={[{ value: "", label: "All zones" }, ...filterOptions.zones.map((zone) => ({ value: zone, label: zone }))]}
+            />
           </div>
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor="f3">
               District
             </label>
-            <select id="f3" value={query.district ?? ""} onChange={(event) => navigate({ district: event.target.value || undefined })} className={panelSelect}>
-              <option value="">All districts</option>
-              {filterOptions.districts.map((district) => (
-                <option key={district} value={district}>
-                  {district}
-                </option>
-              ))}
-            </select>
+            <SelectMenu
+              id="f3"
+              triggerClassName="bg-surface"
+              value={query.district ?? ""}
+              onChange={(district) => navigate({ district: district || undefined })}
+              options={[{ value: "", label: "All districts" }, ...filterOptions.districts.map((district) => ({ value: district, label: district }))]}
+            />
           </div>
           <div className={formStyles.field}>
             <label className={formStyles.label} htmlFor="f4">
               Coupon
             </label>
-            <select id="f4" value={query.coupon ?? ""} onChange={(event) => navigate({ coupon: (event.target.value || undefined) as OrdersQuery["coupon"] })} className={panelSelect}>
-              <option value="">Any</option>
-              {ORDER_COUPON_FILTERS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            <SelectMenu<NonNullable<OrdersQuery["coupon"]> | "">
+              id="f4"
+              triggerClassName="bg-surface"
+              value={query.coupon ?? ""}
+              onChange={(coupon) => navigate({ coupon: coupon || undefined })}
+              options={[{ value: "", label: "Any" }, ...ORDER_COUPON_FILTERS.map((option) => ({ value: option.value, label: option.label }))]}
+            />
           </div>
         </div>
       )}
@@ -279,7 +261,7 @@ export function OrdersManager({ orders, meta, counts, filterOptions, query }: Or
       {chips.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
           {chips.map((chip) => (
-            <span key={chip.key} className="inline-flex h-[30px] items-center gap-1.5 rounded-lg bg-surface-2 pr-1.5 pl-3 text-[13px] text-ink">
+            <span key={chip.key} className="inline-flex h-[30px] items-center gap-1.5 rounded-sm bg-surface-2 pr-1.5 pl-3 text-[13px] text-ink">
               <span className="text-ink-3">{chip.label}</span>
               {chip.value}
               <button
@@ -299,26 +281,36 @@ export function OrdersManager({ orders, meta, counts, filterOptions, query }: Or
       )}
 
       {selected.size > 0 && (
-        <div className="flex flex-wrap items-center gap-2.5 rounded-[14px] bg-choco py-2.5 pr-2.5 pl-4.5 text-white">
-          <span className="font-medium">{selected.size} selected</span>
-          <span className="flex-1" />
-          <Button size="sm" onClick={() => setStatusTargets(selectedOrders)}>
-            Change status
+        <div
+          role="toolbar"
+          aria-label="Bulk actions"
+          className="flex flex-wrap items-center gap-3 rounded-[14px] bg-brand-50 py-2.5 pr-2.5 pl-3 shadow-[inset_0_0_0_1px_var(--brand-200)]"
+        >
+          <span className="flex items-center gap-2.5">
+            <span className="flex size-6.5 items-center justify-center rounded-sm bg-brand text-white">
+              <Icon name="check" size={15} strokeWidth={3} />
+            </span>
+            <span className="font-semibold">{selected.size} selected</span>
+          </span>
+          <span aria-hidden="true" className="h-5 w-px bg-brand-200" />
+          <Button variant="link" size="sm" onClick={() => setSelected(new Set())}>
+            Clear selection
           </Button>
-          <Link href={bulkInvoicePath([...selected])} className={darkButton}>
-            <Icon name="print" size={15} strokeWidth={1.8} />
-            Print invoices
-          </Link>
-          <button type="button" className={darkButton} onClick={() => exportRows(selectedOrders)}>
-            Export
-          </button>
-          <button
-            type="button"
-            className="inline-flex h-[34px] items-center rounded-md px-3 text-[13px] font-medium text-[#e8d6cc] hover:text-white"
-            onClick={() => setSelected(new Set())}
-          >
-            Clear
-          </button>
+          <span className="flex-1" />
+          <div className="flex flex-wrap items-center gap-2">
+            <button type="button" className={bulkButton} onClick={() => setStatusTargets(selectedOrders)}>
+              <Icon name="refresh" size={15} strokeWidth={1.8} />
+              Change status
+            </button>
+            <Link href={bulkInvoicePath([...selected])} className={bulkButton}>
+              <Icon name="print" size={15} strokeWidth={1.8} />
+              Print invoices
+            </Link>
+            <button type="button" className={bulkButton} onClick={() => exportRows(selectedOrders)}>
+              <Icon name="download" size={15} strokeWidth={1.8} />
+              Export
+            </button>
+          </div>
         </div>
       )}
 
@@ -352,13 +344,14 @@ export function OrdersManager({ orders, meta, counts, filterOptions, query }: Or
           pathname={pathname}
           query={ordersQueryParams(query)}
           pageSizeControl={
-            <select aria-label="Rows per page" value={query.limit} onChange={(event) => navigate({ limit: Number(event.target.value) })} className={cn(smallSelect, "w-19")}>
-              {ORDER_PAGE_SIZES.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
+            <SelectMenu
+              ariaLabel="Rows per page"
+              size="sm"
+              className="w-19"
+              value={String(query.limit)}
+              onChange={(limit) => navigate({ limit: Number(limit) })}
+              options={ORDER_PAGE_SIZES.map((size) => ({ value: String(size), label: String(size) }))}
+            />
           }
         />
       )}

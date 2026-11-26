@@ -14,7 +14,7 @@ export function SidebarLogout({ expanded }: { expanded: boolean }) {
       disabled={isPending}
       onClick={logout}
       className={cn(
-        "mt-5 flex h-12.5 w-full flex-none items-center gap-3.5 rounded-xl bg-surface-2 px-4 text-[15px] text-ink-2 outline-none focus-visible:shadow-[0_0_0_3px_rgb(238_86_21/20%)] disabled:opacity-60",
+        "mt-3.5 flex h-12.5 w-full flex-none items-center gap-3.5 rounded-[12px] bg-surface-2 px-4 text-[15px] text-ink-2 outline-none transition-colors hover:bg-danger-soft hover:text-danger focus-visible:shadow-[0_0_0_3px_rgb(238_86_21/28%)] disabled:opacity-60",
         expanded ? "justify-start" : "justify-center"
       )}
     >

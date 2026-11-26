@@ -42,14 +42,16 @@ export function PaymentsTable({ payments, now, busyId, onVerify, onReject }: Pay
             <th className={cn(head, "text-right")}>Amount</th>
             <th className={head}>Submitted</th>
             <th className={head}>Status</th>
-            <th className={cn(head, "text-right")}>Actions</th>
+            <th className={cn(head, "text-right")}>
+              <span className="sr-only">Actions</span>
+            </th>
           </tr>
         </thead>
         <tbody className={tableStyles.body}>
           {payments.map((payment) => (
             <tr key={payment.id} className={tableStyles.row}>
               <td className={tableStyles.cell} data-label="Order">
-                <Link href={orderPath(payment.id)} className="font-semibold text-ink hover:text-brand-text">
+                <Link href={orderPath(payment.id)} className="font-semibold text-ink">
                   {payment.orderNumber}
                 </Link>
               </td>
@@ -63,7 +65,7 @@ export function PaymentsTable({ payments, now, busyId, onVerify, onReject }: Pay
                 {payment.transactionId ? (
                   <span className="inline-flex items-center gap-1.5">
                     <span className="font-mono text-[13.5px]">{payment.transactionId}</span>
-                    <Button variant="ghost" size="icon-xs" aria-label={`Copy ${payment.transactionId}`} onClick={() => copyWithToast(payment.transactionId!, "Copied")}>
+                    <Button variant="ghost" size="icon-xs" className="rounded-md" aria-label={`Copy ${payment.transactionId}`} onClick={() => copyWithToast(payment.transactionId!, "Copied")}>
                       <Icon name="copy" size={14} strokeWidth={1.8} />
                     </Button>
                   </span>

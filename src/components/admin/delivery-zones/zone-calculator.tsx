@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { DEFAULT_CALCULATOR_SUBTOTAL } from "@/config/delivery-zones";
 import { formStyles } from "@/lib/form-styles";
 import { cn, formatTaka } from "@/lib/utils";
@@ -33,18 +34,7 @@ export function ZoneCalculator({ zones, offer }: ZoneCalculatorProps) {
         <label htmlFor="cz" className={formStyles.label}>
           Zone
         </label>
-        <select
-          id="cz"
-          value={zone?.id ?? ""}
-          onChange={(event) => setZoneId(event.target.value)}
-          className={cn(formStyles.input, "select-chevron cursor-pointer pr-9.5")}
-        >
-          {zones.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
+        <SelectMenu id="cz" value={zone?.id ?? ""} onChange={setZoneId} options={zones.map((item) => ({ value: item.id, label: item.name }))} />
       </div>
 
       <div className={formStyles.field}>

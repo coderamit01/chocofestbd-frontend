@@ -140,8 +140,8 @@ export function BannersManager({ banners, categories, canDelete }: BannersManage
               onClick={openNew}
               className="flex min-h-70 cursor-pointer flex-col items-center justify-center gap-2 rounded-[14px] border-[1.5px] border-dashed border-line-2 bg-surface-2 text-center text-[13.5px] leading-[1.3] font-medium text-ink-2 hover:border-brand hover:bg-brand-50"
             >
-              <span className="flex size-10 items-center justify-center rounded-full bg-brand-50 text-brand">
-                <Icon name="plus" size={20} strokeWidth={1.8} />
+              <span className="flex size-14 items-center justify-center rounded-full bg-brand-50 text-brand">
+                <Icon name="plus" size={24} strokeWidth={1.8} />
               </span>
               Add banner to {category.name}
             </button>

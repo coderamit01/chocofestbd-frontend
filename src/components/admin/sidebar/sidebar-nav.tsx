@@ -19,7 +19,7 @@ export function SidebarNav({ sections, counts, expanded }: SidebarNavProps) {
   const { isMobile, setOpenMobile } = useSidebar();
 
   return (
-    <nav aria-label="Main" className="flex flex-1 flex-col gap-[18px]">
+    <nav aria-label="Main" className="scrollbar-brand -mx-2.5 flex min-h-0 flex-[1_1_auto] flex-col gap-[18px] overflow-x-hidden overflow-y-auto px-2.5 pt-0.5 pb-2">
       {sections.map((section) => (
         <div key={section.label} className="flex flex-col gap-[3px]">
           {expanded && section.showLabel && (
@@ -39,12 +39,14 @@ export function SidebarNav({ sections, counts, expanded }: SidebarNavProps) {
                 aria-current={isActive ? "page" : undefined}
                 onClick={() => isMobile && setOpenMobile(false)}
                 className={cn(
-                  "flex h-[46px] items-center gap-3.5 rounded-xl px-3.5 text-[15px] outline-none focus-visible:shadow-[0_0_0_3px_rgb(238_86_21/20%)]",
+                  "flex h-[46px] flex-none items-center gap-3.5 rounded-[12px] px-3.5 text-[15px] outline-none transition-colors focus-visible:shadow-[0_0_0_3px_rgb(238_86_21/28%)]",
                   expanded ? "justify-start" : "justify-center",
-                  isActive ? "bg-brand font-medium text-white" : "text-ink-2"
+                  isActive
+                    ? "bg-brand font-medium text-white hover:bg-brand-hover hover:text-white"
+                    : "text-ink-2 hover:bg-brand-50 hover:text-brand-text [&:hover_svg]:text-brand"
                 )}
               >
-                <Icon name={icon} className="flex-none" />
+                <Icon name={icon} className="flex-none transition-colors" />
                 {expanded && (
                   <>
                     <span className="flex-1 whitespace-nowrap">{title}</span>

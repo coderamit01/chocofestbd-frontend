@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { Icon } from "@/components/shared/icon";
 import { SearchInput } from "@/components/shared/search-input";
 import { SegmentedControl } from "@/components/shared/segmented-control";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { Button } from "@/components/ui/button";
 import { COUPON_STATUS_OPTIONS, DISCOUNT_TYPE_OPTIONS } from "@/config/coupons";
 import { useUrlSearch } from "@/hooks/use-url-search";
@@ -70,19 +71,13 @@ export function CouponsManager({ coupons, meta, query, options, now, today, canD
           wrapperClassName="flex-[0_1_240px]"
         />
         <SegmentedControl ariaLabel="Status" options={COUPON_STATUS_OPTIONS} value={query.status} onChange={(status) => navigate({ status })} />
-        <select
-          aria-label="Type"
+        <SelectMenu<DiscountType | "">
+          ariaLabel="Type"
+          size="sm"
           value={query.type ?? ""}
-          onChange={(event) => navigate({ type: (event.target.value || undefined) as DiscountType | undefined })}
-          className={filterStyles.select}
-        >
-          <option value="">All types</option>
-          {DISCOUNT_TYPE_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          onChange={(type) => navigate({ type: type || undefined })}
+          options={[{ value: "", label: "All types" }, ...DISCOUNT_TYPE_OPTIONS.map((option) => ({ value: option.value, label: option.label }))]}
+        />
         <span className="flex-1" />
         <Button onClick={() => setDrawer({ mode: "new" })}>
           <Icon name="plus" size={18} strokeWidth={1.8} className="size-[17px]" />

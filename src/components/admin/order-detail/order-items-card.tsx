@@ -32,7 +32,7 @@ export function OrderItemsCard({ order }: { order: OrderDetail }) {
           return (
             <div key={item.id} className="flex flex-wrap items-center gap-4 rounded-[14px] bg-surface-2 p-4">
               <span
-                className="flex size-16 flex-none items-center justify-center overflow-hidden rounded-xl font-heading text-base leading-none font-bold"
+                className="flex size-16 flex-none items-center justify-center overflow-hidden rounded-[12px] font-heading text-base leading-none font-bold"
                 style={item.productImage ? undefined : monogramTint(item.productId ?? item.productName)}
               >
                 {item.productImage ? <img src={item.productImage} alt="" className="size-full object-cover" /> : monogram(item.productName)}

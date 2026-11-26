@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { Icon } from "@/components/shared/icon";
+import { SearchInput } from "@/components/shared/search-input";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { Button } from "@/components/ui/button";
 import { STAFF_ROLE_ORDER, STAFF_TABS, type StaffRole, type StaffTab } from "@/config/staff";
 import { cn } from "@/lib/utils";
@@ -52,30 +54,19 @@ export function StaffManager({ staff }: { staff: StaffRow[] }) {
 
         {tab === "staff" && (
           <>
-            <div className="relative flex flex-[0_1_240px] items-center">
-              <Icon name="search" size={18} strokeWidth={1.8} className="pointer-events-none absolute left-3.5 text-ink-3" />
-              <input
-                type="search"
-                aria-label="Name or email"
-                placeholder="Name or email"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                className="h-10.5 w-full rounded-[10px] border border-transparent bg-surface-2 pr-3.5 pl-10.5 text-sm text-ink outline-none transition-[border-color,box-shadow,background-color] placeholder:text-ink-4 focus:border-brand focus:bg-surface focus:shadow-[0_0_0_3px_rgb(238_86_21/20%)]"
-              />
-            </div>
-            <select
-              aria-label="Role"
+            <SearchInput
+              label="Name or email"
+              wrapperClassName="flex-[0_1_240px]"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            <SelectMenu<StaffRole | "">
+              ariaLabel="Role"
+              size="sm"
               value={roleFilter}
-              onChange={(event) => setRoleFilter(event.target.value as StaffRole | "")}
-              className="select-chevron h-9 w-auto cursor-pointer rounded-[10px] border border-transparent bg-surface-2 pr-9.5 pl-3 text-[13px] text-ink outline-none focus:border-brand focus:shadow-[0_0_0_3px_rgb(238_86_21/20%)]"
-            >
-              <option value="">All roles</option>
-              {STAFF_ROLE_ORDER.map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </select>
+              onChange={setRoleFilter}
+              options={[{ value: "", label: "All roles" }, ...STAFF_ROLE_ORDER.map((role) => ({ value: role, label: role }))]}
+            />
             <Button onClick={() => setDrawer({ mode: "invite" })}>
               <Icon name="userAdd" size={18} strokeWidth={1.8} />
               Invite staff

@@ -172,11 +172,8 @@ function CollectionForm({ state, startTransition, onSaved }: CollectionFormProps
           onChange={(event) => set({ title: event.target.value })}
           className={formStyles.input}
         />
-        {errors.title ? (
-          <span className={formStyles.error}>{errors.title}</span>
-        ) : (
-          <span className={formStyles.hint}>/collection/{generateSlug(values.title) || "…"}</span>
-        )}
+        {errors.title && <span className={formStyles.error}>{errors.title}</span>}
+        <span className={formStyles.hint}>/collection/{generateSlug(values.title) || "…"}</span>
       </div>
 
       <div className={formStyles.field}>

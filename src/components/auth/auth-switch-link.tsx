@@ -8,12 +8,9 @@ type AuthSwitchLinkProps = {
 
 export function AuthSwitchLink({ question, label, href }: AuthSwitchLinkProps) {
   return (
-    <p className="text-center text-sm text-muted-foreground">
+    <p className="text-center text-xs text-ink-3">
       {question}{" "}
-      <Link
-        href={href}
-        className="font-medium text-secondary underline underline-offset-4 transition-colors hover:text-secondary/80"
-      >
+      <Link href={href} className="font-medium">
         {label}
       </Link>
     </p>

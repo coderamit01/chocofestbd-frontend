@@ -167,7 +167,9 @@ export function TagsManager({ tags, meta, search, canDelete }: TagsManagerProps)
                   <th className={tableStyles.head}>Name</th>
                   <th className={tableStyles.head}>Slug</th>
                   <th className={cn(tableStyles.head, "text-right")}>Products</th>
-                  <th className={cn(tableStyles.head, "text-right")}>Actions</th>
+                  <th className={cn(tableStyles.head, "text-right")}>
+                    <span className="sr-only">Actions</span>
+                  </th>
                 </tr>
               </thead>
               <tbody className={tableStyles.body}>

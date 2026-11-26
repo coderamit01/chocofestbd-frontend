@@ -4,10 +4,10 @@ export function DeliveriesSkeleton() {
       <div className="flex flex-col gap-4 px-4.5 pt-5 pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="size-11 animate-pulse rounded-[12px] bg-surface-3" />
+            <span className="size-11 rounded-[12px] skel" />
             <span className="flex flex-col gap-2">
-              <span className="h-4 w-32 animate-pulse rounded-md bg-surface-3" />
-              <span className="h-3 w-40 animate-pulse rounded-md bg-surface-3" />
+              <span className="h-4 w-32 rounded-[6px] skel" />
+              <span className="h-3 w-40 rounded-[6px] skel" />
             </span>
           </div>
           <span className="size-11 animate-pulse rounded-[12px] bg-surface" />
@@ -21,11 +21,11 @@ export function DeliveriesSkeleton() {
       <div className="flex flex-col gap-3 px-4 pb-6">
         {Array.from({ length: 3 }, (_, index) => (
           <div key={index} className="flex flex-col gap-3.5 rounded-[18px] bg-surface p-4">
-            <span className="h-4 w-1/3 animate-pulse rounded-md bg-surface-2" />
-            <span className="h-4 w-1/2 animate-pulse rounded-md bg-surface-2" />
-            <span className="h-3.5 w-3/4 animate-pulse rounded-md bg-surface-2" />
-            <span className="h-11 animate-pulse rounded-[12px] bg-surface-2" />
-            <span className="h-13 animate-pulse rounded-[10px] bg-surface-2" />
+            <span className="h-4 w-1/3 rounded-[6px] skel" />
+            <span className="h-4 w-1/2 rounded-[6px] skel" />
+            <span className="h-3.5 w-3/4 rounded-[6px] skel" />
+            <span className="h-11 rounded-[12px] skel" />
+            <span className="h-13 rounded-[10px] skel" />
           </div>
         ))}
       </div>

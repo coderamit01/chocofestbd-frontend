@@ -27,14 +27,14 @@ export function SocialAuthButtons({ callbackURL = "/", onError }: SocialAuthButt
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-4">
+    <div className="flex flex-col gap-3">
       {providers.map(({ id, label, icon: Icon }) => (
         <Button
           key={id}
           type="button"
           variant="outline"
           onClick={() => handleSignIn(id)}
-          className="h-12 min-w-44 gap-2.5 rounded-xl bg-card px-8 text-[15px] font-medium text-foreground"
+          className="h-12 w-full gap-2.5 rounded-[12px] text-[15px]"
         >
           <Icon className="size-5" />
           {label}

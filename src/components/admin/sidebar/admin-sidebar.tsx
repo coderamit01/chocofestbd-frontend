@@ -10,6 +10,7 @@ import { SidebarBrand } from "./sidebar-brand";
 import { SidebarLogout } from "./sidebar-logout";
 import { SidebarNav } from "./sidebar-nav";
 import { SidebarNavSkeleton } from "./sidebar-nav-skeleton";
+import { SidebarToggle } from "./sidebar-toggle";
 
 type AdminSidebarViewProps = {
   role?: UserRole;
@@ -23,8 +24,9 @@ export function AdminSidebarView({ role, isPending = false, counts }: AdminSideb
   const sections = useMemo(() => (role ? filterNavByRole(ADMIN_NAV, role) : []), [role]);
 
   return (
-    <Sidebar collapsible="icon" className="group-data-[side=left]:border-r-0">
-      <div className="flex h-full flex-col overflow-y-auto px-4 pt-[22px] pb-[18px] font-sans">
+    <Sidebar collapsible="icon" className="z-35">
+      <div className="relative flex h-full flex-col px-4 pt-[22px] pb-[18px] font-sans">
+        {!isMobile && <SidebarToggle collapsed={state === "collapsed"} />}
         <SidebarBrand expanded={expanded} />
         {isPending ? <SidebarNavSkeleton /> : <SidebarNav sections={sections} counts={counts} expanded={expanded} />}
         <SidebarLogout expanded={expanded} />

@@ -13,7 +13,7 @@ type TopbarPopoverProps = {
 };
 
 export const topbarIconButtonClass =
-  "relative flex size-12 items-center justify-center rounded-xl bg-surface text-ink outline-none transition-colors hover:bg-surface-2 focus-visible:shadow-focus";
+  "relative flex size-12 items-center justify-center rounded-[12px] bg-surface-2 text-ink outline-none transition-colors focus-visible:shadow-focus";
 
 export function TopbarPopover({ open, onClose, trigger, className, children }: TopbarPopoverProps) {
   const ref = useRef<HTMLDivElement>(null);

@@ -58,7 +58,7 @@ export function DeliveriesBoard({ stops, riderName, today }: DeliveriesBoardProp
             disabled={isLoggingOut}
             className="flex size-11 items-center justify-center rounded-[12px] bg-surface text-ink transition-colors hover:bg-surface-2 disabled:opacity-45"
           >
-            <Icon name="logout" size={19} strokeWidth={1.8} />
+            <Icon name="logout" size={17} strokeWidth={1.8} />
           </button>
         </div>
 
@@ -112,7 +112,7 @@ export function DeliveriesBoard({ stops, riderName, today }: DeliveriesBoardProp
         {list.length === 0 && (
           <div className="flex flex-col items-center gap-2.5 px-3 py-14 text-center">
             <span className="flex size-15 items-center justify-center rounded-full bg-success-soft text-success">
-              <Icon name="check" size={28} strokeWidth={1.8} />
+              <Icon name="check" size={24} strokeWidth={1.8} />
             </span>
             <span className="font-heading text-[17px] leading-[1.3] font-semibold text-ink">{empty.title}</span>
             <span className="text-[12.5px] text-ink-3">{empty.body}</span>

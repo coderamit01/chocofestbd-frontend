@@ -7,6 +7,9 @@ import { deleteReviewAction, setReviewStatusAction } from "@/actions/review.acti
 import { DangerDialog } from "@/components/shared/danger-dialog";
 import { DataPagination } from "@/components/shared/data-pagination";
 import { EmptyState } from "@/components/shared/empty-state";
+import { Icon } from "@/components/shared/icon";
+import { SelectMenu } from "@/components/shared/select-menu";
+import { Button } from "@/components/ui/button";
 import { REVIEW_RATING_OPTIONS, REVIEW_TABS } from "@/config/reviews";
 import { filterStyles } from "@/lib/filter-styles";
 import { reviewCountLabel } from "@/lib/review";
@@ -25,8 +28,6 @@ type ReviewsManagerProps = {
   now: number;
   canDelete: boolean;
 };
-
-const barButton = "inline-flex h-[34px] items-center rounded-md px-3 text-[13px] font-medium disabled:opacity-45";
 
 export function ReviewsManager({ reviews, meta, summary, query, now, canDelete }: ReviewsManagerProps) {
   const router = useRouter();
@@ -116,43 +117,47 @@ export function ReviewsManager({ reviews, meta, summary, query, now, canDelete }
           })}
         </div>
         <span className="flex-1" />
-        <select
-          aria-label="Rating"
+        <SelectMenu
+          ariaLabel="Rating"
+          size="sm"
           value={query.rating ? String(query.rating) : ""}
-          onChange={(event) => navigate({ rating: Number(event.target.value) || undefined })}
-          className={filterStyles.select}
-        >
-          {REVIEW_RATING_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          onChange={(rating) => navigate({ rating: Number(rating) || undefined })}
+          options={REVIEW_RATING_OPTIONS.map((option) => ({ value: String(option.value), label: option.label }))}
+        />
       </div>
 
       {visibleSelected.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2.5 rounded-[14px] bg-choco py-2.5 pr-2.5 pl-4.5 text-white">
-          <span className="font-medium">{visibleSelected.length} selected</span>
+        <div
+          role="toolbar"
+          aria-label="Bulk actions"
+          className="flex flex-wrap items-center gap-3 rounded-[14px] bg-brand-50 py-2.5 pr-2.5 pl-3 shadow-[inset_0_0_0_1px_var(--brand-200)]"
+        >
+          <span className="flex items-center gap-2.5">
+            <span className="flex size-6.5 items-center justify-center rounded-sm bg-brand text-white">
+              <Icon name="check" size={15} strokeWidth={3} />
+            </span>
+            <span className="font-semibold">{visibleSelected.length} selected</span>
+          </span>
+          <span className="h-5 w-px bg-brand-200" />
+          <Button variant="link" size="sm" onClick={() => setSelected(new Set())}>
+            Clear selection
+          </Button>
           <span className="flex-1" />
-          <button
-            type="button"
-            disabled={isSaving}
-            onClick={() => setStatus(visibleSelected, "APPROVED")}
-            className={cn(barButton, "bg-brand font-semibold hover:bg-brand-hover")}
-          >
-            Approve
-          </button>
-          <button
-            type="button"
-            disabled={isSaving}
-            onClick={() => setStatus(visibleSelected, "REJECTED")}
-            className={cn(barButton, "bg-white/12 hover:bg-white/20")}
-          >
-            Reject
-          </button>
-          <button type="button" onClick={() => setSelected(new Set())} className={cn(barButton, "text-[#e8d6cc] hover:text-white")}>
-            Clear
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" disabled={isSaving} onClick={() => setStatus(visibleSelected, "APPROVED")}>
+              <Icon name="check" size={15} strokeWidth={1.8} className="size-[15px]" />
+              Approve
+            </Button>
+            <Button
+              size="sm"
+              disabled={isSaving}
+              onClick={() => setStatus(visibleSelected, "REJECTED")}
+              className="bg-surface text-danger shadow-[0_1px_2px_rgb(34_21_16/6%)] hover:bg-surface-2"
+            >
+              <Icon name="xcircle" size={15} strokeWidth={1.8} className="size-[15px]" />
+              Reject
+            </Button>
+          </div>
         </div>
       )}
 
@@ -162,7 +167,6 @@ export function ReviewsManager({ reviews, meta, summary, query, now, canDelete }
             type="checkbox"
             checked={allOn}
             onChange={() => setSelected(allOn ? new Set() : new Set(reviews.map((review) => review.id)))}
-            className="size-[18px] cursor-pointer accent-brand"
           />
           Select all in this tab
         </label>

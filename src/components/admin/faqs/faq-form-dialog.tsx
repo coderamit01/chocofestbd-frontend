@@ -107,7 +107,7 @@ function FaqForm({ state, onClose }: { state: NonNullable<FaqDialogState>; onClo
         </span>
         <div
           className={cn(
-            "overflow-hidden rounded-xl border border-input bg-surface-2 transition-[border-color,box-shadow] focus-within:border-brand focus-within:shadow-focus",
+            "overflow-hidden rounded-[12px] border border-input bg-surface-2 transition-[border-color,box-shadow] focus-within:border-brand focus-within:shadow-focus",
             errors.answer && "border-danger"
           )}
         >

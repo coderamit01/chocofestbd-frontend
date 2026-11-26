@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { Icon } from "@/components/shared/icon";
 import { SearchInput } from "@/components/shared/search-input";
 import { SegmentedControl } from "@/components/shared/segmented-control";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { Button } from "@/components/ui/button";
 import {
   CUSTOMER_JOINED_OPTIONS,
@@ -104,30 +105,20 @@ export function CustomersManager({ customers, meta, query, canBan }: CustomersMa
           onChange={(event) => search.setValue(event.target.value)}
           wrapperClassName="flex-[0_1_280px]"
         />
-        <select
-          aria-label="Joined"
+        <SelectMenu
+          ariaLabel="Joined"
+          size="sm"
           value={query.joined ? String(query.joined) : ""}
-          onChange={(event) => navigate({ joined: Number(event.target.value) || undefined })}
-          className={filterStyles.select}
-        >
-          {CUSTOMER_JOINED_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <select
-          aria-label="Orders"
+          onChange={(joined) => navigate({ joined: Number(joined) || undefined })}
+          options={CUSTOMER_JOINED_OPTIONS.map((option) => ({ value: String(option.value), label: option.label }))}
+        />
+        <SelectMenu<CustomerOrdersFilter>
+          ariaLabel="Orders"
+          size="sm"
           value={query.orders}
-          onChange={(event) => navigate({ orders: event.target.value as CustomerOrdersFilter })}
-          className={filterStyles.select}
-        >
-          {CUSTOMER_ORDER_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          onChange={(orders) => navigate({ orders })}
+          options={CUSTOMER_ORDER_OPTIONS.map((option) => ({ value: option.value, label: option.label }))}
+        />
         <SegmentedControl ariaLabel="Status" options={CUSTOMER_STATUS_OPTIONS} value={query.status} onChange={(status) => navigate({ status })} />
         <span className="flex-1" />
         <Button variant="outline" onClick={exportCustomers} aria-busy={isExporting || undefined}>
@@ -150,18 +141,14 @@ export function CustomersManager({ customers, meta, query, canBan }: CustomersMa
           pathname={pathname}
           query={customersQueryParams(query)}
           pageSizeControl={
-            <select
-              aria-label="Rows per page"
-              value={query.limit}
-              onChange={(event) => navigate({ limit: Number(event.target.value) })}
-              className={cn(filterStyles.select, filterStyles.pageSize)}
-            >
-              {CUSTOMER_PAGE_SIZES.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
+            <SelectMenu
+              ariaLabel="Rows per page"
+              size="sm"
+              className={filterStyles.pageSize}
+              value={String(query.limit)}
+              onChange={(limit) => navigate({ limit: Number(limit) })}
+              options={CUSTOMER_PAGE_SIZES.map((size) => ({ value: String(size), label: String(size) }))}
+            />
           }
         />
       )}

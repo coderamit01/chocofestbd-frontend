@@ -20,8 +20,7 @@ export function FormDrawer({ open, onOpenChange, title, description, footer, chi
       <SheetContent
         side="right"
         showCloseButton={false}
-        overlayClassName="bg-[rgb(34_21_16/38%)] supports-backdrop-filter:backdrop-blur-none"
-        className="w-full gap-0 border-l-0 bg-surface p-0 shadow-modal data-[side=right]:w-full data-[side=right]:sm:max-w-140"
+        className="w-full gap-0 p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-140"
       >
         <div className="flex h-full flex-col">
           <div className="flex items-start justify-between gap-3 px-7 pt-6.5 pb-4.5">
@@ -30,7 +29,7 @@ export function FormDrawer({ open, onOpenChange, title, description, footer, chi
               {description && <SheetDescription className="mt-1.5 text-caption text-ink-3">{description}</SheetDescription>}
             </div>
             <SheetClose render={<Button variant="ghost" size="icon-sm" aria-label="Close" />}>
-              <Icon name="close" size={18} strokeWidth={1.8} />
+              <Icon name="close" size={17} strokeWidth={1.8} />
             </SheetClose>
           </div>
           <div className="flex flex-1 flex-col gap-5 overflow-y-auto px-7 pt-1 pb-6">{children}</div>

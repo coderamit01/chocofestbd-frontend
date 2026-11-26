@@ -5,7 +5,6 @@ import { productPrice, productRating, productStatus, productStock } from "@/lib/
 import { cn } from "@/lib/utils";
 import type { AdminProduct } from "@/types/product";
 import { ProductThumb } from "./product-thumb";
-import { checkboxClass } from "./products-table";
 
 type ProductsGridProps = {
   products: AdminProduct[];
@@ -23,15 +22,14 @@ export function ProductsGrid({ products, selected, onToggle }: ProductsGridProps
         const status = productStatus(product);
 
         return (
-          <article key={product.id} className={cn("rounded-2xl border bg-surface p-2.5", on ? "border-brand" : "border-line")}>
-            <ProductThumb product={product} className="h-42 w-full rounded-xl text-[34px] leading-none">
+          <article key={product.id} className={cn("rounded-xl border bg-surface p-2.5", on ? "border-brand" : "border-line")}>
+            <ProductThumb product={product} className="h-42 w-full rounded-[12px] text-[34px] leading-none">
               <label className="absolute top-2.5 left-2.5 flex rounded-[7px] bg-surface p-[5px]">
                 <input
                   type="checkbox"
                   aria-label={`Select ${product.name}`}
                   checked={on}
                   onChange={() => onToggle(product.id)}
-                  className={checkboxClass}
                 />
               </label>
               {product.isFeatured && (
@@ -41,7 +39,7 @@ export function ProductsGrid({ products, selected, onToggle }: ProductsGridProps
               )}
             </ProductThumb>
             <div className="flex flex-col gap-2 px-1 pt-3.5 pb-1">
-              <Link href={productEditPath(product.id)} className="font-medium text-ink hover:text-brand-text">
+              <Link href={productEditPath(product.id)} className="font-medium text-ink">
                 {product.name}
               </Link>
               <div className="flex items-center gap-2">

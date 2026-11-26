@@ -90,7 +90,7 @@ export function OrderStatusDialog({ targets, onClose, onDone }: OrderStatusDialo
         </>
       }
     >
-      <div className="flex flex-wrap items-center gap-2.5 rounded-xl bg-surface-2 p-3.5">
+      <div className="flex flex-wrap items-center gap-2.5 rounded-[12px] bg-surface-2 p-3.5">
         <span className="text-[12.5px] text-ink-3">Current</span>
         {single ? <StatusBadge kind="order" status={single.status} /> : <Badge variant="neutral">Mixed</Badge>}
         <Icon name="arrowRight" size={16} strokeWidth={1.8} />

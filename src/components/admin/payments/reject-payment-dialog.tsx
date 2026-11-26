@@ -4,10 +4,10 @@ import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { rejectPaymentAction } from "@/actions/order.actions";
 import { FormDialog } from "@/components/shared/form-dialog";
+import { SelectMenu } from "@/components/shared/select-menu";
 import { Button } from "@/components/ui/button";
 import { REJECT_REASONS } from "@/config/payments";
 import { formStyles } from "@/lib/form-styles";
-import { cn } from "@/lib/utils";
 import type { PaymentRow } from "@/types/payment";
 
 type RejectPaymentDialogProps = {
@@ -58,21 +58,16 @@ export function RejectPaymentDialog({ payment, onClose }: RejectPaymentDialogPro
         <label className={formStyles.label} htmlFor="rr">
           Reason<span className={formStyles.required}>*</span>
         </label>
-        <select
+        <SelectMenu
           id="rr"
           value={reason}
-          aria-invalid={error || undefined}
-          onChange={(event) => {
-            setReason(event.target.value);
+          invalid={error}
+          onChange={(next) => {
+            setReason(next);
             setError(false);
           }}
-          className={cn(formStyles.input, "select-chevron cursor-pointer pr-[38px]")}
-        >
-          <option value="">Select a reason</option>
-          {REJECT_REASONS.map((item) => (
-            <option key={item}>{item}</option>
-          ))}
-        </select>
+          options={[{ value: "", label: "Select a reason" }, ...REJECT_REASONS.map((item) => ({ value: item, label: item }))]}
+        />
         {error && <span className={formStyles.error}>Choose a reason — it’s saved on the order timeline.</span>}
       </div>
     </FormDialog>

@@ -34,7 +34,9 @@ export function CouponsTable({ coupons, now, canDelete, onCopy, onEdit, onDelete
             <th className={cn(tableStyles.head, "min-w-40")}>Usage</th>
             <th className={tableStyles.head}>Valid</th>
             <th className={tableStyles.head}>Status</th>
-            <th className={cn(tableStyles.head, "text-right")}>Actions</th>
+            <th className={cn(tableStyles.head, "text-right")}>
+                <span className="sr-only">Actions</span>
+              </th>
           </tr>
         </thead>
         <tbody className={tableStyles.body}>

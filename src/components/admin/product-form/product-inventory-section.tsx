@@ -1,3 +1,4 @@
+import { SelectMenu } from "@/components/shared/select-menu";
 import { ToggleSwitch } from "@/components/shared/toggle-switch";
 import { Badge, type BadgeVariant } from "@/components/ui/badge";
 import { formStyles } from "@/lib/form-styles";
@@ -73,15 +74,15 @@ export function ProductInventorySection({ values, set, errors }: SectionProps) {
             <label htmlFor="ms" className={formStyles.label}>
               Stock status
             </label>
-            <select
+            <SelectMenu<typeof values.stockStatus>
               id="ms"
               value={values.stockStatus}
-              onChange={(event) => set({ stockStatus: event.target.value as typeof values.stockStatus })}
-              className={cn(formStyles.input, "select-chevron cursor-pointer pr-9.5")}
-            >
-              <option value="IN_STOCK">In stock</option>
-              <option value="OUT_OF_STOCK">Out of stock</option>
-            </select>
+              onChange={(stockStatus) => set({ stockStatus })}
+              options={[
+                { value: "IN_STOCK", label: "In stock" },
+                { value: "OUT_OF_STOCK", label: "Out of stock" },
+              ]}
+            />
           </div>
         )}
       </div>
