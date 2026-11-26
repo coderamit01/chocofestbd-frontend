@@ -16,11 +16,8 @@ export const ProfileClient = {
     return apiRequest<Profile>(`/users/${userId}`, { method: "PUT", body });
   },
 
-  changePassword: (currentPassword: string, newPassword: string) =>
-    unwrap(
-      authClient.changePassword({ currentPassword, newPassword, revokeOtherSessions: true }),
-      "Your password wasn’t changed. Please try again."
-    ),
+  changePassword: (newPassword: string) =>
+    apiRequest<null>("/auth/change-password", { method: "POST", body: JSON.stringify({ newPassword }) }),
 
   revokeSession: (token: string) =>
     unwrap(authClient.revokeSession({ token }), "That device couldn’t be signed out. Please try again."),

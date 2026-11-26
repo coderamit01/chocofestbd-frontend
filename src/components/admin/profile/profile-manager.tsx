@@ -27,7 +27,7 @@ import { ProfileAccountCard, ProfileRoleCard, ProfileStrengthCard } from "./prof
 
 type ProfileManagerProps = ProfileData & { initialTab: ProfileTab };
 
-const EMPTY_PASSWORD: PasswordValues = { current: "", next: "", confirm: "" };
+const EMPTY_PASSWORD: PasswordValues = { next: "", confirm: "" };
 
 const errorMessage = (error: unknown) => (error instanceof Error ? error.message : "Please try again.");
 
@@ -125,14 +125,14 @@ export function ProfileManager({ profile, sessions, passwordChangedAt, lastSignI
 
   const savePassword = async () => {
     const errors = validatePassword(password);
-    if (errors.current || errors.next || errors.confirm) {
+    if (errors.next || errors.confirm) {
       setPasswordErrors(errors);
       return;
     }
 
     setIsSavingPassword(true);
     try {
-      await ProfileClient.changePassword(password.current, password.next);
+      await ProfileClient.changePassword(password.next);
       clearPassword();
       toast.success("Password updated", { description: "Other devices were signed out" });
       router.refresh();

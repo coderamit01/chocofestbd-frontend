@@ -67,6 +67,12 @@ export function TopbarSearch({ role, open, onToggle, onClose }: TopbarSearchProp
             <Icon name="search" size={18} strokeWidth={1.8} className="pointer-events-none absolute left-3.5 text-ink-3" />
             <input
               type="search"
+              name="admin-global-search"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+              data-1p-ignore
+              data-lpignore="true"
               aria-label="Global search"
               placeholder="Search orders, phone, products or SKU…"
               value={query}
@@ -83,6 +89,12 @@ export function TopbarSearch({ role, open, onToggle, onClose }: TopbarSearchProp
         <input
           type="search"
           autoFocus
+          name="admin-global-search-mobile"
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
+          data-1p-ignore
+          data-lpignore="true"
           aria-label="Global search"
           placeholder="Order #, phone, product or SKU"
           value={query}

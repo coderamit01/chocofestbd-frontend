@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Icon, type IconName } from "@/components/shared/icon";
 import { PROFILE_PATH, SETTINGS_PATH, SETTINGS_ROLES } from "@/config/topbar";
@@ -11,7 +12,7 @@ import type { UserRole } from "@/types/auth";
 import { TopbarPopover } from "./topbar-popover";
 
 type TopbarAccountProps = {
-  user?: { name: string; email: string; role?: UserRole };
+  user?: { name: string; email: string; image?: string | null; role?: UserRole };
   open: boolean;
   onToggle: () => void;
   onClose: () => void;
@@ -59,9 +60,12 @@ export function TopbarAccount({ user, open, onToggle, onClose }: TopbarAccountPr
           aria-expanded={open}
           className="flex h-13 cursor-pointer items-center gap-3 rounded-[12px] border-0 bg-transparent pr-1.5 pl-0.5 text-left outline-none focus-visible:shadow-focus"
         >
-          <span className="flex size-12 flex-none items-center justify-center rounded-[12px] bg-choco font-heading text-base leading-none font-semibold text-white">
-            {getInitials(user.name)}
-          </span>
+          <Avatar className="size-12 flex-none rounded-[12px] after:hidden">
+            {user.image && <AvatarImage src={user.image} alt={user.name} className="rounded-[12px] object-cover" />}
+            <AvatarFallback className="rounded-[12px] bg-choco font-heading text-base leading-none font-semibold text-white">
+              {getInitials(user.name)}
+            </AvatarFallback>
+          </Avatar>
           <span className="flex flex-col gap-[3px] max-[900px]:hidden">
             <span className="font-heading text-[15.5px] leading-[1.1] font-semibold text-ink">{user.name}</span>
             <span className="text-xs text-ink-3">{roleLabel}</span>

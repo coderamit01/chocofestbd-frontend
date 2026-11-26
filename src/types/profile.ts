@@ -52,7 +52,6 @@ export type ProfileInfoValues = {
 export type ProfileInfoErrors = Partial<Record<keyof ProfileInfoValues, boolean>>;
 
 export type PasswordValues = {
-  current: string;
   next: string;
   confirm: string;
 };

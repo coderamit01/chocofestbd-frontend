@@ -44,7 +44,6 @@ export const passwordStrength = (password: string) =>
 
 export const validatePassword = (values: PasswordValues): PasswordErrors => {
   const errors: PasswordErrors = {};
-  if (!values.current) errors.current = true;
   if (passwordChecks(values.next).some((ok) => !ok)) errors.next = true;
   if (!values.confirm || values.confirm !== values.next) errors.confirm = true;
   return errors;

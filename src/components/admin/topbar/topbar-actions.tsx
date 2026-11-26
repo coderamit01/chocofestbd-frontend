@@ -27,7 +27,7 @@ export function TopbarActions() {
         onClose={close}
       />
       <TopbarAccount
-        user={user && { name: user.name, email: user.email, role }}
+        user={user && { name: user.name, email: user.email, image: user.image, role }}
         open={panel === "account"}
         onToggle={toggle("account")}
         onClose={close}

@@ -22,7 +22,6 @@ type ProfilePasswordCardProps = {
 };
 
 const FIELDS: { key: keyof PasswordValues; label: string; autoComplete: string; error: string }[] = [
-  { key: "current", label: "Current password", autoComplete: "current-password", error: "Enter your current password." },
   { key: "next", label: "New password", autoComplete: "new-password", error: "Meet all four rules below." },
   { key: "confirm", label: "Confirm new password", autoComplete: "new-password", error: "Passwords don’t match." },
 ];
