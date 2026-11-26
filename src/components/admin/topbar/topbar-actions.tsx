@@ -18,7 +18,7 @@ export function TopbarActions() {
   const toggle = (next: TopbarPanel) => () => setPanel((current) => (current === next ? null : next));
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3 max-[900px]:gap-2">
       <TopbarSearch role={role} open={panel === "search"} onToggle={toggle("search")} onClose={close} />
       <TopbarNotifications
         open={panel === "notifications"}

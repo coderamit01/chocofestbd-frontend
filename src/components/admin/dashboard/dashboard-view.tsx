@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Icon } from "@/components/shared/icon";
@@ -57,6 +57,14 @@ export function DashboardView({ data, query }: { data: DashboardData; query: Das
   const [to, setTo] = useState(data.period.to);
   const [customError, setCustomError] = useState(false);
   const pickerRef = useRef<HTMLDivElement>(null);
+  const rangeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const group = rangeRef.current;
+    const active = group?.querySelector<HTMLElement>("[data-on]");
+    if (!group || !active || group.scrollWidth <= group.clientWidth) return;
+    group.scrollLeft = active.offsetLeft - (group.clientWidth - active.offsetWidth) / 2;
+  }, [query.range]);
   const closePicker = useCallback(() => setCustomOpen(false), []);
   useDismiss(pickerRef, customOpen, closePicker);
 
@@ -103,20 +111,26 @@ export function DashboardView({ data, query }: { data: DashboardData; query: Das
         <p className="text-[14.5px] text-ink-2">
           Showing <strong className="font-semibold text-ink">{period.label}</strong> · compared with the previous {period.compareLabel}
         </p>
-        <div className="flex flex-wrap items-center gap-2.5">
-          <div ref={pickerRef} className="relative">
-            <div role="group" aria-label="Date range" className="inline-flex gap-1 rounded-[12px] bg-surface-2 p-1">
+        <div className="flex flex-wrap items-center gap-2.5 max-[900px]:w-full max-[900px]:flex-nowrap">
+          <div ref={pickerRef} className="relative max-[900px]:min-w-0 max-[900px]:flex-1">
+            <div
+              ref={rangeRef}
+              role="group"
+              aria-label="Date range"
+              className="inline-flex max-w-full scrollbar-none gap-1 overflow-x-auto rounded-[12px] bg-surface-2 p-1 max-[900px]:flex max-[900px]:w-full"
+            >
               {DASHBOARD_RANGES.map((range) => {
                 const on = query.range === range.value;
                 return (
                   <button
                     key={range.value}
                     type="button"
+                    data-on={on || undefined}
                     aria-pressed={on}
                     aria-expanded={range.value === "custom" ? customOpen : undefined}
                     onClick={() => (range.value === "custom" ? setCustomOpen((open) => !open) : navigate({ range: range.value, from: undefined, to: undefined }))}
                     className={cn(
-                      "h-8 rounded-md px-3.5 text-[13px] leading-none font-medium whitespace-nowrap",
+                      "h-8 flex-none rounded-md px-3.5 text-[13px] leading-none font-medium whitespace-nowrap max-[900px]:flex-auto",
                       on ? "bg-surface text-ink shadow-seg" : "text-ink-2 hover:text-ink"
                     )}
                   >
@@ -126,7 +140,7 @@ export function DashboardView({ data, query }: { data: DashboardData; query: Das
               })}
             </div>
             {customOpen && (
-              <div className="absolute top-[calc(100%+8px)] right-0 z-40 flex w-70 animate-pop flex-col gap-3 rounded-[14px] bg-surface p-4 shadow-pop">
+              <div className="absolute top-[calc(100%+8px)] right-0 z-40 flex w-70 max-w-full animate-pop flex-col gap-3 rounded-[14px] bg-surface p-4 shadow-pop">
                 <div className={formStyles.field}>
                   <label className={formStyles.label} htmlFor="df">
                     From
@@ -146,9 +160,9 @@ export function DashboardView({ data, query }: { data: DashboardData; query: Das
               </div>
             )}
           </div>
-          <Button variant="outline" onClick={exportIt}>
+          <Button variant="outline" onClick={exportIt} aria-label="Export" className="max-[900px]:size-10 max-[900px]:flex-none max-[900px]:px-0">
             <Icon name="download" size={18} strokeWidth={1.8} />
-            Export
+            <span className="max-[900px]:hidden">Export</span>
           </Button>
         </div>
       </div>

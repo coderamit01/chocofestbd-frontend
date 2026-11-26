@@ -36,7 +36,7 @@ export function TopbarAccount({ user, open, onToggle, onClose }: TopbarAccountPr
   if (!user) {
     return (
       <div className="flex h-13 items-center gap-3 pr-1.5 pl-0.5">
-        <span className="skel size-12 rounded-[12px]" />
+        <span className="skel size-12 rounded-[12px] max-[900px]:size-[42px]" />
         <span className="flex flex-col gap-1.5 max-[900px]:hidden">
           <span className="skel h-3.5 w-24 rounded-[6px]" />
           <span className="skel h-3 w-16 rounded-[6px]" />
@@ -60,9 +60,9 @@ export function TopbarAccount({ user, open, onToggle, onClose }: TopbarAccountPr
           aria-expanded={open}
           className="flex h-13 cursor-pointer items-center gap-3 rounded-[12px] border-0 bg-transparent pr-1.5 pl-0.5 text-left outline-none focus-visible:shadow-focus"
         >
-          <Avatar className="size-12 flex-none rounded-[12px] after:hidden">
+          <Avatar className="size-12 flex-none rounded-[12px] after:hidden max-[900px]:size-[42px]">
             {user.image && <AvatarImage src={user.image} alt={user.name} className="rounded-[12px] object-cover" />}
-            <AvatarFallback className="rounded-[12px] bg-choco font-heading text-base leading-none font-semibold text-white">
+            <AvatarFallback className="rounded-[12px] bg-choco font-heading text-base leading-none font-semibold text-white max-[900px]:text-sm">
               {getInitials(user.name)}
             </AvatarFallback>
           </Avatar>

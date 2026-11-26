@@ -310,6 +310,25 @@
   animation: skel 1.4s infinite;
 }
 
+@utility mask-notch {
+  --notch: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27120%27%20height%3D%2768%27%20viewBox%3D%270%200%20120%2068%27%3E%3Cpath%20d%3D%27M0%200H6C20%200%2025%205%2029.5%2013.5A36%2036%200%200%200%2090.5%2013.5C95%205%20100%200%20114%200H120V68H0Z%27%20fill%3D%27black%27/%3E%3C/svg%3E");
+  -webkit-mask:
+    linear-gradient(#000, #000) left top / calc(50% - 59px) 100% no-repeat,
+    var(--notch) center top / 120px 68px no-repeat,
+    linear-gradient(#000, #000) right top / calc(50% - 59px) 100% no-repeat;
+  mask:
+    linear-gradient(#000, #000) left top / calc(50% - 59px) 100% no-repeat,
+    var(--notch) center top / 120px 68px no-repeat,
+    linear-gradient(#000, #000) right top / calc(50% - 59px) 100% no-repeat;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @utility scrollbar-brand {
   scrollbar-width: thin;
   scrollbar-color: var(--brand) transparent;
@@ -420,6 +439,21 @@
 
 @theme {
   --animate-pop: pop 0.12s ease-out;
+  --animate-sheet-up: sheet-up 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-fade: fade 0.2s ease;
+
+  @keyframes sheet-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
   --shadow-focus: 0 0 0 3px rgb(238 86 21 / 20%);
 
   @keyframes pop {
