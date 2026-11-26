@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import type { SessionResponse } from "@/types/auth";
 
-const AUTH_API_URL =
+export const AUTH_API_URL =
   process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL ?? process.env.NEXT_PUBLIC_URL;
 
 export async function fetchSession(cookie: string | null): Promise<SessionResponse> {
