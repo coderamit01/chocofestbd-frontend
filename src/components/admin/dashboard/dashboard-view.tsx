@@ -24,7 +24,7 @@ import { StatusDonut } from "./status-donut";
 const count = (value: number) => Math.round(value).toLocaleString("en-IN");
 
 const buildKpis = (summary: DashboardSummary, note: string): Kpi[] => [
-  { label: "Revenue", value: formatTaka(summary.revenue.value), icon: "trend", tone: "solid", change: summary.revenue.change, note },
+  { label: "Revenue", value: formatTaka(summary.revenue.value), icon: "trend", tone: "brand", change: summary.revenue.change, note },
   { label: "Delivered revenue", value: formatTaka(summary.deliveredRevenue.value), icon: "zones", tone: "mint", change: summary.deliveredRevenue.change, note },
   { label: "Total orders", value: count(summary.orders.value), icon: "orders", tone: "sky", change: summary.orders.change, note },
   { label: "Avg. order value", value: formatTaka(summary.averageOrderValue.value), icon: "cash", tone: "lav", change: summary.averageOrderValue.change, note },
@@ -116,7 +116,7 @@ export function DashboardView({ data, query }: { data: DashboardData; query: Das
                     aria-expanded={range.value === "custom" ? customOpen : undefined}
                     onClick={() => (range.value === "custom" ? setCustomOpen((open) => !open) : navigate({ range: range.value, from: undefined, to: undefined }))}
                     className={cn(
-                      "h-8 rounded-[9px] px-3.5 text-[13px] leading-none font-medium whitespace-nowrap",
+                      "h-8 rounded-md px-3.5 text-[13px] leading-none font-medium whitespace-nowrap",
                       on ? "bg-surface text-ink shadow-seg" : "text-ink-2 hover:text-ink"
                     )}
                   >

@@ -89,7 +89,7 @@ export function KpiGrid({ kpis, min = 220 }: { kpis: Kpi[]; min?: 220 | 240 }) {
       aria-label="Key figures"
       className={cn(
         "grid gap-6 max-[900px]:gap-4",
-        min === 240 ? "grid-cols-[repeat(auto-fit,minmax(min(240px,100%),1fr))]" : "grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))]"
+        min === 240 ? "grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))]" : "grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))]"
       )}
     >
       {kpis.map((kpi) => (

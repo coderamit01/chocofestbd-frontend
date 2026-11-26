@@ -18,16 +18,33 @@ type ProfileHeroProps = {
   onEdit: () => void;
 };
 
-export function ProfileHero({ profile, name, phone, isUploading, onChangePhoto, onEdit }: ProfileHeroProps) {
+export function ProfileHero({
+  profile,
+  name,
+  phone,
+  isUploading,
+  onChangePhoto,
+  onEdit,
+}: ProfileHeroProps) {
   const patternId = useId();
   const role = PROFILE_ROLES[profile.role];
 
   return (
     <section className="overflow-hidden rounded-xl bg-card">
       <div className="relative h-33 bg-[linear-gradient(120deg,var(--choco)_0%,#7a2a0c_55%,var(--brand)_130%)]">
-        <svg width="100%" height="132" className="absolute inset-0 opacity-14" aria-hidden="true">
+        <svg
+          width="100%"
+          height="132"
+          className="absolute inset-0 opacity-14"
+          aria-hidden="true"
+        >
           <defs>
-            <pattern id={patternId} width="22" height="22" patternUnits="userSpaceOnUse">
+            <pattern
+              id={patternId}
+              width="22"
+              height="22"
+              patternUnits="userSpaceOnUse"
+            >
               <circle cx="2" cy="2" r="1.6" fill="#fff" />
             </pattern>
           </defs>
@@ -36,11 +53,22 @@ export function ProfileHero({ profile, name, phone, isUploading, onChangePhoto, 
       </div>
 
       <div className="px-7 pb-6">
-        <div className="relative -mt-13 flex flex-wrap items-end gap-5">
+        <div className="relative -mt-12 flex flex-wrap items-end gap-5">
           <div className="relative flex-none">
             <Avatar className="size-28 rounded-[30px] border-5 border-surface after:hidden">
-              {profile.image && <AvatarImage src={profile.image} alt={name} className="rounded-[25px]" />}
-              <AvatarFallback className={cn("rounded-[25px] font-heading text-[38px] leading-none font-semibold", role.avatar)}>
+              {profile.image && (
+                <AvatarImage
+                  src={profile.image}
+                  alt={name}
+                  className="rounded-[25px]"
+                />
+              )}
+              <AvatarFallback
+                className={cn(
+                  "rounded-[25px] font-heading text-[38px] leading-none font-semibold",
+                  role.avatar,
+                )}
+              >
                 {getInitials(name)}
               </AvatarFallback>
             </Avatar>
@@ -52,13 +80,19 @@ export function ProfileHero({ profile, name, phone, isUploading, onChangePhoto, 
               aria-busy={isUploading || undefined}
               className="absolute -right-1 bottom-0.5 flex size-9 items-center justify-center rounded-[12px] border-3 border-surface bg-brand text-white outline-none hover:bg-brand-hover focus-visible:shadow-focus aria-busy:pointer-events-none"
             >
-              {isUploading ? <Spinner /> : <Icon name="upload" size={16} strokeWidth={1.8} />}
+              {isUploading ? (
+                <Spinner />
+              ) : (
+                <Icon name="upload" size={16} strokeWidth={1.8} />
+              )}
             </button>
           </div>
 
-          <div className="flex min-w-60 flex-1 flex-col gap-2 pb-1">
+          <div className="flex min-w-60 flex-1 flex-col gap-2 py-1">
             <div className="flex flex-wrap items-center gap-2.5">
-              <h2 className="font-heading text-[26px] leading-[1.3] font-semibold text-ink">{name}</h2>
+              <h2 className="font-heading text-[26px] leading-[1.3] font-semibold text-ink">
+                {name}
+              </h2>
               <Badge variant="dark" size="sm">
                 {profile.role}
               </Badge>

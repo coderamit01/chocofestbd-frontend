@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -22,15 +23,11 @@ export function SidebarBrand({ expanded }: { expanded: boolean }) {
         onClick={() => isMobile && setOpenMobile(false)}
         className="flex min-w-0 items-center gap-3 text-ink hover:text-ink"
       >
-        <span className="flex size-11 flex-none items-center justify-center rounded-[13px] bg-brand font-heading text-base leading-none font-bold text-white shadow-[0_4px_12px_rgb(238_86_21/28%)]">
-          CF
-        </span>
-        {expanded && (
-          <span className="flex min-w-0 flex-col gap-1">
-            <span className="font-heading text-xl leading-none font-semibold tracking-[-0.01em] whitespace-nowrap">
-              ChocoFest <span className="text-brand">BD</span>
-            </span>
-            <span className="text-[11.5px] leading-none whitespace-nowrap text-ink-3">Admin dashboard</span>
+        {expanded ? (
+          <Image src="/Chocofestbd Logo.webp" alt="ChocoFest BD" width={137} height={80} priority className="h-11 w-auto" />
+        ) : (
+          <span className="flex size-11 flex-none items-center justify-center rounded-[13px] bg-brand font-heading text-base leading-none font-bold text-white shadow-[0_4px_12px_rgb(238_86_21/28%)]">
+            CF
           </span>
         )}
       </Link>
