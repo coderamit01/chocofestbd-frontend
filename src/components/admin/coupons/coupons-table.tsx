@@ -35,7 +35,7 @@ export function CouponsTable({ coupons, now, canDelete, onCopy, onEdit, onDelete
             <th className={tableStyles.head}>Valid</th>
             <th className={tableStyles.head}>Status</th>
             <th className={cn(tableStyles.head, "text-right")}>
-                <span className="sr-only">Actions</span>
+                Actions
               </th>
           </tr>
         </thead>

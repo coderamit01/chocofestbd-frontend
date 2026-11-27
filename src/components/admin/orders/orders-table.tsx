@@ -82,7 +82,7 @@ export function OrdersTable({ orders, query, selected, onToggle, onToggleAll, on
             <th className={head}>Status</th>
             <th className={head}>Zone</th>
             <th className={cn(head, "text-right")}>
-              <span className="sr-only">Actions</span>
+              Actions
             </th>
           </tr>
         </thead>

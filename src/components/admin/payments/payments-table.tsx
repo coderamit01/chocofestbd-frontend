@@ -43,7 +43,7 @@ export function PaymentsTable({ payments, now, busyId, onVerify, onReject }: Pay
             <th className={head}>Submitted</th>
             <th className={head}>Status</th>
             <th className={cn(head, "text-right")}>
-              <span className="sr-only">Actions</span>
+              Actions
             </th>
           </tr>
         </thead>

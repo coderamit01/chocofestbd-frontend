@@ -89,7 +89,7 @@ export function ZonesManager({ zones, offer }: ZonesManagerProps) {
                   <th className={cn(tableStyles.head, "text-right")}>Orders (30 d)</th>
                   <th className={tableStyles.head}>Active</th>
                   <th className={cn(tableStyles.head, "text-right")}>
-                    <span className="sr-only">Actions</span>
+                    Actions
                   </th>
                 </tr>
               </thead>

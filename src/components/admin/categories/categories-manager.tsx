@@ -135,7 +135,7 @@ export function CategoriesManager({ categories, canDelete }: CategoriesManagerPr
                 <th className={cn(tableStyles.head, "text-right")}>Products</th>
                 <th className={tableStyles.head}>Active</th>
                 <th className={cn(tableStyles.head, "text-right")}>
-                  <span className="sr-only">Actions</span>
+                  Actions
                 </th>
               </tr>
             </thead>

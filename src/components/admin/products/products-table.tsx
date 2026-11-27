@@ -44,7 +44,7 @@ export function ProductsTable({ products, selected, canTrash, isPending, onToggl
             <th className={headClass}>Rating</th>
             <th className={headClass}>Featured</th>
             <th className={cn(headClass, "text-right")}>
-              <span className="sr-only">Actions</span>
+              Actions
             </th>
           </tr>
         </thead>

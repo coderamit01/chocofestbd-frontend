@@ -52,6 +52,7 @@ export function TopbarSearch({ role, open, onToggle, onClose }: TopbarSearchProp
       open={open}
       onClose={onClose}
       className="top-[58px] w-[460px] p-2"
+      fullWidthOnMobile
       trigger={
         <>
           <button

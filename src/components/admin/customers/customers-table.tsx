@@ -55,7 +55,7 @@ export function CustomersTable({ customers, canBan, isPending, onSort, onBan }: 
             <th className={tableStyles.head}>Joined</th>
             <th className={tableStyles.head}>Status</th>
             <th className={cn(tableStyles.head, "text-right")}>
-                <span className="sr-only">Actions</span>
+                Actions
               </th>
           </tr>
         </thead>

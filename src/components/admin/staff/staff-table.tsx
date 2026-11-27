@@ -30,7 +30,7 @@ export function StaffTable({ staff, onEdit }: StaffTableProps) {
               </th>
             ))}
             <th className={cn(tableStyles.head, "text-right")}>
-              <span className="sr-only">Actions</span>
+              Actions
             </th>
           </tr>
         </thead>

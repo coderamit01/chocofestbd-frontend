@@ -98,6 +98,7 @@ export function TopbarNotifications({ open, canViewAll, onToggle, onClose }: Top
       open={open}
       onClose={onClose}
       className="top-[58px] w-[390px] p-0"
+      fullWidthOnMobile
       trigger={
         <button
           type="button"
