@@ -4,11 +4,14 @@ import type { SessionUser } from "@/types/auth";
 export type SignUpPayload = {
   name: string;
   email: string;
+  phone: string;
   password: string;
 };
+
 export type SignInPayload = {
   email: string;
   password: string;
+  rememberMe: boolean;
 };
 
 export const AuthService = {
@@ -23,4 +26,3 @@ export const AuthService = {
       body: JSON.stringify(payload),
     }),
 };
-

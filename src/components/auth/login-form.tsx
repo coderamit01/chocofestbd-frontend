@@ -1,27 +1,24 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { formStyles } from "@/lib/form-styles";
-import { cn } from "@/lib/utils";
 import { ApiError } from "@/lib/api-client";
+import { authStyles } from "@/lib/auth-styles";
 import { homeFor, isSafeRedirect } from "@/lib/route-guard";
 import { signInSchema, type SignInInput, type SignInValues } from "@/lib/validations/auth";
 import { AuthService } from "@/services/auth.service";
-import { AuthFieldError } from "./auth-field-error";
+import { AuthField } from "./auth-field";
 import { AuthFormError } from "./auth-form-error";
 import { AuthSocialSection } from "./auth-social-section";
 import { AuthSubmitButton } from "./auth-submit-button";
+import { PasswordField } from "./password-field";
 
 const isSignInField = (field: string): field is keyof SignInInput => field in signInSchema.shape;
 
 export function LoginForm() {
   const router = useRouter();
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const {
     register,
@@ -30,12 +27,12 @@ export function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignInInput, unknown, SignInValues>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "", password: "", rememberMe: true },
   });
 
-  const onSubmit = async ({ email, password }: SignInValues) => {
+  const onSubmit = async (values: SignInValues) => {
     try {
-      const { data: user } = await AuthService.signIn({ email, password });
+      const { data: user } = await AuthService.signIn(values);
       const callbackUrl = new URLSearchParams(window.location.search).get("callbackUrl");
       router.replace(isSafeRedirect(callbackUrl) ? callbackUrl : homeFor(user?.role));
       router.refresh();
@@ -54,67 +51,48 @@ export function LoginForm() {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <>
       <AuthFormError message={errors.root?.message ?? null} />
 
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
-        <div className={formStyles.field}>
-          <label htmlFor="email" className={formStyles.label}>
-            Email
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className={authStyles.stack}>
+        <AuthField
+          id="email"
+          label="Email address"
+          type="email"
+          placeholder="Email address"
+          autoComplete="username"
+          error={errors.email?.message}
+          {...register("email")}
+        />
+        <PasswordField
+          id="password"
+          label="Password"
+          placeholder="Password"
+          autoComplete="current-password"
+          error={errors.password?.message}
+          {...register("password")}
+        />
+
+        <div className="-mt-0.5 flex items-center justify-between gap-3">
+          <label className="inline-flex cursor-pointer items-center gap-[9px] text-[13.5px] text-ink-2">
+            <input type="checkbox" className={authStyles.checkbox} {...register("rememberMe")} />
+            Remember me
           </label>
-          <input
-            id="email"
-            type="email"
-            placeholder="you@chocofestbd.com"
-            autoComplete="username"
-            aria-invalid={errors.email ? true : undefined}
-            aria-describedby={errors.email ? "email-error" : undefined}
-            className={cn(formStyles.input, "h-12.5 bg-surface")}
-            {...register("email")}
-          />
-          <AuthFieldError id="email-error" message={errors.email?.message} />
+          <Link href="/forgot-password" className="text-[13px] font-medium text-[#8a7f79] hover:text-brand">
+            Forgot password?
+          </Link>
         </div>
 
-        <div className={formStyles.field}>
-          <div className="flex items-center justify-between">
-            <label htmlFor="password" className={formStyles.label}>
-              Password
-            </label>
-            <Link href="/forgot-password" className={buttonVariants({ variant: "link", className: "text-[13px]" })}>
-              Forgot password?
-            </Link>
-          </div>
-          <div className={cn(formStyles.inputGroup, "h-12.5 bg-surface")}>
-            <input
-              id="password"
-              type={isPasswordVisible ? "text" : "password"}
-              placeholder="At least 8 characters"
-              autoComplete="current-password"
-              aria-invalid={errors.password ? true : undefined}
-              aria-describedby={errors.password ? "password-error" : undefined}
-              className={formStyles.groupInput}
-              {...register("password")}
-            />
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsPasswordVisible((visible) => !visible)}
-              aria-label={isPasswordVisible ? "Hide password" : "Show password"}
-              className="m-1.5 h-auto"
-            >
-              {isPasswordVisible ? "Hide" : "Show"}
-            </Button>
-          </div>
-          <AuthFieldError id="password-error" message={errors.password?.message} />
-        </div>
-
-        <AuthSubmitButton isPending={isSubmitting} pendingLabel="Signing in…">
-          Sign in
+        <AuthSubmitButton isPending={isSubmitting} pendingLabel="Logging in…">
+          Login
         </AuthSubmitButton>
       </form>
 
-      <AuthSocialSection label="Or sign in with" onError={(message) => setError("root", { message })} />
-    </div>
+      <AuthSocialSection
+        label="Or login with"
+        buttonLabel="Login with Google"
+        onError={(message) => setError("root", { message })}
+      />
+    </>
   );
 }

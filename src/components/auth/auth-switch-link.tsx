@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { authStyles } from "@/lib/auth-styles";
 
 type AuthSwitchLinkProps = {
   question: string;
@@ -8,9 +9,9 @@ type AuthSwitchLinkProps = {
 
 export function AuthSwitchLink({ question, label, href }: AuthSwitchLinkProps) {
   return (
-    <p className="text-center text-xs text-ink-3">
+    <p className={authStyles.alt}>
       {question}{" "}
-      <Link href={href} className="font-medium">
+      <Link href={href} className={authStyles.link}>
         {label}
       </Link>
     </p>

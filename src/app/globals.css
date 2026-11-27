@@ -322,6 +322,106 @@
     linear-gradient(#000, #000) right top / calc(50% - 59px) 100% no-repeat;
 }
 
+@utility choco-digit {
+  position: relative;
+  font-family: var(--font-heading);
+  font-size: 178px;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: transparent;
+  background: linear-gradient(180deg, #8a3a17 0%, #5a1f0b 45%, #3d1104 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 3px 0 #2a0b02) drop-shadow(0 6px 0 #ee5615) drop-shadow(0 18px 18px rgb(61 17 4 / 25%));
+  &::before {
+    content: attr(data-t);
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    background: linear-gradient(180deg, rgb(255 255 255 / 38%) 0%, rgb(255 255 255 / 0%) 38%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    pointer-events: none;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    left: 30%;
+    bottom: 4px;
+    width: 16px;
+    height: 30px;
+    border-radius: 0 0 10px 10px;
+    background: linear-gradient(180deg, #3d1104, #5a1f0b);
+    box-shadow: 46px -8px 0 -3px #3d1104;
+    animation: choco-drip 3.2s ease-in-out infinite;
+  }
+  &:last-child::after {
+    left: auto;
+    right: 38%;
+    height: 24px;
+    animation-delay: -1.4s;
+    box-shadow: -40px -6px 0 -4px #3d1104;
+  }
+  @media (max-width: 900px) {
+    font-size: 104px;
+    &::after {
+      display: none;
+    }
+  }
+}
+
+@keyframes choco-drip {
+  0%,
+  100% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  50% {
+    transform: scaleY(1.35);
+    transform-origin: top;
+  }
+}
+
+@keyframes crumb {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(18px, 34px) rotate(120deg);
+  }
+}
+
+@utility check-box {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin: 0;
+  appearance: none;
+  border-radius: 6px;
+  background: #efebe7 no-repeat center / 14px 14px;
+  cursor: pointer;
+  outline: none;
+  transition:
+    background-color 0.15s,
+    box-shadow 0.15s;
+  &:hover {
+    background-color: #e6e0da;
+  }
+  &:checked {
+    background-color: var(--brand);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E");
+  }
+  &:checked:hover {
+    background-color: var(--brand-hover);
+  }
+  &:focus-visible {
+    box-shadow: var(--shadow-focus);
+  }
+}
+
 @utility scrollbar-none {
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -441,6 +541,14 @@
   --animate-pop: pop 0.12s ease-out;
   --animate-sheet-up: sheet-up 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
   --animate-fade: fade 0.2s ease;
+  --animate-auth-in: auth-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  @keyframes auth-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
 
   @keyframes sheet-up {
     from {

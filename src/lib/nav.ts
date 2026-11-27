@@ -1,4 +1,4 @@
-import type { NavSection } from "@/config/admin-nav";
+import { ADMIN_NAV, type NavSection } from "@/config/admin-nav";
 import type { UserRole } from "@/types/auth";
 
 export function filterNavByRole(sections: NavSection[], role: UserRole): NavSection[] {
@@ -9,3 +9,6 @@ export function filterNavByRole(sections: NavSection[], role: UserRole): NavSect
 
 export const isActivePath = (pathname: string, url: string) =>
   url === "/admin" ? pathname === url : pathname === url || pathname.startsWith(`${url}/`);
+
+export const canAccessPath = (role: UserRole, url: string) =>
+  ADMIN_NAV.some((section) => section.items.some((item) => item.url === url && item.roles.includes(role)));
