@@ -8,20 +8,15 @@ import {
   FOOTER_PAYMENT_METHODS,
   FOOTER_SOCIALS,
   FOOTER_TAGLINE,
-  FOOTER_TRUST_ITEMS,
 } from "@/config/store-footer";
 import { FooterBottomBar } from "./footer-bottom-bar";
 import { FooterBrand } from "./footer-brand";
 import { FooterContact } from "./footer-contact";
 import { FooterLinkColumns } from "./footer-link-columns";
-import { TrustBand } from "./trust-band";
 
-type StoreFooterProps = { showTrustBand?: boolean };
-
-export function StoreFooter({ showTrustBand = false }: StoreFooterProps) {
+export function StoreFooter() {
   return (
     <footer className="font-sans">
-      {showTrustBand && <TrustBand items={FOOTER_TRUST_ITEMS} />}
       <div className="bg-white text-ink-2">
         <Container>
           <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1.2fr] gap-10 pt-11 pb-10 max-[1180px]:grid-cols-3 max-[900px]:grid-cols-1 max-[900px]:gap-0 max-[900px]:pt-6 max-[900px]:pb-2">
