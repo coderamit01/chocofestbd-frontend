@@ -1,3 +1,4 @@
+import { AppToaster } from "@/components/shared/app-toaster";
 import { StoreFooter } from "@/components/store/footer/store-footer";
 import { StoreHeader } from "@/components/store/header/store-header";
 
@@ -7,6 +8,7 @@ export default function StoreLayout({ children }: LayoutProps<"/">) {
       <StoreHeader />
       <main className="flex-1">{children}</main>
       <StoreFooter />
+      <AppToaster />
     </div>
   );
 }

@@ -1,11 +1,7 @@
-import type { ComponentProps } from "react";
+import type { HTMLAttributes } from "react";
 import { cn } from "cn";
+import { PageContainer } from "@/components/store/ui/page-container";
 
-export function HomeSection({ className, ...props }: ComponentProps<"section">) {
-  return (
-    <section
-      className={cn("mx-auto mt-11 w-full max-w-[1320px] px-6 max-[900px]:mt-[30px] max-[900px]:px-3.5", className)}
-      {...props}
-    />
-  );
+export function HomeSection({ className, ...props }: HTMLAttributes<HTMLElement>) {
+  return <PageContainer as="section" className={cn("mt-11 max-[900px]:mt-[30px]", className)} {...props} />;
 }

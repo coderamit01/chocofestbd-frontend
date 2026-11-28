@@ -12,7 +12,7 @@ import { MobileCategoryAccordion } from "./mobile-category-accordion";
 import { Scrim } from "./scrim";
 import { SectionLabel } from "./section-label";
 import { SideDrawer } from "./side-drawer";
-import { storeButtonClass } from "./store-button";
+import { storeButtonClass } from "@/components/store/ui/store-button";
 import { useOverlay } from "./use-overlay";
 
 export function MobileMenu() {
@@ -64,12 +64,12 @@ export function MobileMenu() {
           <Link
             href={STORE_ROUTES.trackOrder}
             onClick={closePanel}
-            className={storeButtonClass("ghost", "h-[42px] flex-1")}
+            className={storeButtonClass({ variant: "ghost", className: "h-[42px] flex-1" })}
           >
             <Icon name="truck" size={16} strokeWidth={1.8} />
             Track order
           </Link>
-          <a href={STORE_HOTLINE.href} className={storeButtonClass("ghost", "h-[42px] flex-1")}>
+          <a href={STORE_HOTLINE.href} className={storeButtonClass({ variant: "ghost", className: "h-[42px] flex-1" })}>
             <Icon name="phone" size={16} strokeWidth={1.8} />
             Call us
           </a>

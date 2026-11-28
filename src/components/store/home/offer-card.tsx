@@ -38,7 +38,7 @@ export function OfferCard({ product }: { product: StoreProduct }) {
         </div>
         <div className="mt-1 grid grid-cols-2 gap-1.5">
           <BuyNowLink className="h-[34px] px-1.5 text-[12.5px]" />
-          <AddToCartButton productName={product.name} className="h-[34px] px-1.5 text-[12.5px]" />
+          <AddToCartButton productId={product.id} productName={product.name} price={product.price} className="h-[34px] px-1.5 text-[12.5px]" />
         </div>
       </div>
     </article>

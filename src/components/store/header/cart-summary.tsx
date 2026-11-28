@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Icon } from "@/components/shared/icon";
 import { DEFAULT_DELIVERY_AREA, STORE_ROUTES } from "@/config/store-header";
 import { formatTaka } from "@/lib/utils";
-import { storeButtonClass } from "./store-button";
+import { storeButtonClass } from "@/components/store/ui/store-button";
 
 type CartSummaryProps = {
   subtotal: number;
@@ -21,10 +21,10 @@ export function CartSummary({ subtotal, onNavigate }: CartSummaryProps) {
         on delivery available.
       </span>
       <div className="mt-1 grid grid-cols-[1fr_1.3fr] gap-2.5">
-        <Link href={STORE_ROUTES.cart} onClick={onNavigate} className={storeButtonClass("ghost")}>
+        <Link href={STORE_ROUTES.cart} onClick={onNavigate} className={storeButtonClass({ variant: "ghost" })}>
           View cart
         </Link>
-        <Link href={STORE_ROUTES.checkout} onClick={onNavigate} className={storeButtonClass("primary")}>
+        <Link href={STORE_ROUTES.checkout} onClick={onNavigate} className={storeButtonClass()}>
           Checkout
           <Icon name="arrowRight" size={16} strokeWidth={1.8} />
         </Link>

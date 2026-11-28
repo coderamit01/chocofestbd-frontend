@@ -586,6 +586,20 @@
   --animate-bag-wiggle: bag-wiggle 0.5s ease;
   --animate-mic-pulse: mic-pulse 1.1s ease-out infinite;
   --animate-hb-zoom: hb-zoom 6s ease-out both;
+  --animate-drip: drip 2.4s ease-in-out infinite;
+
+  @keyframes drip {
+    50% {
+      height: 60px;
+    }
+  }
+  --animate-track-pulse: track-pulse 1.8s infinite;
+
+  @keyframes track-pulse {
+    50% {
+      box-shadow: 0 0 0 11px rgb(238 86 21 / 6%);
+    }
+  }
 
   @keyframes hb-zoom {
     from {

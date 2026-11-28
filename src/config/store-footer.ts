@@ -42,8 +42,8 @@ export const FOOTER_LINK_GROUPS: FooterLinkGroup[] = [
   {
     heading: "Shop",
     links: [
-      { label: "Chocolates", href: "/shop/chocolates" },
-      { label: "Gift boxes", href: "/shop/gift-boxes" },
+      { label: "Chocolates", href: "/category/chocolates" },
+      { label: "Gift boxes", href: "/category/gift-boxes" },
       { label: "Offers", href: "/offers" },
       { label: "New arrivals", href: "/new-arrivals" },
       { label: "All brands", href: "/brands" },

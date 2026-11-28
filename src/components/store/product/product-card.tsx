@@ -14,12 +14,13 @@ import type { StoreProduct } from "@/types/store-product";
 type ProductCardProps = {
   product: StoreProduct;
   sizes?: string;
+  wishlisted?: boolean;
   className?: string;
 };
 
 const DEFAULT_SIZES = "(max-width: 900px) 40vw, (max-width: 1180px) 30vw, 240px";
 
-export function ProductCard({ product, sizes = DEFAULT_SIZES, className }: ProductCardProps) {
+export function ProductCard({ product, sizes = DEFAULT_SIZES, wishlisted = false, className }: ProductCardProps) {
   const href = productHref(product);
   const inStock = isInStock(product);
 
@@ -34,7 +35,7 @@ export function ProductCard({ product, sizes = DEFAULT_SIZES, className }: Produ
         <ProductImageLink href={href} src={product.image} alt={product.name} sizes={sizes} outOfStock={!inStock} />
         <div className="pointer-events-none absolute top-0 right-2 left-0 z-[2] flex items-start justify-between gap-2 *:pointer-events-auto">
           <ProductBadges discount={discountPercent(product)} tag={product.tag} />
-          <WishlistButton className="mt-2 ml-auto" />
+          <WishlistButton productName={product.name} defaultSaved={wishlisted} className="mt-2 ml-auto" />
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-2 px-1 pt-2.5">
@@ -55,7 +56,9 @@ export function ProductCard({ product, sizes = DEFAULT_SIZES, className }: Produ
           <div className="mt-auto grid grid-cols-2 gap-2 pt-1.5 @max-[200px]:grid-cols-[1fr_40px] @max-[200px]:gap-1.5">
             <BuyNowLink className="@max-[200px]:h-9" />
             <AddToCartButton
+              productId={product.id}
               productName={product.name}
+              price={product.price}
               icon={<Icon name="cart" size={16} strokeWidth={1.8} className="hidden @max-[200px]:block" />}
               className="@max-[200px]:h-9 @max-[200px]:w-10 @max-[200px]:px-0"
               labelClassName="@max-[200px]:hidden"

@@ -54,7 +54,7 @@ export function BestSellingCard({ product, ribbon }: BestSellingCardProps) {
         ) : null}
         <div className="mt-2.5 grid w-full max-w-[280px] grid-cols-2 gap-2 max-[700px]:mt-1">
           <BuyNowLink className="h-[38px] px-2 text-[13.5px]" />
-          <AddToCartButton productName={product.name} className="h-[38px] px-2 text-[13.5px]" />
+          <AddToCartButton productId={product.id} productName={product.name} price={product.price} className="h-[38px] px-2 text-[13.5px]" />
         </div>
       </div>
     </article>

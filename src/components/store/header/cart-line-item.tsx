@@ -2,7 +2,7 @@ import { Icon } from "@/components/shared/icon";
 import { formatTaka } from "@/lib/utils";
 import type { CartLine } from "@/types/store";
 import { ProductThumb } from "./product-thumb";
-import { QuantityStepper } from "./quantity-stepper";
+import { QuantityStepper } from "@/components/store/ui/quantity-stepper";
 
 type CartLineItemProps = {
   line: CartLine;
@@ -21,7 +21,12 @@ export function CartLineItem({ line, onQuantityChange, onRemove }: CartLineItemP
           {product.brand} · {formatTaka(product.price)}
         </span>
         <span className="flex items-center justify-between gap-2">
-          <QuantityStepper value={quantity} onChange={onQuantityChange} />
+          <QuantityStepper
+            size="xs"
+            min={0}
+            value={quantity}
+            onChange={(next) => onQuantityChange(next - quantity)}
+          />
           <b className="font-heading text-[15px] leading-none font-bold text-ink">
             {formatTaka(quantity * product.price)}
           </b>
