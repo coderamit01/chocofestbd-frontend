@@ -9,19 +9,19 @@ import {
   FOOTER_SOCIALS,
   FOOTER_TAGLINE,
   FOOTER_TRUST_ITEMS,
-  STORE_WHATSAPP_URL,
 } from "@/config/store-footer";
 import { FooterBottomBar } from "./footer-bottom-bar";
 import { FooterBrand } from "./footer-brand";
 import { FooterContact } from "./footer-contact";
 import { FooterLinkColumns } from "./footer-link-columns";
 import { TrustBand } from "./trust-band";
-import { WhatsAppButton } from "./whatsapp-button";
 
-export function StoreFooter() {
+type StoreFooterProps = { showTrustBand?: boolean };
+
+export function StoreFooter({ showTrustBand = false }: StoreFooterProps) {
   return (
     <footer className="font-sans">
-      <TrustBand items={FOOTER_TRUST_ITEMS} />
+      {showTrustBand && <TrustBand items={FOOTER_TRUST_ITEMS} />}
       <div className="bg-white text-ink-2">
         <Container>
           <div className="grid grid-cols-[1.4fr_1fr_1fr_1fr_1.2fr] gap-10 pt-11 pb-10 max-[1180px]:grid-cols-3 max-[900px]:grid-cols-1 max-[900px]:gap-0 max-[900px]:pt-6 max-[900px]:pb-2">
@@ -32,7 +32,6 @@ export function StoreFooter() {
         </Container>
       </div>
       <FooterBottomBar copyright={FOOTER_COPYRIGHT} links={FOOTER_LEGAL_LINKS} developer={FOOTER_DEVELOPER} />
-      <WhatsAppButton href={STORE_WHATSAPP_URL} label="Order on WhatsApp" />
     </footer>
   );
 }
